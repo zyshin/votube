@@ -19,7 +19,7 @@ def splitSense(sense):
         else:
             if sense[i] in ['.', '?', '!']:
                 lastpoint = i
-    return [sense, '']
+    return [sense, sense]
 
 
 def classifySenses(dic):
