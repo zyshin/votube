@@ -1,0 +1,28 @@
+{% load static %}
+<li>
+  <a href="#">
+    <div class="media">
+      <div class="media-left">
+      {% if poster %}
+        <img class="media-object media-object-poster-sm" src="{{ poster }}" alt="...">
+      {% else %}
+        <img class="media-object media-object-poster-sm" src="{% static "img/placeholder_poster.jpg" %}" alt="...">
+      {% endif %}
+      </div>
+      <div class="media-body">
+        <h5>{{ title }} ({% firstof year2 year "unknown year" %})</h5>
+        <p title="Vocabulary used in">
+          <span class="level-label">TOEFL</span>
+          <strong>{{ t|default:0 }}</strong>
+        </p>
+        <p title="Vocabulary used in">
+          <span class="level-label">&nbsp;&nbsp;GRE&nbsp;&nbsp;</span>
+          <strong>{{ g|default:0 }}</strong>
+        </p>
+        <p class="star-rating" title="IMDB rating: {{ rating2 }}">
+          {% include "controls/star_rating.html" %}
+        </p>
+      </div>
+    </div>
+  </a>
+</li>

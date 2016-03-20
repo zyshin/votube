@@ -1,0 +1,16 @@
+<!-- rating: 0-10 -->
+{% comment %}
+  {% firstof rating2 rating 0 as rating %}
+  firstof return string type
+{% endcomment %}
+{% if rating2 %}
+  {% for i in "12345" %}
+    {% if rating2 >= forloop.counter|add:forloop.counter %}
+      <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+    {% elif rating2|add:"1" >= forloop.counter|add:forloop.counter %}
+      <span class="glyphicon glyphicon-star-half" aria-hidden="true"></span>
+    {% else %}
+      <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
+    {% endif %}
+  {% endfor %}
+{% endif %}

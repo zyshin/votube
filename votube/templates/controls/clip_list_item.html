@@ -1,0 +1,33 @@
+<li class="list-group-item active">
+  <div class="media">
+    <div class="media-left col-md-6">
+      <div class="embed-responsive embed-responsive-4by3">
+        <div class="video-hover">
+          {% for m in word.meanings %}
+          {% if forloop.counter0 == sense %}
+            <p class="pull-down">{{ forloop.counter }}. [{{ m.pos_entry.pos }}] {{ m.tran|safe }}</p>
+          {% endif %}
+          {% endfor %}
+        </div>
+        <video class="embed-responsive-item" preload="metadata" src="http://pi.cs.tsinghua.edu.cn/lab/moviedict/movies/mp4/{{ videofile }}#t={{ start }},{{ end }}"></video>
+      </div>
+    </div>
+    <div class="media-body">
+      <h5 class="media-heading">{{ title }} ({{ year }})</h5>
+      <p class="pull-down">
+        <a href="#" class="btn btn-link disabled" role="button">
+          <span class="glyphicon glyphicon-facetime-video" aria-hidden="true"></span>
+        </a>
+        <span>{{ length|floatformat:0 }}s</span>
+        <a href="#" class="btn btn-link disabled" role="button">
+          <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+        </a>
+        <span>{{ views|default:0 }}</span>
+        <a href="#" title="I think it's useful" class="btn btn-link btn-vote" role="button">
+          <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
+        </a>
+        <span>{{ votes|default:0 }}</span>
+      </p>
+    </div>
+  </div>
+</li>

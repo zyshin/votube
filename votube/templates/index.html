@@ -1,0 +1,171 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- <link rel="icon" href="../../favicon.ico"> -->
+
+    <title>Votube</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <!-- <link rel="stylesheet" href="../../static/css/offcanvas.css">
+    <link rel="stylesheet" href="../../static/css/styles.css" /> -->
+    <link rel="stylesheet" href="{% static "css/offcanvas.css" %}">
+    <link rel="stylesheet" href="{% static "css/styles.css" %}" />
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+    <nav class="navbar navbar-fixed-top navbar-inverse">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <!-- <a class="navbar-brand" href="#">Project name</a> -->
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="#">Dictionary</a></li>
+            <li><a href="#">Votube</a></li>
+          </ul>
+          <form class="navbar-form navbar-right" role="search">
+            <div class="input-group">
+              <span class="input-group-btn">
+                <button class="btn btn-search" type="submit">
+                  <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                </button>
+              </span>
+              <input type="text" class="form-control input-search" placeholder="Search for...">
+            </div><!-- /input-group -->
+          </form>
+        </div><!-- /.nav-collapse -->
+      </div><!-- /.container -->
+    </nav><!-- /.navbar -->
+
+    <div class="container">
+
+      <div class="row row-offcanvas row-offcanvas-right">
+
+        <div class="col-xs-12 col-sm-8">
+          <p class="pull-right visible-xs">
+            <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
+          </p>
+          <div class="row row-heading">
+          {% comment %}
+          {% with word="ambush" ukphone="ˈæmbʊʃ" usphone="ˈæmbʊʃ" t=True g=False forms="ambushing, ambushed, ambushes" %}
+          {% endcomment %}
+          {% with word=word.word ukphone=word.ukphone usphone=word.usphone t=word.t g=word.g forms=word.forms %}
+            {% include "controls/word_info.html" %}
+          {% endwith %}
+          </div><!--/row-->
+
+          <!-- 16:9 aspect ratio -->
+          <div class="row row-video">
+            <div class="embed-responsive embed-responsive-16by9" id="videoContainer">
+            {% with videofile=active_clip.movie.videofile en_sub="Forrest%20Gump%20en.vtt" dual_sub="Forrest%20Gump%20ch+en.vtt" start=active_clip.start end=active_clip.end length=active_clip.length votes=active_clip.votes views=active_clip.views en_sub=active_clip.movie.en_sub|first dual_sub=active_clip.movie.dual_sub|first %}
+              {% include "controls/clip_player.html" %}
+            {% endwith %}
+            </div>
+          </div>
+
+          <div class="row row-movie-info">
+          {% comment %}
+            {% with title="Forrest Gump" year="1994" poster="https://image.tmdb.org/t/p/w185/y3EsNpMFwvpcucLmx4HiiRRhCXV.jpg" description="如果你所创建的组件不包含任何文本内容（例如，内只包含了一个图标），你应当提供其他的内容来表示这个控件的意图，这样就能让使用辅助设备的用户知道其作用了。这种情况下，你可以为控件添加 aria-label 属相。" rating=5.5 t=213 g=168 %}
+          {% endcomment %}
+          {% with title=active_clip.movie.title rating=active_clip.movie.rating t=active_clip.movie.t g=active_clip.movie.g rating2=active_clip.movie.omdb.imdbRating plot=active_clip.movie.omdb.Plot %}
+          {% firstof active_clip.movie.omdb.Poster active_clip.movie.poster as poster %}
+          {% firstof active_clip.movie.omdb.Year active_clip.movie.year "unknown year" as year %}
+              {% include "controls/movie_info.html" %}
+          {% endwith %}
+          </div><!--/row-->
+        </div><!--/.col-->
+
+        <div class="col-xs-6 col-sm-4 sidebar-offcanvas" id="sidebar">
+          <div class="dropdown">
+            <button class="btn btn-block btn-dropdown dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+              <h4>
+                All Movies
+                <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
+              </h4>
+            </button>
+            <ul class="col-xs-12 col-sm-12 dropdown-menu" aria-labelledby="dropdownMenu1">
+            {% comment %}
+            {% with title="Forrest Gump" year="1994" poster="https://image.tmdb.org/t/p/w185/y3EsNpMFwvpcucLmx4HiiRRhCXV.jpg" description="如果你所创建的组件不包含任何文本内容（例如，内只包含了一个图标），你应当提供其他的内容来表示这个控件的意图，这样就能让使用辅助设备的用户知道其作用了。这种情况下，你可以为控件添加 aria-label 属相。" rating=5.5 t=213 g=168 %}
+              {% include "controls/movie_list_item.html" %}
+              {% include "controls/movie_list_item.html" %}
+              {% include "controls/movie_list_item.html" %}
+            {% endwith %}
+            {% endcomment %}
+            {% for movie in movies %}
+              {% with title=movie.title rating=movie.rating t=movie.t g=movie.g rating2=movie.omdb.imdbRating %}
+              {% firstof active_clip.movie.omdb.Poster active_clip.movie.poster as poster %}
+              {% firstof active_clip.movie.omdb.Year active_clip.movie.year "unknown year" as year %}
+                {% include "controls/movie_list_item.html" %}
+              {% endwith %}
+            {% endfor %}
+            </ul>
+          </div>
+          <ul class="list-group">
+            <li class="list-group-item text-center">
+              <h4>All Meanings</h4>
+            </li>
+            {% comment %}
+            {% with title="Forrest Gump" year="1994" videofile="Forrest.Gump.1994.BDRip.X264.480p.mp4" start="01:20:09.233" end="01:20:15.900" length=6 votes=3122 views=13124 %}
+              {% include "controls/clip_list_item.html" %}
+              {% include "controls/clip_list_item.html" %}
+              {% include "controls/clip_list_item.html" %}
+            {% endwith %}
+            {% endcomment %}
+            {% for clip in clips %}
+              {% with title=clip.movie.title videofile=clip.movie.videofile start=clip.start end=clip.end length=clip.length votes=clip.votes views=clip.views en_sub=clip.subtitle sense=clip.sense %}
+              {% firstof active_clip.movie.omdb.Year active_clip.movie.year "unknown year" as year %}
+                {% include "controls/clip_list_item.html" %}
+              {% endwith %}
+            {% endfor %}
+          </ul>
+          <nav>
+            <ul class="pager">
+              <li class="previous disabled"><a href="#"><span aria-hidden="true">&larr;</span> Older</a></li>
+              <li class="next"><a href="#">Newer <span aria-hidden="true">&rarr;</span></a></li>
+            </ul>
+          </nav>
+        </div><!--/.sidebar-offcanvas-->
+      </div><!--/row-->
+
+      <hr>
+
+      <footer>
+        <p>&copy; Votube 2016</p>
+      </footer>
+
+    </div><!--/.container-->
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="http://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+    <!-- <script src="../../static/js/offcanvas.js"></script> -->
+    <script src="{% static "js/offcanvas.js" %}"></script>
+    <!-- <script src="../../static/js/video-player.js"></script> -->
+  </body>
+</html>
