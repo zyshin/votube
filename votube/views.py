@@ -6,6 +6,7 @@ from django.views.generic import View, TemplateView
 import json
 from datetime import datetime
 from SubWSD.subWSD import getWordSents
+from SubWSD.classifySense import splitSense
 
 from pymongo import MongoClient
 db = MongoClient('166.111.139.42').dev
@@ -53,6 +54,7 @@ class PageView(TemplateView):
             for m in meanings:
                 # m['tran'] = ???
                 # TODO(@Shuriken13): extract only Chinese in m['tran']
+                m['tran'] = splitSense(m['tran'])[1]
                 pass
         except Exception, e:
             print repr(e)
