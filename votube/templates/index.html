@@ -19,7 +19,10 @@
     <!-- <link rel="stylesheet" href="../../static/css/offcanvas.css">
     <link rel="stylesheet" href="../../static/css/styles.css" /> -->
     <link rel="stylesheet" href="{% static "css/offcanvas.css" %}">
-    <link rel="stylesheet" href="{% static "css/styles.css" %}" />
+    <!-- <link rel="stylesheet" href="{% static "css/styles.css" %}" /> -->
+  {% if is_plugin %}
+    <link rel="stylesheet" href="{% static "css/plugin.css" %}" />
+  {% endif %}
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -27,8 +30,25 @@
       <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
   </head>
-
   <body>
+  {% if is_plugin %}
+    <!-- TODO: @zyk -->
+    <div class="container">
+      <div class="row row-heading">
+      {% comment %}
+      {% with word="ambush" ukphone="ˈæmbʊʃ" usphone="ˈæmbʊʃ" t=True g=False forms="ambushing, ambushed, ambushes" %}
+      {% endcomment %}
+      {% with word=word.word ukphone=word.ukphone usphone=word.usphone t=word.t g=word.g forms=word.forms %}
+        {% include "controls/word_info.html" %}
+      {% endwith %}
+      </div>
+      <div class="row row-video">
+      {% with videofile=active_clip.movie.videofile start=active_clip.start end=active_clip.end length=active_clip.length votes=active_clip.votes views=active_clip.views en_sub=active_clip.movie.en_sub|first dual_sub=active_clip.movie.dual_sub|first %}
+        {% include "controls/clip_player.html" %}
+      {% endwith %}
+      </div>
+    </div>
+  {% else %}
     <nav class="navbar navbar-fixed-top navbar-inverse">
       <div class="container">
         <div class="navbar-header">
@@ -78,11 +98,9 @@
 
           <!-- 16:9 aspect ratio -->
           <div class="row row-video">
-            <div class="embed-responsive embed-responsive-16by9" id="videoContainer">
-            {% with videofile=active_clip.movie.videofile en_sub="Forrest%20Gump%20en.vtt" dual_sub="Forrest%20Gump%20ch+en.vtt" start=active_clip.start end=active_clip.end length=active_clip.length votes=active_clip.votes views=active_clip.views en_sub=active_clip.movie.en_sub|first dual_sub=active_clip.movie.dual_sub|first %}
-              {% include "controls/clip_player.html" %}
-            {% endwith %}
-            </div>
+          {% with videofile=active_clip.movie.videofile start=active_clip.start end=active_clip.end length=active_clip.length votes=active_clip.votes views=active_clip.views en_sub=active_clip.movie.en_sub|first dual_sub=active_clip.movie.dual_sub|first %}
+            {% include "controls/clip_player.html" %}
+          {% endwith %}
           </div>
 
           <div class="row row-movie-info">
@@ -156,7 +174,7 @@
       </footer>
 
     </div><!--/.container-->
-
+{% endif %}
 
     <!-- Bootstrap core JavaScript
     ================================================== -->

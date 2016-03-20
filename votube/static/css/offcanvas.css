@@ -73,6 +73,10 @@ footer {
  * Global
  * -----------------------------
  */
+* {
+  border-radius: 0 !important;
+}
+
 .pull-down {
   position: absolute;
   bottom: 0;
@@ -108,11 +112,7 @@ footer {
   text-align: center;
   background-color: #4f5f6f;
   border-width: 0;
-}
-
-.navbar-inverse * {
   color: #f0f3f6;
-  background-color: #4f5f6f;
 }
 
 .navbar-inverse .navbar-brand,
@@ -128,25 +128,26 @@ footer {
   background-color: #59c2e6;
 }
 
-.btn-search {
+.navbar-inverse .input-group {
+  background: #3d4c5b;
+}
+
+.btn-search,
+.btn-search:hover,
+.btn-search:active {
   background-color: #3d4c5b;
   border-width: 0;
   font-size: 22px;
 }
 
-.btn-search:hover {
+.btn-search:hover,
+.btn-search:focus {
   color: #fff;
-  background-color: #4f5f6f;
-}
-
-.btn-search:active {
-  background-color: #3d4c5b;
 }
 
 .input-search {
   height: inherit;
-  border-left-width: 0px;
-  border-color: #4f5f6f;
+  border-color: #3d4c5b;
   background-color: #3d4c5b;
   font-size: 22px;
 }
@@ -196,7 +197,7 @@ footer {
   width: 100%;
   height: 100%;
   color: #fff;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.6);
   z-index: 10;
 }
 
@@ -214,23 +215,36 @@ footer {
 
 .video-hover>.pull-down {
   margin: 0;
-  padding-top: 3px;
-  padding-bottom: 3px;
+  padding: 3px;
+  width: 100%;
   white-space: nowrap;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.6);
   font-size: 10px;
 }
 
 video::cue {
   font-family: "Arial","Microsoft YaHei","黑体","宋体",sans-serif;
   font-size: 24px;
-  /*background-color: transparent;*/
+  /*background-color: rgba(0, 0, 0, 0);*/
 }
 
 video::cue(.highlighted) {
   color: red;
   font-weight: bold;
 }
+
+video.no-sub::cue {
+  color: rgba(0, 0, 0, 0);
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.video-controls {
+  margin: 0;
+  background: #000;
+  color: #fff;
+  font-size: 18px;
+}
+
 
 /*
  * Side bar
@@ -314,6 +328,9 @@ video::cue(.highlighted) {
   color: #f61;
 }
 
+.label-group {
+  margin-right: 10px;
+}
 
 /*
  * Movie info row

@@ -52,7 +52,6 @@ class PageView(TemplateView):
         try:
             meanings = [e['tran_entry'][0] for e in word['def']['collins']['collins_entries'][0]['entries']['entry']]
             for m in meanings:
-                # m['tran'] = ???
                 # TODO(@Shuriken13): extract only Chinese in m['tran']
                 m['tran'] = splitSense(m['tran'])[1]
                 pass
@@ -100,6 +99,7 @@ class PageView(TemplateView):
         context = super(PageView, self).get_context_data(**kwargs)
         word = self.request.GET.get('word') or 'default'
         r = getWordSents(word)
+        context['is_plugin'] = 'plugin' in self.request.GET
         context['word'] = self.__get_word(r)
         context['clips'] = self.__get_clips(r)
         context['movies'] = self.__get_movies(r)

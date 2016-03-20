@@ -1,64 +1,66 @@
-<div class="video-hover">
-  <div class="container">
-{% if word.meanings %}
-    <h2>Basic Meaning</h2>
-    {% for m in word.meanings %}
-    {% if forloop.counter0 == active_clip.sense %}
-      <p>{{ forloop.counter }}. [{{ m.pos_entry.pos_tips }} {{ m.pos_entry.pos }}] {{ m.tran|safe }}</p>
+<div class="embed-responsive embed-responsive-16by9" id="videoContainer">
+  <div class="video-hover">
+    <div class="container">
+  {% if word.meanings %}
+      <h2>In-Context Meaning</h2>
+      {% for m in word.meanings %}
+      {% if forloop.counter0 == active_clip.sense %}
+        <b>{{ forloop.counter }}. [{{ m.pos_entry.pos_tips }} {{ m.pos_entry.pos }}] {{ m.tran|safe }}</b>
+      {% endif %}
+      {% endfor %}
+      <h2>Line</h2>
+      <p>... {{ active_clip.sent|safe }} ...</p>
+    {% if word.meanings|length > 1 %}
+      <h2>Other Meanings</h2>
+      {% for m in word.meanings %}
+      {% if forloop.counter0 != active_clip.sense %}
+        <p>{{ forloop.counter }}. [{{ m.pos_entry.pos_tips }} {{ m.pos_entry.pos }}] {{ m.tran|safe }}</p>
+      {% endif %}
+      {% endfor %}
     {% endif %}
-    {% endfor %}
-    <h2>Line</h2>
-    <p>... {{ active_clip.sent|safe }} ...</p>
-  {% if word.meanings|length > 1 %}
-    <h2>Other Meanings</h2>
-    {% for m in word.meanings %}
-    {% if forloop.counter0 != active_clip.sense %}
-      <p>{{ forloop.counter }}. [{{ m.pos_entry.pos_tips }} {{ m.pos_entry.pos }}] {{ m.tran|safe }}</p>
-    {% endif %}
-    {% endfor %}
+  {% else %}
+    <h2>Not found</h2>
   {% endif %}
-{% else %}
-  <h2>Not found</h2>
-{% endif %}
+    </div>
   </div>
+
+  <!-- <video class="embed-responsive-item" id="video" preload="metadata" src="http://pi.cs.tsinghua.edu.cn/lab/moviedict/movies/Contact.1997.BluRay.720p.x264.480p.mp4#t=6100">
+    <track label="Eng" kind="subtitles" src="../../static/subtitles/Contact en.vtt" default>
+    <track label="Chi-Eng" kind="subtitles" src="../../static/subtitles/Contact ch+en.vtt">
+  </video> -->
+  <video class="embed-responsive-item" id="video" controls crossorigin preload="metadata" src="http://pi.cs.tsinghua.edu.cn/lab/moviedict/movies/mp4/{{ videofile }}#t={{ start }},{{ end }}">
+    <track label="Eng" kind="subtitles" src="http://pi.cs.tsinghua.edu.cn/lab/moviedict/movies/subtitles/{{ en_sub }}" default>
+    <track label="Chi-Eng" kind="subtitles" src="http://pi.cs.tsinghua.edu.cn/lab/moviedict/movies/subtitles/{{ dual_sub }}">
+  </video>
+  <!-- <div id="video-controls" class="controls btn-group" role="group" aria-label="..." data-state="hidden">
+    <button class="btn btn-default" id="playpause" type="button" data-state="play">Play/Pause</button>
+    <button class="btn btn-default" id="stop" type="button" data-state="stop">Stop</button>
+    <div class="progress">
+      <progress id="progress" value="0" min="0">
+        <span id="progress-bar"></span>
+      </progress>
+    </div>
+    <button class="btn btn-default" id="mute" type="button" data-state="mute">Mute/Unmute</button>
+    <button class="btn btn-default" id="volinc" type="button" data-state="volup">Vol+</button>
+    <button class="btn btn-default" id="voldec" type="button" data-state="voldown">Vol-</button>
+    <button class="btn btn-default" id="fs" type="button" data-state="go-fullscreen">Fullscreen</button>
+    <button class="btn btn-default" id="subtitles" type="button" data-state="subtitles">Eng</button>
+  </div> -->
 </div>
 
-<!-- <video class="embed-responsive-item" id="video" preload="metadata" src="http://pi.cs.tsinghua.edu.cn/lab/moviedict/movies/Contact.1997.BluRay.720p.x264.480p.mp4#t=6100">
-  <track label="Eng" kind="subtitles" src="../../static/subtitles/Contact en.vtt" default>
-  <track label="Chi-Eng" kind="subtitles" src="../../static/subtitles/Contact ch+en.vtt">
-</video> -->
-<video class="embed-responsive-item" id="video" controls crossorigin preload="metadata" src="http://pi.cs.tsinghua.edu.cn/lab/moviedict/movies/mp4/{{ videofile }}#t={{ start }},{{ end }}">
-  <track label="Eng" kind="subtitles" src="http://pi.cs.tsinghua.edu.cn/lab/moviedict/movies/subtitles/{{ en_sub }}" default>
-  <track label="Chi-Eng" kind="subtitles" src="http://pi.cs.tsinghua.edu.cn/lab/moviedict/movies/subtitles/{{ dual_sub }}">
-</video>
 {% if videofile %}
-<div>
-  <div class="col-md-6" title="View times">
+<div class="row video-controls">
+  <div class="col-xs-6" title="View times">
     <a href="#" class="btn btn-link disabled" role="button">
       <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
     </a>
-    <span>{{ views }}</span>
+    <span>{{ views|default:0 }}</span>
   </div>
-  <div class="col-md-6 text-right" title="Votes">
+  <div class="col-xs-6 text-right" title="Votes">
     <a href="#" title="I think it's useful" class="btn btn-link btn-vote" role="button">
       <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
     </a>
-    <span>{{ votes }}</span>
+    <span>{{ votes|default:0 }}</span>
   </div>
 </div>
 {% endif %}
-
-<!-- <div id="video-controls" class="controls btn-group" role="group" aria-label="..." data-state="hidden">
-  <button class="btn btn-default" id="playpause" type="button" data-state="play">Play/Pause</button>
-  <button class="btn btn-default" id="stop" type="button" data-state="stop">Stop</button>
-  <div class="progress">
-    <progress id="progress" value="0" min="0">
-      <span id="progress-bar"></span>
-    </progress>
-  </div>
-  <button class="btn btn-default" id="mute" type="button" data-state="mute">Mute/Unmute</button>
-  <button class="btn btn-default" id="volinc" type="button" data-state="volup">Vol+</button>
-  <button class="btn btn-default" id="voldec" type="button" data-state="voldown">Vol-</button>
-  <button class="btn btn-default" id="fs" type="button" data-state="go-fullscreen">Fullscreen</button>
-  <button class="btn btn-default" id="subtitles" type="button" data-state="subtitles">Eng</button>
-</div> -->
