@@ -52,7 +52,7 @@
                   <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
                 </button>
               </span>
-              <input type="text" class="form-control input-search" placeholder="Search for...">
+              <input class="form-control input-search" type="text" name="word" placeholder="Search for...">
             </div><!-- /input-group -->
           </form>
         </div><!-- /.nav-collapse -->
@@ -91,7 +91,7 @@
           {% endcomment %}
           {% with title=active_clip.movie.title rating=active_clip.movie.rating t=active_clip.movie.t g=active_clip.movie.g rating2=active_clip.movie.omdb.imdbRating plot=active_clip.movie.omdb.Plot %}
           {% firstof active_clip.movie.omdb.Poster active_clip.movie.poster as poster %}
-          {% firstof active_clip.movie.omdb.Year active_clip.movie.year "unknown year" as year %}
+          {% firstof active_clip.movie.omdb.Year active_clip.movie.year "No year" as year %}
               {% include "controls/movie_info.html" %}
           {% endwith %}
           </div><!--/row-->
@@ -115,8 +115,8 @@
             {% endcomment %}
             {% for movie in movies %}
               {% with title=movie.title rating=movie.rating t=movie.t g=movie.g rating2=movie.omdb.imdbRating %}
-              {% firstof active_clip.movie.omdb.Poster active_clip.movie.poster as poster %}
-              {% firstof active_clip.movie.omdb.Year active_clip.movie.year "unknown year" as year %}
+              {% firstof movie.omdb.Poster movie.poster as poster %}
+              {% firstof movie.omdb.Year movie.year "No year" as year %}
                 {% include "controls/movie_list_item.html" %}
               {% endwith %}
             {% endfor %}
@@ -135,7 +135,7 @@
             {% endcomment %}
             {% for clip in clips %}
               {% with title=clip.movie.title videofile=clip.movie.videofile start=clip.start end=clip.end length=clip.length votes=clip.votes views=clip.views en_sub=clip.subtitle sense=clip.sense %}
-              {% firstof active_clip.movie.omdb.Year active_clip.movie.year "unknown year" as year %}
+              {% firstof clip.movie.omdb.Year clip.movie.year "No year" as year %}
                 {% include "controls/clip_list_item.html" %}
               {% endwith %}
             {% endfor %}

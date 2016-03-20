@@ -20,5 +20,6 @@ from .views import MyView, PageView
 
 urlpatterns = [
     url(r'^api/', MyView.as_view()),
+    # url(r'^votube/(?P<word>[a-zA-Z]+)/', PageView.as_view()),
     url(r'^votube/', PageView.as_view()),
 ]

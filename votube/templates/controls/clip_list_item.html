@@ -1,4 +1,5 @@
-<li class="list-group-item active">
+{% load static %}
+<li class="list-group-item{% if clip.id == active_clip.id %} active{% endif %}">
   <div class="media">
     <div class="media-left col-md-6">
       <div class="embed-responsive embed-responsive-4by3">
@@ -9,11 +10,15 @@
           {% endif %}
           {% endfor %}
         </div>
+      {% if videofile %}
         <video class="embed-responsive-item" preload="metadata" src="http://pi.cs.tsinghua.edu.cn/lab/moviedict/movies/mp4/{{ videofile }}#t={{ start }},{{ end }}"></video>
+      {% else %}
+        <img class="embed-responsive-item" src="{% static "img/placeholder_clip.jpg" %}">
+      {% endif %}
       </div>
     </div>
     <div class="media-body">
-      <h5 class="media-heading">{{ title }} ({{ year }})</h5>
+      <h5 class="media-heading">{{ title|default:"No title" }} ({{ year }})</h5>
       <p class="pull-down">
         <a href="#" class="btn btn-link disabled" role="button">
           <span class="glyphicon glyphicon-facetime-video" aria-hidden="true"></span>

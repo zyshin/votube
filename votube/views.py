@@ -33,6 +33,7 @@ class PageView(TemplateView):
 
     @staticmethod
     def __get_word(word):
+        # TODO: move into templates
         try:
             w = word['def']['simple']['word'][0]
         except Exception, e:
@@ -51,7 +52,7 @@ class PageView(TemplateView):
             meanings = [e['tran_entry'][0] for e in word['def']['collins']['collins_entries'][0]['entries']['entry']]
             for m in meanings:
                 # m['tran'] = ???
-                # TODO: extract only Chinese in m['tran']
+                # TODO(@Shuriken13): extract only Chinese in m['tran']
                 pass
         except Exception, e:
             print repr(e)
@@ -70,7 +71,9 @@ class PageView(TemplateView):
 
     @staticmethod
     def __get_clips(word):
+        word['sents'] = [s for s in word['sents'] if s['movie']]
         for s in word['sents']:
+            s['id'] = s['_id']
             times = [datetime.strptime(t, '%H:%M:%S.%f') for t in s['time']]
             start = times[0]
             end = times[3]
@@ -84,7 +87,7 @@ class PageView(TemplateView):
         ids = list(set([s['movie'] for s in word['sents']]))
         d = {o['_id']: o for o in db.movies.find({'_id': {'$in': ids}})}
         for s in word['sents']:
-            s['movie'] = d[s['movie']]
+            s['movie'] = d.get(s['movie'], {})
         for m in d.itervalues():
             m['rating'] = float(m['rating'])
             m['omdb']['imdbRating'] = float(m['omdb']['imdbRating'])
@@ -93,10 +96,11 @@ class PageView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(PageView, self).get_context_data(**kwargs)
-        word = self.request.GET.get('word', 'default')
+        word = self.request.GET.get('word') or 'default'
         r = getWordSents(word)
         context['word'] = self.__get_word(r)
         context['clips'] = self.__get_clips(r)
         context['movies'] = self.__get_movies(r)
+        # watch = self.request.GET.get('watch')
         context['active_clip'] = context['clips'][0] if context['clips'] else {}
         return context
