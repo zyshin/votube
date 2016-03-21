@@ -18,7 +18,7 @@ class MyView(View):
     def get(self, request, *args, **kwargs):
         word = request.GET.get('word', '')
         r = JsonResponse(getWordSents(word))
-        r = self.__cors(r)
+        # r = self.__cors(r)
         return r
 
     @staticmethod
@@ -52,7 +52,6 @@ class PageView(TemplateView):
         try:
             meanings = [e['tran_entry'][0] for e in word['def']['collins']['collins_entries'][0]['entries']['entry']]
             for m in meanings:
-                # TODO(@Shuriken13): extract only Chinese in m['tran']
                 m['tran'] = splitSense(m['tran'])[1]
                 pass
         except Exception, e:
@@ -103,6 +102,5 @@ class PageView(TemplateView):
         context['word'] = self.__get_word(r)
         context['clips'] = self.__get_clips(r)
         context['movies'] = self.__get_movies(r)
-        # watch = self.request.GET.get('watch')
         context['active_clip'] = context['clips'][0] if context['clips'] else {}
         return context
