@@ -18,7 +18,7 @@ class MyView(View):
     def get(self, request, *args, **kwargs):
         word = request.GET.get('word', '')
         r = JsonResponse(getWordSents(word))
-        # r = self.__cors(r)
+        r = self.__cors(r)
         return r
 
     @staticmethod

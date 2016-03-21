@@ -14,6 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 from django.conf.urls import url
+from django.views.decorators.clickjacking import xframe_options_exempt
 
 from .views import MyView, PageView
 
@@ -21,5 +22,5 @@ from .views import MyView, PageView
 urlpatterns = [
     url(r'^api/', MyView.as_view()),
     # url(r'^votube/(?P<word>[a-zA-Z]+)/', PageView.as_view()),
-    url(r'^votube/', PageView.as_view()),
+    url(r'^votube/', xframe_options_exempt(PageView.as_view())),
 ]
