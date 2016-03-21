@@ -1,0 +1,6 @@
+在manifest.json里改名字和描述
+
+icon.png需要是一个19px*19px的png
+
+browser_action 
+	"default_title"：鼠标悬停的时候显示的内容

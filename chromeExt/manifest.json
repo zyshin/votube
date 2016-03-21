@@ -1,0 +1,36 @@
+{
+    "manifest_version": 2,
+
+    "name": "划词取词插件",
+    "description": "这是一个可以划词取词的插件。",
+    "version": "1.0",
+
+    "browser_action": {
+        "default_icon": "icon.png",
+        // "default_popup": "popup.html",
+        "default_title": "划词插件"
+    },
+    "content_scripts": [
+        {
+            "matches" : [
+                    "<all_urls>"
+            ],
+            "css" : [
+                    "content.css"
+            ],
+            "js" : [
+                    "jquery.min.js",
+                    "content.js"
+            ]
+        }
+    ],
+    "background": {
+        "scripts": ["background.js"],
+        "persistent": true
+    },
+    "permissions": [
+        "activeTab",
+        "background",
+        "https://ajax.googleapis.com/"
+    ]
+}

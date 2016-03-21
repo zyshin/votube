@@ -1,0 +1,15 @@
+
+#extFloatDialog {
+	display: none;
+	position: absolute;
+	marginLeft: 0,;
+	marginTop: 0;
+	width: 750px;
+	height: 555px;
+	top: 0;
+	left: 0;
+	background-color: #ffffff;
+	// opacity: 0.8;
+	z-index: 1000;
+	box-shadow: 0 0 5px 2px rgba(0, 0, 0, .5);
+}
