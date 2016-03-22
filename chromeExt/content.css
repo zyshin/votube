@@ -14,9 +14,18 @@
 	box-shadow: 0 0 5px 2px rgba(0, 0, 0, .5);
 }
 
-#extFloatDialog iframe {
+#extContentIframe {
 	padding: 0px;
 	margin: 0px;
 	width: 100%;
 	height: 100%;
+}
+
+#extControls {
+	position: relative;
+	right: 50px;
+	bottom: 50px;
+	text-align: right;
+	color:#ddd;
+	text-shadow:0 -1px 0px rgba(1,1,1,0.4);
 }

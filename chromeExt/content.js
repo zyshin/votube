@@ -3,6 +3,7 @@
 var eslext = eslext || {};
 
 eslext.dlgName = "extFloatDialog";
+eslext.contentName = "extContentIframe";
 
 eslext.dlgDelayTimer = null;
 
@@ -11,28 +12,28 @@ eslext.showDlg =  function(url, e) {
         function(response) {
             if(response.status == 0)
                 return;
-            offset = 10;
-            eslext.hideDlg();
-            dlg = $('<div></div>');
-            dlg.attr("id", eslext.dlgName);
-            dlg.appendTo("body");
-            w = parseInt(dlg.css("width"));
-            h = parseInt(dlg.css("height"));
-            W = window.innerWidth;
-            H = window.innerHeight;
-            x = e.pageX + offset;
-            y = e.pageY + offset;
-            if(e.clientX > W - w)
-                x -= w + offset * 2;
-            if(e.clientY > H - h)
-                y -= h + offset * 2;
-            dlg.css("display", "block");
-            dlg.css("top", y);
-            dlg.css("left", x);
-            content = $('<iframe></iframe>');
-            content.appendTo(dlg);
-            content.attr('src', url);
-            eslext.dlg = dlg;
+            $.get(chrome.extension.getURL('/extDialog.html'), function(data) {
+                $(data).appendTo('body');
+                offset = 10;
+                eslext.hideDlg();
+                dlg = $('#' + eslext.dlgName);
+                w = parseInt(dlg.css("width"));
+                h = parseInt(dlg.css("height"));
+                W = window.innerWidth;
+                H = window.innerHeight;
+                x = e.pageX + offset;
+                y = e.pageY + offset;
+                if(e.clientX > W - w)
+                    x -= w + offset * 2;
+                if(e.clientY > H - h)
+                    y -= h + offset * 2;
+                dlg.css("top", y);
+                dlg.css("left", x);
+                dlg.css("display", "block");
+                content = $('#' + eslext.contentName);
+                content.attr('src', url);
+                eslext.dlg = dlg;
+            });
         }
     );
 };
@@ -83,7 +84,7 @@ eslext.work = function (e) {
         $.post(url, s, function(r) {
             // lemma success
             s = r.split('\t')[2];
-            alert(s);
+            // alert(s);
             eslext.showDlg("http://166.111.139.15:8003/votube/?word=" + s + "&plugin=true", e);
         }).fail(function() {
             eslext.showDlg("http://166.111.139.15:8003/votube/?word=" + s + "&plugin=true", e);

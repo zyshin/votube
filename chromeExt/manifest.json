@@ -32,5 +32,8 @@
         "activeTab",
         "background",
         "https://ajax.googleapis.com/"
+    ],
+    "web_accessible_resources": [
+        "extDialog.html"
     ]
 }
