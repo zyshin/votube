@@ -13,9 +13,8 @@ eslext.showDlg =  function(url, e) {
                 return;
             offset = 10;
             eslext.hideDlg();
-            dlg = $('<iframe></iframe>');
+            dlg = $('<div></div>');
             dlg.attr("id", eslext.dlgName);
-            dlg.attr('src', url);
             dlg.appendTo("body");
             w = parseInt(dlg.css("width"));
             h = parseInt(dlg.css("height"));
@@ -30,6 +29,9 @@ eslext.showDlg =  function(url, e) {
             dlg.css("display", "block");
             dlg.css("top", y);
             dlg.css("left", x);
+            content = $('<iframe></iframe>');
+            content.appendTo(dlg);
+            content.attr('src', url);
             eslext.dlg = dlg;
         }
     );
@@ -74,7 +76,18 @@ eslext.work = function (e) {
     var s = this.getSelection();
     var parent = this.getSelectionElement();
     if(s !== '' && s.length < 50)  {
-        eslext.showDlg("http://166.111.139.15:8003/votube/?word=" + s + "&plugin=true", e);
+        url = 'http://166.111.139.15:9000/?' + 
+            'properties=%7B%22ssplit.isOneSentence%22%3A+true%2C+%22' + 
+            'outputFormat%22%3A+%22conll%22%2C+%22annotators%22%3A+%22' + 
+            'tokenize%2Cssplit%2Cpos%2Clemma%22%2C+%22tokenize.whitespace%22%3A+true%7D';
+        $.post(url, s, function(r) {
+            // lemma success
+            s = r.split('\t')[2];
+            alert(s);
+            eslext.showDlg("http://166.111.139.15:8003/votube/?word=" + s + "&plugin=true", e);
+        }).fail(function() {
+            eslext.showDlg("http://166.111.139.15:8003/votube/?word=" + s + "&plugin=true", e);
+        });
     } else
         eslext.hideDlg();
 }
