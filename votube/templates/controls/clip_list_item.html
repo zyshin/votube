@@ -20,24 +20,7 @@
     <div class="media-body">
       <h5 class="media-heading">{{ title|default:"No title" }} ({{ year }})</h5>
       <p class="pull-down">
-        <span class="label-group" title="Clip duration">
-          <a href="#" class="btn btn-link disabled" role="button">
-            <span class="glyphicon glyphicon-facetime-video" aria-hidden="true"></span>
-          </a>
-          <span>{{ length|floatformat:0 }}s</span>
-        </span>
-        <span class="label-group" title="View times">
-          <a href="#" class="btn btn-link disabled" role="button">
-            <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
-          </a>
-          <span>{{ views|default:0 }}</span>
-        </span>
-        <span class="label-group" title="Votes">
-          <a href="#" title="I think it's useful" class="btn btn-link btn-vote" role="button">
-            <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
-          </a>
-          <span>{{ votes|default:0 }}</span>
-        </span>
+        {% include "controls/clip_info.html" %}
       </p>
     </div>
   </div>

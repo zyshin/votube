@@ -38,7 +38,7 @@
       {% comment %}
       {% with word="ambush" ukphone="ˈæmbʊʃ" usphone="ˈæmbʊʃ" t=True g=False forms="ambushing, ambushed, ambushes" %}
       {% endcomment %}
-      {% with word=word.word ukphone=word.ukphone usphone=word.usphone t=word.t g=word.g forms=word.forms %}
+      {% with word=word.word ukphone=word.ukphone ukspeech=word.ukspeech usspeech=word.usspeech usphone=word.usphone t=word.t g=word.g forms=word.forms %}
         {% include "controls/word_info.html" %}
       {% endwith %}
       </div>
@@ -91,7 +91,7 @@
           {% comment %}
           {% with word="ambush" ukphone="ˈæmbʊʃ" usphone="ˈæmbʊʃ" t=True g=False forms="ambushing, ambushed, ambushes" %}
           {% endcomment %}
-          {% with word=word.word ukphone=word.ukphone usphone=word.usphone t=word.t g=word.g forms=word.forms %}
+          {% with word=word.word ukphone=word.ukphone ukspeech=word.ukspeech usspeech=word.usspeech usphone=word.usphone t=word.t g=word.g forms=word.forms %}
             {% include "controls/word_info.html" %}
           {% endwith %}
           </div><!--/row-->
@@ -174,7 +174,7 @@
       </footer>
 
     </div><!--/.container-->
-{% endif %}
+  {% endif %}
 
     <!-- Bootstrap core JavaScript
     ================================================== -->

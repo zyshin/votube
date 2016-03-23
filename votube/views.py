@@ -4,6 +4,7 @@ from django.http import JsonResponse
 from django.views.generic import View, TemplateView
 
 import json
+from itertools import chain
 from datetime import datetime
 from SubWSD.subWSD import getWordSents
 from SubWSD.classifySense import splitSense
@@ -50,10 +51,10 @@ class PageView(TemplateView):
             print repr(e)
             forms = ''
         try:
-            meanings = [e['tran_entry'][0] for e in word['def']['collins']['collins_entries'][0]['entries']['entry']]
+            meanings = list(chain(*[[te['tran_entry'][0] for te in e['entries']['entry']] for e in word['def']['collins']['collins_entries']]))
             for m in meanings:
                 m['tran'] = splitSense(m['tran'])[1]
-                pass
+            # TODO: filter meanings
         except Exception, e:
             print repr(e)
             meanings = []
