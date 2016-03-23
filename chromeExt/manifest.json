@@ -6,7 +6,7 @@
     "version": "1.0",
 
     "browser_action": {
-        "default_icon": "icon.png",
+        "default_icon": "icons/icon_1.png",
         // "default_popup": "popup.html",
         "default_title": "划词插件"
     },
@@ -32,5 +32,8 @@
         "activeTab",
         "background",
         "https://ajax.googleapis.com/"
+    ],
+    "web_accessible_resources": [
+        "extDialog.html"
     ]
 }
