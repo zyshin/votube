@@ -140,10 +140,26 @@
             {% endfor %}
             </ul>
           </div>
+          <hr>
+          <nav>
+            <ul class="pager">
+              <li class="previous disabled">
+                <a href="#" class="h4">
+                  <span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>
+                </a>
+              </li>
+              <li>
+                <span class="h4">All Meanings</span>
+              </li>
+              <li class="next">
+                <a href="#" class="h4">
+                  <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+          <hr>
           <ul class="list-group">
-            <li class="list-group-item text-center">
-              <h4>All Meanings</h4>
-            </li>
             {% comment %}
             {% with title="Forrest Gump" year="1994" videofile="Forrest.Gump.1994.BDRip.X264.480p.mp4" start="01:20:09.233" end="01:20:15.900" length=6 votes=3122 views=13124 %}
               {% include "controls/clip_list_item.html" %}
@@ -158,12 +174,6 @@
               {% endwith %}
             {% endfor %}
           </ul>
-          <nav>
-            <ul class="pager">
-              <li class="previous disabled"><a href="#"><span aria-hidden="true">&larr;</span> Older</a></li>
-              <li class="next"><a href="#">Newer <span aria-hidden="true">&rarr;</span></a></li>
-            </ul>
-          </nav>
         </div><!--/.sidebar-offcanvas-->
       </div><!--/row-->
 
