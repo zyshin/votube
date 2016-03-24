@@ -66,21 +66,22 @@ class PageView(TemplateView):
             'ukspeech': ukspeech,
             'usphone': usphone,
             'usspeech': usspeech,
-            'forms': forms,
+            # 'forms': forms,
             'meanings': meanings,
         }
 
     @staticmethod
     def __get_clips(word):
         word['sents'] = [s for s in word['sents'] if s['movie']]
+        zero_time = datetime.strptime('00:00:00.000', '%H:%M:%S.%f')
         for s in word['sents']:
             s['id'] = s['_id']
-            times = [datetime.strptime(t, '%H:%M:%S.%f') for t in s['time']]
-            start = times[0]
-            end = times[3]
-            s['start'] = start.strftime('%H:%M:%S.%f')[:-3]
-            s['end'] = end.strftime('%H:%M:%S.%f')[:-3]
-            s['length'] = (end - start).total_seconds()
+            times = [(datetime.strptime(t, '%H:%M:%S.%f') - zero_time).total_seconds() for t in s['time']]
+            s['start'] = max((times[0] + times[1]) / 2, times[1] - 3)
+            s['end'] = min((times[2] + times[3]) / 2, times[2] + 1)
+            # s['start'] = start.strftime('%H:%M:%S.%f')[:-3]
+            # s['end'] = end.strftime('%H:%M:%S.%f')[:-3]
+            s['length'] = s['end'] - s['start']
         return word['sents']
 
     @staticmethod

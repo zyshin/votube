@@ -234,7 +234,7 @@ footer {
 .video-hover>.container {
   width: 100%;
   margin: 0;
-  padding: 20px 30px;
+  /*padding: 20px 30px;*/
   font-size: 16px;
 }
 
@@ -260,7 +260,7 @@ video::cue(.highlighted) {
 
 video.no-sub::cue {
   color: rgba(0, 0, 0, 0);
-  background-color: rgba(0, 0, 0, 0);
+  text-shadow: 0px 0px 4px #fff;
 }
 
 .video-controls {
@@ -342,7 +342,7 @@ video.no-sub::cue {
 
 .pager li>a,
 .pager li>span {
-  padding: 5px 14px;
+  padding: 1px 14px;
   background-color: inherit;
   border: 0px solid #ddd;
 }
@@ -370,6 +370,20 @@ video.no-sub::cue {
 
 .list-group-item .media-left {
   padding-left: 0;
+}
+
+.list-group-item .video-hover {
+  background-color: rgba(0,0,0,0.3);
+}
+
+.list-group-item .video-hover:before {
+  content: '\e029';
+  font-size: 24px;
+  position: relative;
+  top: 30%;
+  left: 40%;
+  font-family: 'Glyphicons Halflings';
+  color: #f0f3f6;
 }
 
 .list-group-item.active,
