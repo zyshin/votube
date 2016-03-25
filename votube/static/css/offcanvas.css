@@ -368,6 +368,23 @@ video.no-sub::cue {
   border-width: 0;
 }
 
+.list-group-item:hover,
+.list-group-item.active,
+.list-group-item.active:focus,
+.list-group-item.active:hover {
+  background-color: #4f5f6f;
+  border-color: #4f5f6f;
+}
+
+.list-group-item .media-heading>a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.list-group-item.active .media-heading {
+  color: #59c2e6;
+}
+
 .list-group-item .media-left {
   padding-left: 0;
 }
@@ -384,17 +401,6 @@ video.no-sub::cue {
   left: 40%;
   font-family: 'Glyphicons Halflings';
   color: #f0f3f6;
-}
-
-.list-group-item.active,
-.list-group-item.active:focus,
-.list-group-item.active:hover {
-  background-color: #4f5f6f;
-  border-color: #4f5f6f;
-}
-
-.list-group-item.active .media-heading {
-  color: #59c2e6;
 }
 
 .embed-responsive {

@@ -1,13 +1,8 @@
-{% load static %}
 <li>
   <a href="#">
     <div class="media">
       <div class="media-left">
-      {% if poster %}
         <img class="media-object media-object-poster-sm" src="{{ poster }}" alt="...">
-      {% else %}
-        <img class="media-object media-object-poster-sm" src="{% static "img/placeholder_poster.jpg" %}" alt="...">
-      {% endif %}
       </div>
       <div class="media-body">
         <h5>{{ title|default:"No title" }} ({{ year }})</h5>

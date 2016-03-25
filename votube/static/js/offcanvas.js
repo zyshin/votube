@@ -3,7 +3,25 @@ $(document).ready(function () {
     $('.row-offcanvas').toggleClass('active');
   });
 
-  var v = $('#video')[0];
+  var v = $('#video')[0],
+    url = v.currentSrc,
+    times = url.substring(url.indexOf('#t=') + 3).split(','),
+    start = Number(times[0]),
+    end = Number(times[1]);
+  $(v).on('pause', function (e) {
+    $(v).addClass('no-sub');
+    $('#videoContainer>.video-hover').removeClass('hidden');
+  });
+  $(v).on('play', function (e) {
+    $(v).removeClass('no-sub');
+    $('#videoContainer>.video-hover').addClass('hidden');
+  });
+  $(v).on('timeupdate', function onTimeUpdate(video) {
+    if (v.currentTime >= end) {
+      v.currentTime = start;
+      v.pause();
+    }
+  });
   $('track').each(function (index, track) {
     $(track).load(function (e) {
       console.log('track loaded: ' + e.target.label);
@@ -15,23 +33,25 @@ $(document).ready(function () {
       });
     });
   });
-  v.textTracks[0].mode = "showing";
-  $('#video').on('pause', function(e) {
-    $('#video').addClass('no-sub');
-    $('#videoContainer>.video-hover').removeClass('hidden');
-    var url = v.currentSrc,
-      times = url.substring(url.indexOf('#t=') + 3).split(','),
-      start = Number(times[0]);
-    v.currentTime = start;
-  });
-  $('#video').on('play', function(e) {
-    $('#video').removeClass('no-sub');
-    $('#videoContainer>.video-hover').addClass('hidden');
-  });
-
-  $('.btn-play').click(function(e) {
+  $('.btn-play').click(function (e) {
     v.play();
   });
+  $('.btn-subtitle').click(function (e) {
+    var lang = $(e.target).attr('lang');
+    v.showSubtitle(lang);
+  });
+  v.showSubtitle = function (lang) {
+    $(v.textTracks).each(function (index, textTrack) {
+      textTrack.mode = 'hidden';
+    });
+    $(v.textTracks).each(function (index, textTrack) {
+      if (textTrack.label == lang) {
+        textTrack.mode = 'showing';
+        return false;
+      }
+    });
+  };
+  v.showSubtitle('Eng');
 });
 
 (function(b, a) {

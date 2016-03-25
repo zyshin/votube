@@ -4,6 +4,7 @@ from django.http import JsonResponse
 from django.views.generic import View, TemplateView
 
 import json
+from base64 import b64encode
 from itertools import chain
 from datetime import datetime
 from SubWSD.subWSD import getWordSents
@@ -94,6 +95,8 @@ class PageView(TemplateView):
             m['rating'] = float(m['rating'])
             m['omdb']['imdbRating'] = float(m['omdb']['imdbRating'])
             m['omdb']['imdbVotes'] = int(m['omdb']['imdbVotes'].replace(',', ''))
+            m['omdb']['Poster'] = 'http://pi.cs.tsinghua.edu.cn/lab/moviedict/movies/poster/' + m['omdb']['Poster'].split('/')[-1]
+            m['poster'] = 'http://pi.cs.tsinghua.edu.cn/lab/moviedict/movies/poster/' + m['poster'].split('/')[-1]
         return d.values()
 
     def get_context_data(self, **kwargs):
@@ -104,5 +107,8 @@ class PageView(TemplateView):
         context['word'] = self.__get_word(r)
         context['clips'] = self.__get_clips(r)
         context['movies'] = self.__get_movies(r)
+        from random import shuffle
+        shuffle(context['clips'])
         context['active_clip'] = context['clips'][0] if context['clips'] else {}
+        # context['active_movie'] = context['movies'][0] if context['movies'] else {}
         return context
