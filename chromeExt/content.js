@@ -3,6 +3,7 @@
 var eslext = eslext || {};
 
 eslext.dlgName = "extFloatDialog";
+eslext.contentName = "extContentIframe";
 
 eslext.dlgDelayTimer = null;
 
@@ -11,26 +12,28 @@ eslext.showDlg =  function(url, e) {
         function(response) {
             if(response.status == 0)
                 return;
-            offset = 10;
-            eslext.hideDlg();
-            dlg = $('<iframe></iframe>');
-            dlg.attr("id", eslext.dlgName);
-            dlg.attr('src', url);
-            dlg.appendTo("body");
-            w = parseInt(dlg.css("width"));
-            h = parseInt(dlg.css("height"));
-            W = window.innerWidth;
-            H = window.innerHeight;
-            x = e.pageX + offset;
-            y = e.pageY + offset;
-            if(e.clientX > W - w)
-                x -= w + offset * 2;
-            if(e.clientY > H - h)
-                y -= h + offset * 2;
-            dlg.css("display", "block");
-            dlg.css("top", y);
-            dlg.css("left", x);
-            eslext.dlg = dlg;
+            $.get(chrome.extension.getURL('/extDialog.html'), function(data) {
+                $(data).appendTo('body');
+                offset = 10;
+                eslext.hideDlg();
+                dlg = $('#' + eslext.dlgName);
+                w = parseInt(dlg.css("width"));
+                h = parseInt(dlg.css("height"));
+                W = window.innerWidth;
+                H = window.innerHeight;
+                x = e.pageX + offset;
+                y = e.pageY + offset;
+                if(e.clientX > W - w)
+                    x -= w + offset * 2;
+                if(e.clientY > H - h)
+                    y -= h + offset * 2;
+                dlg.css("top", y);
+                dlg.css("left", x);
+                dlg.css("display", "block");
+                content = $('#' + eslext.contentName);
+                content.attr('src', url);
+                eslext.dlg = dlg;
+            });
         }
     );
 };
@@ -74,7 +77,18 @@ eslext.work = function (e) {
     var s = this.getSelection();
     var parent = this.getSelectionElement();
     if(s !== '' && s.length < 50)  {
-        eslext.showDlg("http://166.111.139.15:8003/votube/?word=" + s + "&plugin=true", e);
+        url = 'http://166.111.139.15:9000/?' + 
+            'properties=%7B%22ssplit.isOneSentence%22%3A+true%2C+%22' + 
+            'outputFormat%22%3A+%22conll%22%2C+%22annotators%22%3A+%22' + 
+            'tokenize%2Cssplit%2Cpos%2Clemma%22%2C+%22tokenize.whitespace%22%3A+true%7D';
+        $.post(url, s, function(r) {
+            // lemma success
+            s = r.split('\t')[2];
+            // alert(s);
+            eslext.showDlg("http://166.111.139.15:8003/votube/?word=" + s + "&plugin=true", e);
+        }).fail(function() {
+            eslext.showDlg("http://166.111.139.15:8003/votube/?word=" + s + "&plugin=true", e);
+        });
     } else
         eslext.hideDlg();
 }
