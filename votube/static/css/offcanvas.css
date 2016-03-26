@@ -187,6 +187,15 @@ footer {
   font-size: 18px;
 }
 
+.word-title {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.word-title>h1 {
+  margin-top: 12px;
+}
+
 .btn-voice,
 .btn-voice:focus {
   color: #ffbc3e;
@@ -265,8 +274,8 @@ video.no-sub::cue {
 
 .video-controls {
   margin: 0;
-  padding-top: 5px;
-  padding-bottom: 5px;
+  padding-top: 2px;
+  padding-bottom: 0;
   background-color: #3d4c5b;
   color: #fff;
   font-size: 18px;

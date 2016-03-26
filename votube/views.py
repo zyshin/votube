@@ -4,7 +4,6 @@ from django.http import JsonResponse
 from django.views.generic import View, TemplateView
 
 import json
-from base64 import b64encode
 from itertools import chain
 from datetime import datetime
 from SubWSD.subWSD import getWordSents
@@ -109,6 +108,6 @@ class PageView(TemplateView):
         context['movies'] = self.__get_movies(r)
         from random import shuffle
         shuffle(context['clips'])
+        # TODO: sort and filter context['clips']
         context['active_clip'] = context['clips'][0] if context['clips'] else {}
-        # context['active_movie'] = context['movies'][0] if context['movies'] else {}
         return context

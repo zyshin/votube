@@ -1,4 +1,33 @@
 
 body {
-	padding: 0px;
+  padding: 0px;
+}
+
+h1, .h1 {
+  font-size: 28px;
+}
+
+h2, .h2 {
+  font-size: 20px;
+}
+
+.container {
+  /*width: 600px;*/
+}
+
+.row-heading {
+  font-size: 16px;
+}
+
+.row-video {
+  margin-top: 0;
+}
+
+.video-controls {
+  padding-top: 1px;
+  font-size: 14px;
+}
+
+.video-hover>.container {
+  font-size: 14px;
 }
