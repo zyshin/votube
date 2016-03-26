@@ -24,11 +24,11 @@ $(document).ready(function () {
   });
   $('track').each(function (index, track) {
     $(track).load(function (e) {
-      console.log('track loaded: ' + e.target.label);
+      console.log('track loaded: ' + this.label);
       // TODO: lemmatization
       var keyword = $('.word-title').text().trim();
       var re = new RegExp(keyword, 'gi');
-      $(e.target.track.cues).each(function (index, cue) {
+      $(this.track.cues).each(function (index, cue) {
         cue.text = cue.text.replace(re, '<c.highlighted>$&</c>');
       });
     });
@@ -37,7 +37,7 @@ $(document).ready(function () {
     v.play();
   });
   $('.btn-subtitle').click(function (e) {
-    var lang = $(e.target).attr('lang');
+    var lang = $(this).hasClass('active') ? 'Eng' : 'Chi-Eng';
     v.showSubtitle(lang);
   });
   v.showSubtitle = function (lang) {
@@ -52,6 +52,21 @@ $(document).ready(function () {
     });
   };
   v.showSubtitle('Eng');
+
+  $('.btn-vote').click(function (e) {
+    var clip_id = $(this).parents('li.list-group-item').attr('clip-id') || $('li.list-group-item.active').attr('clip-id'),
+      data = {
+        'clip_id': clip_id,
+        'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()
+      };
+    console.log('vote-btn clicked: ' + clip_id);
+    $('[clip-id="' + clip_id + '"]').find('.btn-vote').addClass('disabled');
+    $.post('clip/', data, function (r) {
+      if (Number(r) >= 0)
+        $('[clip-id="' + clip_id + '"]').find('span.num-votes').text(r);
+      $('[clip-id="' + clip_id + '"]').find('.btn-vote').removeClass('disabled');
+    });
+  });
 });
 
 (function(b, a) {

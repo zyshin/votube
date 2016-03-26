@@ -31,6 +31,7 @@
     <![endif]-->
   </head>
   <body>
+  {% csrf_token %}
   {% if is_plugin %}
     <!-- TODO: @zyk -->
     <div class="container">
@@ -42,7 +43,7 @@
         {% include "controls/word_info.html" %}
       {% endwith %}
       </div>
-      <div class="row row-video">
+      <div class="row row-video" clip-id="{{ active_clip.id }}">
       {% with videofile=active_clip.movie.videofile start=active_clip.start end=active_clip.end length=active_clip.length votes=active_clip.votes views=active_clip.views en_sub=active_clip.movie.en_sub|first dual_sub=active_clip.movie.dual_sub|first %}
         {% include "controls/clip_player.html" %}
       {% endwith %}
@@ -97,7 +98,7 @@
           </div><!--/row-->
 
           <!-- 16:9 aspect ratio -->
-          <div class="row row-video">
+          <div class="row row-video" clip-id="{{ active_clip.id }}">
           {% with videofile=active_clip.movie.videofile start=active_clip.start end=active_clip.end length=active_clip.length votes=active_clip.votes views=active_clip.views en_sub=active_clip.movie.en_sub|first dual_sub=active_clip.movie.dual_sub|first %}
             {% include "controls/clip_player.html" %}
           {% endwith %}

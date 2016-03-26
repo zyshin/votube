@@ -16,11 +16,12 @@ Including another URLconf
 from django.conf.urls import url
 from django.views.decorators.clickjacking import xframe_options_exempt
 
-from .views import MyView, PageView
+from .views import MyView, PageView, ClipView
 
 
 urlpatterns = [
     url(r'^api/', MyView.as_view()),
     # url(r'^votube/(?P<word>[a-zA-Z]+)/', PageView.as_view()),
+    url(r'^votube/clip/', ClipView.as_view()),
     url(r'^votube/', xframe_options_exempt(PageView.as_view())),
 ]

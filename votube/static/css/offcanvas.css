@@ -110,7 +110,7 @@ footer {
 }
 
 .btn-link.disabled {
-  opacity: 1.0;
+  opacity: .5;
 }
 
 
@@ -279,6 +279,24 @@ video.no-sub::cue {
   background-color: #3d4c5b;
   color: #fff;
   font-size: 18px;
+}
+
+.btn-subtitle {
+  padding-left: 3px;
+  padding-right: 3px;
+  background-color: #5f6f7f;
+}
+
+.btn-subtitle:focus,
+.btn-subtitle:hover {
+  /*outline-width:0;*/
+  background-color: #6f7f8f;
+}
+
+.btn-subtitle.active,
+.btn-subtitle.active:focus,
+.btn-subtitle.active:hover {
+  background-color: #313941;
 }
 
 .btn-play {

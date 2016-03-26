@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.conf import settings
-from django.http import JsonResponse
+from django.http import HttpResponse, JsonResponse
 from django.views.generic import View, TemplateView
 
 import json
@@ -9,7 +9,7 @@ from datetime import datetime
 from SubWSD.subWSD import getWordSents
 from SubWSD.classifySense import splitSense
 
-from pymongo import MongoClient
+from pymongo import MongoClient, ReturnDocument
 db = MongoClient('166.111.139.42').dev
 db.authenticate('test', 'test')
 
@@ -111,3 +111,10 @@ class PageView(TemplateView):
         # TODO: sort and filter context['clips']
         context['active_clip'] = context['clips'][0] if context['clips'] else {}
         return context
+
+
+class ClipView(View):
+    def post(self, request):
+        clip_id = request.POST.get('clip_id')
+        clip = db.sents.find_one_and_update({'_id': clip_id}, {'$inc': {'votes': 1}}, return_document=ReturnDocument.AFTER)
+        return HttpResponse(str(clip['votes']))
