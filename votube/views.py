@@ -4,6 +4,7 @@ from django.http import JsonResponse
 from django.views.generic import View, TemplateView
 
 import json
+from itertools import chain
 from datetime import datetime
 from SubWSD.subWSD import getWordSents
 from SubWSD.classifySense import splitSense
@@ -50,10 +51,10 @@ class PageView(TemplateView):
             print repr(e)
             forms = ''
         try:
-            meanings = [e['tran_entry'][0] for e in word['def']['collins']['collins_entries'][0]['entries']['entry']]
+            meanings = list(chain(*[[te['tran_entry'][0] for te in e['entries']['entry']] for e in word['def']['collins']['collins_entries']]))
             for m in meanings:
                 m['tran'] = splitSense(m['tran'])[1]
-                pass
+            # TODO: filter meanings
         except Exception, e:
             print repr(e)
             meanings = []
@@ -65,21 +66,22 @@ class PageView(TemplateView):
             'ukspeech': ukspeech,
             'usphone': usphone,
             'usspeech': usspeech,
-            'forms': forms,
+            # 'forms': forms,
             'meanings': meanings,
         }
 
     @staticmethod
     def __get_clips(word):
         word['sents'] = [s for s in word['sents'] if s['movie']]
+        zero_time = datetime.strptime('00:00:00.000', '%H:%M:%S.%f')
         for s in word['sents']:
             s['id'] = s['_id']
-            times = [datetime.strptime(t, '%H:%M:%S.%f') for t in s['time']]
-            start = times[0]
-            end = times[3]
-            s['start'] = start.strftime('%H:%M:%S.%f')[:-3]
-            s['end'] = end.strftime('%H:%M:%S.%f')[:-3]
-            s['length'] = (end - start).total_seconds()
+            times = [(datetime.strptime(t, '%H:%M:%S.%f') - zero_time).total_seconds() for t in s['time']]
+            s['start'] = max((times[0] + times[1]) / 2, times[1] - 3)
+            s['end'] = min((times[2] + times[3]) / 2, times[2] + 1)
+            # s['start'] = start.strftime('%H:%M:%S.%f')[:-3]
+            # s['end'] = end.strftime('%H:%M:%S.%f')[:-3]
+            s['length'] = s['end'] - s['start']
         return word['sents']
 
     @staticmethod
@@ -92,6 +94,8 @@ class PageView(TemplateView):
             m['rating'] = float(m['rating'])
             m['omdb']['imdbRating'] = float(m['omdb']['imdbRating'])
             m['omdb']['imdbVotes'] = int(m['omdb']['imdbVotes'].replace(',', ''))
+            m['omdb']['Poster'] = 'http://pi.cs.tsinghua.edu.cn/lab/moviedict/movies/poster/' + m['omdb']['Poster'].split('/')[-1]
+            m['poster'] = 'http://pi.cs.tsinghua.edu.cn/lab/moviedict/movies/poster/' + m['poster'].split('/')[-1]
         return d.values()
 
     def get_context_data(self, **kwargs):
@@ -102,5 +106,8 @@ class PageView(TemplateView):
         context['word'] = self.__get_word(r)
         context['clips'] = self.__get_clips(r)
         context['movies'] = self.__get_movies(r)
+        from random import shuffle
+        shuffle(context['clips'])
+        # TODO: sort and filter context['clips']
         context['active_clip'] = context['clips'][0] if context['clips'] else {}
         return context

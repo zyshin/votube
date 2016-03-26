@@ -3,41 +3,28 @@
   <div class="media">
     <div class="media-left col-xs-12 col-sm-6">
       <div class="embed-responsive embed-responsive-4by3">
-        <div class="video-hover">
+        <a href="#">
+          <div class="video-hover">
           {% for m in word.meanings %}
           {% if forloop.counter0 == sense %}
             <p class="pull-down">{{ forloop.counter }}. {{ m.pos_entry.pos|slice:":3" }} {{ m.tran|safe }}</p>
           {% endif %}
           {% endfor %}
-        </div>
-      {% if videofile %}
-        <video class="embed-responsive-item" preload="metadata" src="http://pi.cs.tsinghua.edu.cn/lab/moviedict/movies/mp4/{{ videofile }}#t={{ start }},{{ end }}"></video>
-      {% else %}
-        <img class="embed-responsive-item" src="{% static "img/placeholder_clip.jpg" %}">
-      {% endif %}
+          </div>
+        {% if videofile %}
+          <video class="embed-responsive-item" preload="metadata" src="http://pi.cs.tsinghua.edu.cn/lab/moviedict/movies/mp4/{{ videofile }}#t={{ start }},{{ end }}"></video>
+        {% else %}
+          <img class="embed-responsive-item" src="{% static "img/placeholder_clip.jpg" %}">
+        {% endif %}
+        </a>
       </div>
     </div>
     <div class="media-body">
-      <h5 class="media-heading">{{ title|default:"No title" }} ({{ year }})</h5>
+      <h5 class="media-heading">
+        <a href="#">{{ title|default:"No title" }} ({{ year }})</a>
+      </h5>
       <p class="pull-down">
-        <span class="label-group" title="Clip duration">
-          <a href="#" class="btn btn-link disabled" role="button">
-            <span class="glyphicon glyphicon-facetime-video" aria-hidden="true"></span>
-          </a>
-          <span>{{ length|floatformat:0 }}s</span>
-        </span>
-        <span class="label-group" title="View times">
-          <a href="#" class="btn btn-link disabled" role="button">
-            <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
-          </a>
-          <span>{{ views|default:0 }}</span>
-        </span>
-        <span class="label-group" title="Votes">
-          <a href="#" title="I think it's useful" class="btn btn-link btn-vote" role="button">
-            <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
-          </a>
-          <span>{{ votes|default:0 }}</span>
-        </span>
+        {% include "controls/clip_info.html" %}
       </p>
     </div>
   </div>
