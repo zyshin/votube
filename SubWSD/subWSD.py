@@ -84,8 +84,8 @@ def WSD(sent, dic, model):
 def saveSent(sent, cover=False):
     word = sent['word']
     saved = subtitlesdb.find({'word': word,
-        'sent': sent['sent'], 'subtitle': sent['subtitle'],
-        'line_no': sent['line_no']})
+                              'sent': sent['sent'], 'subtitle': sent['subtitle'],
+                              'line_no': sent['line_no']})
     for save in saved:
         if cover == False:
             return
@@ -117,10 +117,10 @@ def processAll(model, num=-1):
     return
 
 
-def getWordSents(word, limitnum = 100):
+def getWordSents(word, limitnum=100):
     found = dictionary.find_one({'_id': word})
     if found:
-        found['sents'] = list(db.sents.find({'word': word}, limit = limitnum))
+        found['sents'] = list(db.sents.find({'word': word}, limit=limitnum))
         return found
     r = requests.get(
         "http://dict.youdao.com/jsonapi?dicts=%7Bcount:1,dicts:%5B%5B%22collins%22%5D%5D%7D&q=" + word)
@@ -132,7 +132,8 @@ def getWordSents(word, limitnum = 100):
         sents = getSubtitles(word)
 
     for sent in sents:
-        sent['_id'] = word + '_' + sent['subtitle'] + '_' + str(sent['line_no'])
+        sent['_id'] = word + '_' + \
+            sent['subtitle'].replace('.vtt', '') + '_' + str(sent['line_no'])
         sent['word'] = word
         sent = setSentMovie(sent)
 
@@ -186,11 +187,11 @@ def checkAll():
 
 def setSentMovie(sent):
     subtitle = sent['subtitle']
-    found = moviesdb.find_one({'$or':[{'en_sub':{'$in':[subtitle]}},{'dual_sub':{'$in':[subtitle]}}]})
+    found = moviesdb.find_one(
+        {'$or': [{'en_sub': {'$in': [subtitle]}}, {'dual_sub': {'$in': [subtitle]}}]})
     if found:
         imdbid = found['_id']
     else:
         imdbid = ""
     sent['movie'] = imdbid
     return sent
-
