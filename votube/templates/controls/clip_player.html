@@ -1,3 +1,5 @@
+{% load static %}
+
 <div class="embed-responsive embed-responsive-16by9" id="videoContainer">
   <div class="video-hover">
     <div class="container">
@@ -5,7 +7,7 @@
       <h2>In-Context Meaning</h2>
       {% for m in word.meanings %}
       {% if forloop.counter0 == active_clip.sense %}
-        <b>{{ forloop.counter }}. [{{ m.pos_entry.pos_tips }} {{ m.pos_entry.pos }}] {{ m.tran|safe }}</b>
+        <b>{{ forloop.counter }}. [{{ m.pos_entry.pos }}] {{ m.tran|safe }}</b>
       {% endif %}
       {% endfor %}
       <h2>Line</h2>
@@ -14,7 +16,10 @@
       <h2>Other Meanings</h2>
       {% for m in word.meanings %}
       {% if forloop.counter0 != active_clip.sense %}
-        <p>{{ forloop.counter }}. [{{ m.pos_entry.pos_tips }} {{ m.pos_entry.pos }}] {{ m.tran|safe }}</p>
+        <p>{{ forloop.counter }}. [{{ m.pos_entry.pos }}] {{ m.tran|safe }}</p>
+        {% comment %}
+          {{ m.pos_entry.pos_tips }} 
+        {% endcomment %}
       {% endif %}
       {% endfor %}
     {% endif %}
@@ -28,30 +33,20 @@
     <track label="Eng" kind="subtitles" src="../../static/subtitles/Contact en.vtt" default>
     <track label="Chi-Eng" kind="subtitles" src="../../static/subtitles/Contact ch+en.vtt">
   </video> -->
+{% with videofile=active_clip.movie.videofile start=active_clip.start end=active_clip.end en_sub=active_clip.movie.en_sub|first dual_sub=active_clip.movie.dual_sub|first %}
   <video class="embed-responsive-item no-sub" id="video" crossorigin preload="metadata" src="http://pi.cs.tsinghua.edu.cn/lab/moviedict/movies/mp4/{{ videofile }}#t={{ start }},{{ end }}">
     <track label="Eng" kind="subtitles" src="http://pi.cs.tsinghua.edu.cn/lab/moviedict/movies/subtitles/{{ en_sub }}">
     <track label="Chi-Eng" kind="subtitles" src="http://pi.cs.tsinghua.edu.cn/lab/moviedict/movies/subtitles/{{ dual_sub }}">
   </video>
-  <!-- <div id="video-controls" class="controls btn-group" role="group" aria-label="..." data-state="hidden">
-    <button class="btn btn-default" id="playpause" type="button" data-state="play">Play/Pause</button>
-    <button class="btn btn-default" id="stop" type="button" data-state="stop">Stop</button>
-    <div class="progress">
-      <progress id="progress" value="0" min="0">
-        <span id="progress-bar"></span>
-      </progress>
-    </div>
-    <button class="btn btn-default" id="mute" type="button" data-state="mute">Mute/Unmute</button>
-    <button class="btn btn-default" id="volinc" type="button" data-state="volup">Vol+</button>
-    <button class="btn btn-default" id="voldec" type="button" data-state="voldown">Vol-</button>
-    <button class="btn btn-default" id="fs" type="button" data-state="go-fullscreen">Fullscreen</button>
-    <button class="btn btn-default" id="subtitles" type="button" data-state="subtitles">Eng</button>
-  </div> -->
+{% endwith %}
 </div>
 
-{% if videofile %}
-<div class="row video-controls">
+{% if active_clip.movie.videofile %}
+<div class="row video-controls" clip-id="{{ active_clip.id }}">
   <div class="col-xs-6">
+  {% with length=active_clip.length votes=active_clip.votes views=active_clip.views %}
     {% include "controls/clip_info.html" %}
+  {% endwith %}
   </div>
   <div class="col-xs-6 text-right">
     <button type="button" class="btn btn-primary btn-subtitle" data-toggle="button" aria-pressed="false" autocomplete="off">双语</button>
@@ -62,4 +57,16 @@
     </span>
   </div>
 </div>
+
+<div class="row row-movie-info">
+{% comment %}
+  {% with title="Forrest Gump" year="1994" poster="https://image.tmdb.org/t/p/w185/y3EsNpMFwvpcucLmx4HiiRRhCXV.jpg" description="如果你所创建的组件不包含任何文本内容（例如，内只包含了一个图标），你应当提供其他的内容来表示这个控件的意图，这样就能让使用辅助设备的用户知道其作用了。这种情况下，你可以为控件添加 aria-label 属相。" rating=5.5 t=213 g=168 %}
+{% endcomment %}
+{% with title=active_clip.movie.title rating=active_clip.movie.rating t=active_clip.movie.t g=active_clip.movie.g rating2=active_clip.movie.omdb.imdbRating plot=active_clip.movie.omdb.Plot %}
+{% static "img/placeholder_poster.jpg" as placeholder_poster %}
+{% firstof active_clip.movie.omdb.Poster active_clip.movie.poster placeholder_poster as poster %}
+{% firstof active_clip.movie.omdb.Year active_clip.movie.year "No year" as year %}
+    {% include "controls/movie_info.html" %}
+{% endwith %}
+</div><!--/row-->
 {% endif %}

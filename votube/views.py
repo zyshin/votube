@@ -29,9 +29,8 @@ class MyView(View):
         r['Access-Control-Expose-Headers'] = 'Access-Control-Allow-Origin, Access-Control-Allow-Credentials'
         return r
 
-class PageView(TemplateView):
 
-    template_name = "index.html"
+class PageView(TemplateView):
 
     @staticmethod
     def __get_word(word):
@@ -106,14 +105,19 @@ class PageView(TemplateView):
         context['word'] = self.__get_word(r)
         context['clips'] = self.__get_clips(r)
         context['movies'] = self.__get_movies(r)
+        
         from random import shuffle
         shuffle(context['clips'])
         # TODO: sort and filter context['clips']
-        context['active_clip'] = context['clips'][0] if context['clips'] else {}
+
+        if context['clips']:
+            clip_id = self.request.GET.get('clip_id')
+            ids = [c['id'] for c in context['clips']]
+            index = ids.index(clip_id) if clip_id in ids else 0
+            context['active_clip'] = context['clips'][index]
+
         return context
 
-
-class ClipView(View):
     def post(self, request):
         clip_id = request.POST.get('clip_id')
         clip = db.sents.find_one_and_update({'_id': clip_id}, {'$inc': {'votes': 1}}, return_document=ReturnDocument.AFTER)

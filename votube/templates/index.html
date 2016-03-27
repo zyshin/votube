@@ -16,10 +16,8 @@
     <link href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <!-- <link rel="stylesheet" href="../../static/css/offcanvas.css">
-    <link rel="stylesheet" href="../../static/css/styles.css" /> -->
+    <!-- <link rel="stylesheet" href="../../static/css/offcanvas.css"> -->
     <link rel="stylesheet" href="{% static "css/offcanvas.css" %}">
-    <!-- <link rel="stylesheet" href="{% static "css/styles.css" %}" /> -->
   {% if is_plugin %}
     <link rel="stylesheet" href="{% static "css/plugin.css" %}" />
   {% endif %}
@@ -98,23 +96,9 @@
           </div><!--/row-->
 
           <!-- 16:9 aspect ratio -->
-          <div class="row row-video" clip-id="{{ active_clip.id }}">
-          {% with videofile=active_clip.movie.videofile start=active_clip.start end=active_clip.end length=active_clip.length votes=active_clip.votes views=active_clip.views en_sub=active_clip.movie.en_sub|first dual_sub=active_clip.movie.dual_sub|first %}
+          <div class="row row-video">
             {% include "controls/clip_player.html" %}
-          {% endwith %}
           </div>
-
-          <div class="row row-movie-info">
-          {% comment %}
-            {% with title="Forrest Gump" year="1994" poster="https://image.tmdb.org/t/p/w185/y3EsNpMFwvpcucLmx4HiiRRhCXV.jpg" description="如果你所创建的组件不包含任何文本内容（例如，内只包含了一个图标），你应当提供其他的内容来表示这个控件的意图，这样就能让使用辅助设备的用户知道其作用了。这种情况下，你可以为控件添加 aria-label 属相。" rating=5.5 t=213 g=168 %}
-          {% endcomment %}
-          {% with title=active_clip.movie.title rating=active_clip.movie.rating t=active_clip.movie.t g=active_clip.movie.g rating2=active_clip.movie.omdb.imdbRating plot=active_clip.movie.omdb.Plot %}
-          {% static "img/placeholder_poster.jpg" as placeholder_poster %}
-          {% firstof active_clip.movie.omdb.Poster active_clip.movie.poster placeholder_poster as poster %}
-          {% firstof active_clip.movie.omdb.Year active_clip.movie.year "No year" as year %}
-              {% include "controls/movie_info.html" %}
-          {% endwith %}
-          </div><!--/row-->
         </div><!--/.col-->
 
         <div class="col-xs-6 col-sm-4 sidebar-offcanvas" id="sidebar">
@@ -198,6 +182,5 @@
 
     <!-- <script src="../../static/js/offcanvas.js"></script> -->
     <script src="{% static "js/offcanvas.js" %}"></script>
-    <!-- <script src="../../static/js/video-player.js"></script> -->
   </body>
 </html>

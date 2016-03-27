@@ -444,6 +444,8 @@ video.no-sub::cue {
  */
 
 .row-movie-info {
+  margin-left: 0;
+  margin-right: 0;
   margin-top: 20px;
   padding: 10px;
   background: #fff;
