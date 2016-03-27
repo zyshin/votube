@@ -51,7 +51,8 @@ class PageView(TemplateView):
             forms = ''
         try:
             meanings = list(chain(*[[te['tran_entry'][0] for te in e['entries']['entry']] for e in word['def']['collins']['collins_entries']]))
-            for m in meanings:
+            for i, m in enumerate(meanings):
+                m['id'] = 'sense%d' % (i + 1)
                 m['tran'] = splitSense(m['tran'])[1]
             # TODO: filter meanings
         except Exception, e:
@@ -71,7 +72,7 @@ class PageView(TemplateView):
 
     @staticmethod
     def __get_clips(word):
-        word['sents'] = [s for s in word['sents'] if s['movie']]
+        word['sents'] = [s for s in word['sents'] if s['movie']]    # pertain clips with movie downloads
         zero_time = datetime.strptime('00:00:00.000', '%H:%M:%S.%f')
         for s in word['sents']:
             s['id'] = s['_id']
@@ -90,6 +91,7 @@ class PageView(TemplateView):
         for s in word['sents']:
             s['movie'] = d.get(s['movie'], {})
         for m in d.itervalues():
+            m['id'] = ''.join([c for c in m['_id'] if c.islower() or c.isdigit()]) # convert to safe css class name
             m['rating'] = float(m['rating'])
             m['omdb']['imdbRating'] = float(m['omdb']['imdbRating'])
             m['omdb']['imdbVotes'] = int(m['omdb']['imdbVotes'].replace(',', ''))
@@ -106,15 +108,38 @@ class PageView(TemplateView):
         context['clips'] = self.__get_clips(r)
         context['movies'] = self.__get_movies(r)
         
-        from random import shuffle
-        shuffle(context['clips'])
-        # TODO: sort and filter context['clips']
+        context['clips'] = [c for c in context['clips'] if c['movie'].get('videofile')]    # filter by if having videofile
+        # context['clips'].sort(key=lambda c: not c['movie'].get('videofile'))    # sort by if having videofile
+        # TODO: sort context['clips']
 
         if context['clips']:
             clip_id = self.request.GET.get('clip_id')
             ids = [c['id'] for c in context['clips']]
             index = ids.index(clip_id) if clip_id in ids else 0
             context['active_clip'] = context['clips'][index]
+
+        if context['movies']:
+            movie_id = self.request.GET.get('movie_id', '')
+            if movie_id:
+                context['clips'] = [c for c in context['clips'] if c['movie']['id'] == movie_id]
+            context['movies'] = [{'id': '', 'title': 'All Movies'}] + context['movies']
+            ids = [m['id'] for m in context['movies']]
+            context['active_movie'] = context['movies'][ids.index(movie_id)]
+
+        if context['clips']:
+            sense_id = self.request.GET.get('sense_id', '')
+            if sense_id:
+                context['clips'] = [c for c in context['clips'] if c['sense'] == int(sense_id[5:]) - 1]
+            meanings = [{'id': '', 'tran': 'All Meanings'}] + context['word']['meanings']
+            for i, m in enumerate(meanings[1:]):
+                m['index'] = '%d.' % (i + 1)
+            ids = [m['id'] for m in meanings]
+            index = ids.index(sense_id)
+            context['active_sense'] = {
+                'current': meanings[index],
+                'previous': meanings[index - 1],
+                'next': meanings[(index + 1) % len(meanings)],
+            }
 
         return context
 

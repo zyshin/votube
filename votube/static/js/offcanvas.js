@@ -6,6 +6,15 @@ $(document).ready(function () {
     }, true);
   };
 
+  $.getParams = function(clip, movie, sense) {
+    return {
+      'word': $('.word-title').text().trim(),
+      'clip_id': (clip || $('.list-group-item.active')).attr('clip-id'),
+      'movie_id': (movie || $('.dropdown-menu>li.active')).attr('movie-id'),
+      'sense_id': (sense || $('.pager>li.current')).attr('sense-id')
+    };
+  }
+
   $('[data-toggle="offcanvas"]').click(function () {
     $('.row-offcanvas').toggleClass('active');
   });
@@ -73,24 +82,34 @@ $(document).ready(function () {
       cue.text = cue.text.replace(re, '<c.highlighted>$&</c>');
     });
   });
+  $.on('loadeddata', '#video', function (e) {
+    $.showSubtitle('Eng');
+  });
 
-  $('li.list-group-item .btn-clip').click(function (e) {
-    var parent = $(this).parents('li.list-group-item'),
-      clip_id = parent.attr('clip-id');
-    console.log('clip-btn clicked: ' + clip_id);
+  $('#sidebar').on('click', '.btn-clip', function (e) {
+    var parent = $(this).parents('li.list-group-item');
+    console.log('clip-btn clicked: ' + parent.attr('clip-id'));
     if (parent.hasClass('active'))
       return;
-    var keyword = $('.word-title').text().trim();
-    var data = {
-      'word': keyword,
-      'clip_id': clip_id
-    };
-    $('.row-video').load('clip/?' + $.param(data), function (data) {
-      // alert('video loaded');
+    var data = $.getParams(parent, null, null);
+    $('.row-video').load('clip/?' + $.param(data), function (r) {
       $('li.list-group-item').removeClass('active');
       parent.addClass('active');
-      $.showSubtitle('Eng');
     });
+  });
+  $('#sidebar').on('click', '.btn-movie', function (e) {
+    var parent = $(this).parents('li');
+    console.log('movie-btn clicked: ' + parent.attr('movie-id'));
+    if (parent.hasClass('active'))
+      return;
+    var data = $.getParams(null, parent, null);
+    $('#sidebar').load('movie/?' + $.param(data));
+  });
+  $('#sidebar').on('click', '.btn-sense', function (e) {
+    var parent = $(this).parents('li');
+    console.log('sense-btn clicked: ' + parent.attr('sense-id'));
+    var data = $.getParams(null, null, parent);
+    $('#sidebar').load('movie/?' + $.param(data));
   });
 });
 

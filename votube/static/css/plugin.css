@@ -13,6 +13,7 @@ h2, .h2 {
 
 .container {
   /*width: 600px;*/
+  padding-left: 15px;
 }
 
 .row-heading {
@@ -21,6 +22,10 @@ h2, .h2 {
 
 .row-video {
   margin-top: 0;
+}
+
+video::cue {
+  font-size: 20px;
 }
 
 .video-controls {

@@ -1,0 +1,74 @@
+{% load static %}
+
+<div class="dropdown">
+  <button class="btn btn-block btn-dropdown dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+    <h4>
+      {{ active_movie.title|truncatechars:30 }}
+      <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
+    </h4>
+  </button>
+  <ul class="col-xs-12 col-sm-12 dropdown-menu" aria-labelledby="dropdownMenu1">
+  {% comment %}
+  {% with title="Forrest Gump" year="1994" poster="https://image.tmdb.org/t/p/w185/y3EsNpMFwvpcucLmx4HiiRRhCXV.jpg" description="如果你所创建的组件不包含任何文本内容（例如，内只包含了一个图标），你应当提供其他的内容来表示这个控件的意图，这样就能让使用辅助设备的用户知道其作用了。这种情况下，你可以为控件添加 aria-label 属相。" rating=5.5 t=213 g=168 %}
+    {% include "controls/movie_list_item.html" %}
+    {% include "controls/movie_list_item.html" %}
+    {% include "controls/movie_list_item.html" %}
+  {% endwith %}
+  {% endcomment %}
+  {% for movie in movies %}
+  {% if forloop.first %}
+    <li {% if not active_movie.id %}class="active"{% endif %}>
+      <a href="#" class="btn-movie text-center">
+        <h4>
+          <span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>
+          back to All Movies
+        </h4>
+      </a>
+    </li>
+  {% else %}
+    {% with id=movie.id title=movie.title rating=movie.rating t=movie.t g=movie.g rating2=movie.omdb.imdbRating %}
+    {% static "img/placeholder_poster.jpg" as placeholder_poster %}
+    {% firstof movie.omdb.Poster movie.poster placeholder_poster as poster %}
+    {% firstof movie.omdb.Year movie.year "No year" as year %}
+      {% include "controls/movie_list_item.html" %}
+    {% endwith %}
+  {% endif %}
+  {% endfor %}
+  </ul>
+</div>
+<hr>
+<nav>
+  <ul class="pager">
+    <li class="previous" sense-id="{{ active_sense.previous.id }}">
+      <a href="#" class="h4 btn-sense">
+        <span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>
+      </a>
+    </li>
+    <li class="current" sense-id="{{ active_sense.current.id }}">
+    {% with m=active_sense.current %}
+      <span class="h4 one-line">{{ m.index }} {{ m.pos_entry.pos|slice:":3" }} {{ m.tran|safe }}</span>
+    {% endwith %}
+    </li>
+    <li class="next" sense-id="{{ active_sense.next.id }}">
+      <a href="#" class="h4 btn-sense">
+        <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
+      </a>
+    </li>
+  </ul>
+</nav>
+<hr>
+<ul class="list-group">
+  {% comment %}
+  {% with title="Forrest Gump" year="1994" videofile="Forrest.Gump.1994.BDRip.X264.480p.mp4" start="01:20:09.233" end="01:20:15.900" length=6 votes=3122 views=13124 %}
+    {% include "controls/clip_list_item.html" %}
+    {% include "controls/clip_list_item.html" %}
+    {% include "controls/clip_list_item.html" %}
+  {% endwith %}
+  {% endcomment %}
+  {% for clip in clips %}
+    {% with id=clip.id title=clip.movie.title videofile=clip.movie.videofile start=clip.start end=clip.end length=clip.length votes=clip.votes views=clip.views en_sub=clip.subtitle sense=clip.sense %}
+    {% firstof clip.movie.omdb.Year clip.movie.year "No year" as year %}
+      {% include "controls/clip_list_item.html" %}
+    {% endwith %}
+  {% endfor %}
+</ul>

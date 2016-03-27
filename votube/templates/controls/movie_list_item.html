@@ -1,5 +1,5 @@
-<li>
-  <a href="#">
+<li class="{% if id == active_movie.id %}active{% endif %}" movie-id="{{ id }}">
+  <a href="#" class="btn-movie">
     <div class="media">
       <div class="media-left">
         <img class="media-object media-object-poster-sm" src="{{ poster }}" alt="...">
