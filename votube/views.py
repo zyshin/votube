@@ -87,10 +87,11 @@ class PageView(TemplateView):
     @staticmethod
     def __get_movies(word):
         ids = list(set([s['movie'] for s in word['sents']]))
-        d = {o['_id']: o for o in db.movies.find({'_id': {'$in': ids}})}
+        d = {o['_id']: o for o in db.movies.find({'_id': {'$in': ids}, 'videofile': {'$ne': ''}})}
         for s in word['sents']:
             s['movie'] = d.get(s['movie'], {})
         for m in d.itervalues():
+            assert m['videofile']
             m['id'] = ''.join([c for c in m['_id'] if c.islower() or c.isdigit()]) # convert to safe css class name
             m['rating'] = float(m['rating'])
             m['omdb']['imdbRating'] = float(m['omdb']['imdbRating'])
@@ -107,9 +108,7 @@ class PageView(TemplateView):
         context['word'] = self.__get_word(r)
         context['clips'] = self.__get_clips(r)
         context['movies'] = self.__get_movies(r)
-        
-        context['clips'] = [c for c in context['clips'] if c['movie'].get('videofile')]    # filter by if having videofile
-        # context['clips'].sort(key=lambda c: not c['movie'].get('videofile'))    # sort by if having videofile
+        context['clips'] = [c for c in context['clips'] if c['movie'].get('videofile')]    # pertain clips with movie file
         # TODO: sort context['clips']
 
         if context['clips']:
@@ -126,7 +125,7 @@ class PageView(TemplateView):
             ids = [m['id'] for m in context['movies']]
             context['active_movie'] = context['movies'][ids.index(movie_id)]
 
-        if context['clips']:
+        if context['word']['meanings']:
             sense_id = self.request.GET.get('sense_id', '')
             if sense_id:
                 context['clips'] = [c for c in context['clips'] if c['sense'] == int(sense_id[5:]) - 1]

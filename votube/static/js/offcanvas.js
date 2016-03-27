@@ -9,7 +9,7 @@ $(document).ready(function () {
   $.getParams = function(clip, movie, sense) {
     return {
       'word': $('.word-title').text().trim(),
-      'clip_id': (clip || $('.list-group-item.active')).attr('clip-id'),
+      'clip_id': (clip || $('.video-controls')).attr('clip-id'),
       'movie_id': (movie || $('.dropdown-menu>li.active')).attr('movie-id'),
       'sense_id': (sense || $('.pager>li.current')).attr('sense-id')
     };
