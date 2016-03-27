@@ -93,6 +93,12 @@ footer {
   margin-left: -5px;
 }
 
+.row-heading {
+  margin-left: -15px;
+  margin-top: 20px;
+  font-size: 18px;
+}
+
 .pull-down {
   position: absolute;
   bottom: 0;
@@ -454,15 +460,13 @@ li.current>span {
   background: #fff;
 }
 
-.row-heading {
-  margin-left: -15px;
-  margin-top: 20px;
-  font-size: 18px;
+.row-movie-info .row-heading {
+  margin-top: 10px;
 }
 
 .media-object-poster {
   max-width: 101px;
-  min-height: 65%;
+  min-height: 130px;
 }
 
 .glyphicon-star,
