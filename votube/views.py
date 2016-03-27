@@ -146,3 +146,11 @@ class PageView(TemplateView):
         clip_id = request.POST.get('clip_id')
         clip = db.sents.find_one_and_update({'_id': clip_id}, {'$inc': {'votes': 1}}, return_document=ReturnDocument.AFTER)
         return HttpResponse(str(clip['votes']))
+
+
+class AnalyticView(View):
+
+    def get(self, request, *args, **kwargs):
+        clip_id = request.GET.get('clip_id')
+        clip = db.sents.find_one_and_update({'_id': clip_id}, {'$inc': {'views': 1}}, return_document=ReturnDocument.AFTER)
+        return HttpResponse(str(clip['views']))

@@ -16,13 +16,14 @@ Including another URLconf
 from django.conf.urls import url
 from django.views.decorators.clickjacking import xframe_options_exempt
 
-from .views import MyView, PageView
+from .views import MyView, PageView, AnalyticView
 
 
 urlpatterns = [
-    url(r'^api/', MyView.as_view()),
+    url(r'^api/$', MyView.as_view()),
     # url(r'^votube/(?P<word>[a-zA-Z]+)/', PageView.as_view()),
-    url(r'^votube/clip/', PageView.as_view(template_name="controls/clip_player.html")),
-    url(r'^votube/movie/', PageView.as_view(template_name="controls/sidebar.html")),
-    url(r'^votube/', xframe_options_exempt(PageView.as_view(template_name="index.html"))),
+    url(r'^votube/clip/$', PageView.as_view(template_name="controls/clip_player.html")),
+    url(r'^votube/movie/$', PageView.as_view(template_name="controls/sidebar.html")),
+    url(r'^votube/view/$', AnalyticView.as_view()),
+    url(r'^votube/$', xframe_options_exempt(PageView.as_view(template_name="index.html"))),
 ]

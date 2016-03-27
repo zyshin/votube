@@ -37,6 +37,7 @@ $(document).ready(function () {
   $.on('play', '#video', function (e) {
     $('#video').removeClass('no-sub');
     $('#videoContainer>.video-hover').addClass('hidden');
+    $.get('view/', $.getParams());
   });
   $.on('pause', '#video', function (e) {
     $('#video').addClass('no-sub');
@@ -84,6 +85,7 @@ $(document).ready(function () {
   });
   $.on('loadeddata', '#video', function (e) {
     $.showSubtitle('Eng');
+    $('.btn-play').click()
   });
 
   $('#sidebar').on('click', '.btn-clip', function (e) {
