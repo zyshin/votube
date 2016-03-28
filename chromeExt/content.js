@@ -7,7 +7,7 @@ eslext.contentName = "extContentIframe";
 
 eslext.dlgDelayTimer = null;
 
-eslext.showDlg =  function(url, e) {
+eslext.showDlg =  function(word, e) {
     chrome.runtime.sendMessage({type: "getStatus"}, 
         function(response) {
             if(response.status == 0)
@@ -31,7 +31,10 @@ eslext.showDlg =  function(url, e) {
                 dlg.css("left", x);
                 dlg.css("display", "block");
                 content = $('#' + eslext.contentName);
+                url = "http://166.111.139.15:8003/votube/?word=" + word + "&plugin=true";
                 content.attr('src', url);
+                url = "http://166.111.139.15:8003/votube/?word=" + word;
+                $(".extControlLink").attr('href', url);
                 eslext.dlg = dlg;
             });
         }
@@ -85,9 +88,9 @@ eslext.work = function (e) {
             // lemma success
             s = r.split('\t')[2];
             // alert(s);
-            eslext.showDlg("http://166.111.139.15:8003/votube/?word=" + s + "&plugin=true", e);
+            eslext.showDlg(s, e);
         }).fail(function() {
-            eslext.showDlg("http://166.111.139.15:8003/votube/?word=" + s + "&plugin=true", e);
+            eslext.showDlg(s, e);
         });
     } else
         eslext.hideDlg();
