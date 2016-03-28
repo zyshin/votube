@@ -58,6 +58,9 @@ $(document).ready(function () {
     var v = $('#video')[0];
     v.play();
   });
+  $('.row-video').on('click', '.video-hover', function (e) {
+    $('.btn-play').click()
+  });
   $.showSubtitle = function (lang) {
     var v = $('#video')[0]
     $(v.textTracks).each(function (index, textTrack) {
@@ -73,6 +76,7 @@ $(document).ready(function () {
   $('.row-video').on('click', '.btn-subtitle', function (e) {
     var lang = $(this).hasClass('active') ? 'Eng' : 'Chi-Eng';
     $.showSubtitle(lang);
+    $('.btn-play').click()
   });
   $.on('load', 'track', function (e) {
     console.log('track loaded: ' + e.target.label);

@@ -233,13 +233,23 @@ footer {
 }
 
 .video-hover {
-  content: '';
   position: absolute;
   width: 100%;
   height: 100%;
   color: #fff;
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(0, 0, 0, .7);
   z-index: 10;
+  cursor: pointer;
+}
+
+.video-hover:before {
+  content: '\e030';
+  font-size: 72px;
+  position: absolute;
+  right: 10px;
+  bottom: 0;
+  font-family: 'Glyphicons Halflings';
+  color: rgba(240, 243, 246, .6);
 }
 
 .video-hover em, b {
@@ -291,12 +301,14 @@ video.no-sub::cue {
   padding-left: 3px;
   padding-right: 3px;
   background-color: #5f6f7f;
+  color: rgba(240, 243, 246, .6);
 }
 
 .btn-subtitle:focus,
 .btn-subtitle:hover {
   /*outline-width:0;*/
   background-color: #6f7f8f;
+  color: rgba(240, 243, 246, .6);
 }
 
 .btn-subtitle.active,
@@ -432,12 +444,12 @@ li.current>span {
 
 .list-group-item .video-hover:before {
   content: '\e029';
-  font-size: 24px;
+  font-size: 32px;
   position: relative;
   top: 30%;
   left: 40%;
-  font-family: 'Glyphicons Halflings';
-  color: #f0f3f6;
+  /*font-family: 'Glyphicons Halflings';*/
+  /*color: #f0f3f6;*/
 }
 
 .embed-responsive {
