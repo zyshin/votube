@@ -102,6 +102,8 @@ class PageView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(PageView, self).get_context_data(**kwargs)
+        if 'visited' not in self.request.session:
+            self.request.session['visited'] = str(datetime.now())
         word = self.request.GET.get('word') or 'default'
         r = getWordSents(word)
         context['is_plugin'] = 'plugin' in self.request.GET
@@ -144,8 +146,11 @@ class PageView(TemplateView):
 
     def post(self, request):
         clip_id = request.POST.get('clip_id')
-        clip = db.sents.find_one_and_update({'_id': clip_id}, {'$inc': {'votes': 1}}, return_document=ReturnDocument.AFTER)
-        return HttpResponse(str(clip['votes']))
+        sessionid = request.POST.get('sessionid', 'unknown')
+        if clip_id:
+            print 'vote on %s by %s' % (clip_id, sessionid)
+            clip = db.sents.find_one_and_update({'_id': clip_id}, {'$inc': {'votes': 1}}, return_document=ReturnDocument.AFTER)
+            return HttpResponse(str(clip['votes']))
 
 
 class AnalyticView(View):

@@ -30,6 +30,7 @@
   </head>
   <body>
   {% csrf_token %}
+  <input type="hidden" name="sessionid" value="{{ request.session.session_key }}">
   {% if is_plugin %}
     <!-- TODO: @zyk -->
     <div class="container">
@@ -118,6 +119,7 @@
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="http://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
     <script src="http://cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="http://cdn.bootcss.com/js-cookie/2.1.0/js.cookie.min.js"></script>
 
     <!-- <script src="../../static/js/offcanvas.js"></script> -->
     <script src="{% static "js/offcanvas.js" %}"></script>

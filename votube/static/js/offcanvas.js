@@ -11,7 +11,8 @@ $(document).ready(function () {
       'word': $('.word-title').text().trim(),
       'clip_id': (clip || $('.video-controls')).attr('clip-id'),
       'movie_id': (movie || $('.dropdown-menu>li.active')).attr('movie-id'),
-      'sense_id': (sense || $('.pager>li.current')).attr('sense-id')
+      'sense_id': (sense || $('.pager>li.current')).attr('sense-id'),
+      'sessionid': $('input[name="sessionid"]').val()
     };
   }
 
@@ -23,7 +24,8 @@ $(document).ready(function () {
     var clip_id = $(this).parents('[clip-id]').attr('clip-id'),
       data = {
         'clip_id': clip_id,
-        'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()
+        'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
+        'sessionid': $('input[name="sessionid"]').val()
       };
     console.log('vote-btn clicked: ' + clip_id);
     $('[clip-id="' + clip_id + '"]').find('.btn-vote').addClass('disabled');
@@ -37,7 +39,9 @@ $(document).ready(function () {
   $.on('play', '#video', function (e) {
     $('#video').removeClass('no-sub');
     $('#videoContainer>.video-hover').addClass('hidden');
-    $.get('view/', $.getParams());
+    var data = $.getParams();
+    data.lang = $('.btn-subtitle').hasClass('active') ? 'DUAL' : 'EN';
+    $.get('view/', data);
   });
   $.on('pause', '#video', function (e) {
     $('#video').addClass('no-sub');
