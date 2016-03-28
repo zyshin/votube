@@ -13,7 +13,7 @@ body {
   background-color: #f0f3f6;
 }
 body {
-  padding-top: 70px;
+  padding-top: 50px;
 }
 footer {
   padding: 30px 0;
@@ -131,11 +131,8 @@ footer {
  * -----------------------------
  */
 
-.navbar {
-  /*min-height: 62px;*/
-}
 .navbar-nav>li>a {
-  line-height: inherit;
+  /*line-height: inherit;*/
 }
 
 .navbar-inverse {
@@ -164,6 +161,8 @@ footer {
 }
 
 .navbar-form {
+  margin-top: 5px;
+  margin-bottom: 5px;
   padding-left: 0;
 }
 
@@ -186,7 +185,7 @@ footer {
   height: inherit;
   border-color: #3d4c5b;
   background-color: #3d4c5b;
-  font-size: 22px;
+  font-size: 18px;
 }
 
 
