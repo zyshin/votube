@@ -26,7 +26,7 @@
       </a>
     </li>
   {% else %}
-    {% with id=movie.id title=movie.title rating=movie.rating t=movie.t g=movie.g rating2=movie.omdb.imdbRating %}
+    {% with id=movie.id title=movie.title type=movie.type rating=movie.rating t=movie.t g=movie.g rating2=movie.omdb.imdbRating %}
     {% static "img/placeholder_poster.jpg" as placeholder_poster %}
     {% firstof movie.omdb.Poster movie.poster placeholder_poster as poster %}
     {% firstof movie.omdb.Year movie.year "No year" as year %}
@@ -46,7 +46,7 @@
     </li>
     <li class="current" sense-id="{{ active_sense.current.id }}">
     {% with m=active_sense.current %}
-      <span class="h4 one-line">{{ m.index }} {{ m.pos_entry.pos|slice:":3" }} {{ m.tran|safe }}</span>
+      <span class="h4 text-overflow">{{ m.index }} {{ m.pos_entry.pos|slice:":3" }} {{ m.tran|safe }}</span>
     {% endwith %}
     </li>
     <li class="next" sense-id="{{ active_sense.next.id }}">
@@ -66,7 +66,7 @@
   {% endwith %}
   {% endcomment %}
   {% for clip in clips %}
-    {% with id=clip.id title=clip.movie.title videofile=clip.movie.videofile start=clip.start end=clip.end length=clip.length votes=clip.votes views=clip.views en_sub=clip.subtitle sense=clip.sense %}
+    {% with id=clip.id title=clip.movie.title type=clip.movie.type videofile=clip.movie.videofile start=clip.start end=clip.end length=clip.length votes=clip.votes views=clip.views en_sub=clip.subtitle sense=clip.sense %}
     {% firstof clip.movie.omdb.Year clip.movie.year "No year" as year %}
       {% include "controls/clip_list_item.html" %}
     {% endwith %}

@@ -78,7 +78,7 @@ footer {
   border-radius: 0 !important;
 }
 
-.one-line {
+.text-overflow {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -484,6 +484,7 @@ li.current>span {
 }
 
 .list-group-item .media-heading>a {
+
   color: inherit;
   text-decoration: none;
 }
@@ -494,6 +495,10 @@ li.current>span {
 
 .list-group-item .media-left {
   padding-left: 0;
+}
+
+.list-group-item .media-heading {
+  margin-top: 5px;
 }
 
 .list-group-item .video-hover {

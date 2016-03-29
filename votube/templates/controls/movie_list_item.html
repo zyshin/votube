@@ -5,7 +5,15 @@
         <img class="media-object media-object-poster-sm" src="{{ poster }}" alt="...">
       </div>
       <div class="media-body">
-        <h5>{{ title|default:"No title" }} ({{ year }})</h5>
+        <h5>
+          <strong>{{ title|default:"No title" }}</strong> ({{ year|slice:":4" }}
+        {% if type == 'Tvshow' %}
+          <span class="level-label">TV</span>
+        {% else %}
+          <span class="level-label">Film</span>
+        {% endif %}
+          )
+        </h5>
         <p title="Vocabulary used in">
           <span class="level-label">TOEFL</span>
           <strong>{{ t|default:0 }}</strong>

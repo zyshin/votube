@@ -4,14 +4,16 @@
   <div class="video-hover">
     <div class="container">
   {% if word.meanings %}
+    {% for m in word.meanings %}
+    {% if forloop.counter0 == active_clip.sense %}
       <h2>In-Context Meaning</h2>
-      {% for m in word.meanings %}
-      {% if forloop.counter0 == active_clip.sense %}
         <b>{{ forloop.counter }}. [{{ m.pos_entry.pos }}] {{ m.tran|safe }}</b>
-      {% endif %}
-      {% endfor %}
+    {% endif %}
+    {% endfor %}
+    {% if active_clip.sent %}
       <h2>Line</h2>
       <p>... {{ active_clip.sent|safe }} ...</p>
+    {% endif %}
     {% if word.meanings|length > 1 %}
       <h2>Other Meanings</h2>
       {% for m in word.meanings %}
@@ -24,7 +26,7 @@
       {% endfor %}
     {% endif %}
   {% else %}
-    <h2>Not found</h2>
+    <h2>{{ word.trans }}</h2>
   {% endif %}
     </div>
   </div>

@@ -1,7 +1,5 @@
 {% load static %}
-{% with request.get_full_path|add:"&?c" as clip_url %}
-    
-{% endwith %}
+
 <li class="list-group-item{% if clip.id == active_clip.id %} active{% endif %}" clip-id="{{ id }}">
   <div class="media">
     <div class="media-left col-xs-12 col-sm-6">
@@ -10,7 +8,7 @@
           <div class="video-hover">
           {% for m in word.meanings %}
           {% if forloop.counter0 == sense %}
-            <p class="pull-down one-line">{{ forloop.counter }}. {{ m.pos_entry.pos|slice:":3" }} {{ m.tran|safe }}</p>
+            <p class="pull-down text-overflow">{{ forloop.counter }}. {{ m.pos_entry.pos|slice:":3" }} {{ m.tran|safe }}</p>
           {% endif %}
           {% endfor %}
           </div>
@@ -24,8 +22,17 @@
     </div>
     <div class="media-body">
       <h5 class="media-heading">
-        <a class="btn-clip" href="#">{{ title|default:"No title" }} ({{ year }})</a>
+        <a class="btn-clip" href="#">
+          <strong>{{ title|default:"No title" }}</strong> ({{ year|slice:":4" }})
+        </a>
       </h5>
+      <p>
+      {% if type == 'Tvshow' %}
+        <span class="level-label">TV</span>
+      {% else %}
+        <span class="level-label">Film</span>
+      {% endif %}
+      </p>
       <p class="pull-down">
         {% include "controls/clip_info.html" %}
       </p>

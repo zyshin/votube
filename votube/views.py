@@ -51,6 +51,7 @@ class PageView(TemplateView):
             forms = ''
         try:
             meanings = list(chain(*[[te['tran_entry'][0] for te in e['entries']['entry']] for e in word['def']['collins']['collins_entries']]))
+            meanings = [m for m in meanings if m.get('tran')]
             for i, m in enumerate(meanings):
                 m['id'] = 'sense%d' % (i + 1)
                 m['tran'] = splitSense(m['tran'])[1]
@@ -58,6 +59,11 @@ class PageView(TemplateView):
         except Exception, e:
             print repr(e)
             meanings = []
+        try:
+            tran = 'TODO'
+        except Exception, e:
+            print repr(e)
+            tran = '(No definition found)'
         return {
             'word': word['_id'],
             't': word.get('t', False),
@@ -68,6 +74,7 @@ class PageView(TemplateView):
             'usspeech': usspeech,
             # 'forms': forms,
             'meanings': meanings,
+            'tran': tran,
         }
 
     @staticmethod
@@ -118,6 +125,7 @@ class PageView(TemplateView):
             ids = [c['id'] for c in context['clips']]
             index = ids.index(clip_id) if clip_id in ids else 0
             context['active_clip'] = context['clips'][index]
+            print context['active_clip']['sense']
 
         if context['movies']:
             movie_id = self.request.GET.get('movie_id', '')
