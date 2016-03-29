@@ -110,6 +110,12 @@ class PageView(TemplateView):
         times = [(datetime.strptime(t, '%H:%M:%S.%f') - zero_time).total_seconds() for t in times]
         return times[1] - times[0]
 
+    @staticmethod
+    def __distinct_clips(clips):
+        # TODO @ssy: filter context['clips'] with same videofile and line
+        r = clips
+        return r
+
     def get_context_data(self, **kwargs):
         context = super(PageView, self).get_context_data(**kwargs)
         if 'visited' not in self.request.session:
@@ -119,17 +125,18 @@ class PageView(TemplateView):
         word = self.request.GET.get('word') or 'default'
         r = getWordSents(word)
         context['word'] = self.__get_word(r)
-        print context['word']
         context['clips'] = self.__get_clips(r)
         context['movies'] = self.__get_movies(r)
         context['clips'] = [c for c in context['clips'] if c['movie'].get('videofile')]    # pertain clips with movie file
+        context['clips'] = self.__distinct_clips(context['clips'])
         
         # sort context['clips']:
         # 1. by sense 123
         # 2. by votes
         # 3. by length of the occurence line
-        # 4. by views
-        context['clips'].sort(key=lambda c: (-c['sense'], c.get('votes', 0), self.__line_length(c['line']), c.get('views', 0)), reverse=True)
+        # 4. by reversed clip length
+        # 5. by views
+        context['clips'].sort(key=lambda c: (-c['sense'], c.get('votes', 0), int(self.__line_length(c['line']) / 2), -int(c['length'] / 2), c.get('views', 0)), reverse=True)
 
         if context['clips']:
             clip_id = self.request.GET.get('clip_id')
