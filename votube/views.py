@@ -13,6 +13,8 @@ from pymongo import MongoClient, ReturnDocument
 db = MongoClient('166.111.139.42').dev
 db.authenticate('test', 'test')
 
+zero_time = datetime.strptime('00:00:00.000', '%H:%M:%S.%f')
+
 
 class MyView(View):
 
@@ -59,11 +61,6 @@ class PageView(TemplateView):
         except Exception, e:
             print repr(e)
             meanings = []
-        try:
-            tran = 'TODO'
-        except Exception, e:
-            print repr(e)
-            tran = '(No definition found)'
         return {
             'word': word['_id'],
             't': word.get('t', False),
@@ -74,13 +71,12 @@ class PageView(TemplateView):
             'usspeech': usspeech,
             # 'forms': forms,
             'meanings': meanings,
-            'tran': tran,
+            'tran': word.get('tran', '(No definition found)'),
         }
 
     @staticmethod
     def __get_clips(word):
         word['sents'] = [s for s in word['sents'] if s['movie']]    # pertain clips with movie downloads
-        zero_time = datetime.strptime('00:00:00.000', '%H:%M:%S.%f')
         for s in word['sents']:
             s['id'] = s['_id']
             times = [(datetime.strptime(t, '%H:%M:%S.%f') - zero_time).total_seconds() for t in s['time']]
@@ -107,25 +103,39 @@ class PageView(TemplateView):
             m['poster'] = 'http://pi.cs.tsinghua.edu.cn/lab/moviedict/movies/poster/' + m['poster'].split('/')[-1]
         return d.values()
 
+    @staticmethod
+    def __line_length(line):
+        ss = line.split()
+        times = [ss[0], ss[2]]
+        times = [(datetime.strptime(t, '%H:%M:%S.%f') - zero_time).total_seconds() for t in times]
+        return times[1] - times[0]
+
     def get_context_data(self, **kwargs):
         context = super(PageView, self).get_context_data(**kwargs)
         if 'visited' not in self.request.session:
             self.request.session['visited'] = str(datetime.now())
+        context['is_plugin'] = 'plugin' in self.request.GET
+
         word = self.request.GET.get('word') or 'default'
         r = getWordSents(word)
-        context['is_plugin'] = 'plugin' in self.request.GET
         context['word'] = self.__get_word(r)
+        print context['word']
         context['clips'] = self.__get_clips(r)
         context['movies'] = self.__get_movies(r)
         context['clips'] = [c for c in context['clips'] if c['movie'].get('videofile')]    # pertain clips with movie file
-        # TODO: sort context['clips']
+        
+        # sort context['clips']:
+        # 1. by sense 123
+        # 2. by votes
+        # 3. by length of the occurence line
+        # 4. by views
+        context['clips'].sort(key=lambda c: (-c['sense'], c.get('votes', 0), self.__line_length(c['line']), c.get('views', 0)), reverse=True)
 
         if context['clips']:
             clip_id = self.request.GET.get('clip_id')
             ids = [c['id'] for c in context['clips']]
             index = ids.index(clip_id) if clip_id in ids else 0
             context['active_clip'] = context['clips'][index]
-            print context['active_clip']['sense']
 
         if context['movies']:
             movie_id = self.request.GET.get('movie_id', '')

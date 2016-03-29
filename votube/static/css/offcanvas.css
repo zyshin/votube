@@ -242,13 +242,16 @@ footer {
 }
 
 .video-hover:before {
+  font-family: 'Glyphicons Halflings';
+  color: rgba(240, 243, 246, .6);
+}
+
+.video-hover.video-hover-valid:before {
   content: '\e030';
   font-size: 72px;
   position: absolute;
   right: 10px;
   bottom: 0;
-  font-family: 'Glyphicons Halflings';
-  color: rgba(240, 243, 246, .6);
 }
 
 .video-hover em, b {

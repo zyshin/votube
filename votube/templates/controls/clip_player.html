@@ -1,7 +1,7 @@
 {% load static %}
 
 <div class="embed-responsive embed-responsive-16by9" id="videoContainer">
-  <div class="video-hover">
+  <div class="video-hover{% if active_clip.movie.videofile %} video-hover-valid{%endif%}">
     <div class="container">
   {% if word.meanings %}
     {% for m in word.meanings %}
@@ -14,19 +14,19 @@
       <h2>Line</h2>
       <p>... {{ active_clip.sent|safe }} ...</p>
     {% endif %}
-    {% if word.meanings|length > 1 %}
+    {% if word.meanings|length > 0 %}
+    {% if word.meanings|length > 1 or not active_clip.sense %}
       <h2>Other Meanings</h2>
       {% for m in word.meanings %}
       {% if forloop.counter0 != active_clip.sense %}
         <p>{{ forloop.counter }}. [{{ m.pos_entry.pos }}] {{ m.tran|safe }}</p>
-        {% comment %}
-          {{ m.pos_entry.pos_tips }} 
-        {% endcomment %}
       {% endif %}
       {% endfor %}
     {% endif %}
+    {% endif %}
   {% else %}
-    <h2>{{ word.trans }}</h2>
+    <h2>Online Meanings</h2>
+    <p>{{ word.trans }}</p>
   {% endif %}
     </div>
   </div>
@@ -36,10 +36,14 @@
     <track label="Chi-Eng" kind="subtitles" src="../../static/subtitles/Contact ch+en.vtt">
   </video> -->
 {% with videofile=active_clip.movie.videofile start=active_clip.start end=active_clip.end en_sub=active_clip.movie.en_sub|first dual_sub=active_clip.movie.dual_sub|first %}
+{% if videofile %}
   <video class="embed-responsive-item no-sub" id="video" crossorigin preload="metadata" src="http://pi.cs.tsinghua.edu.cn/lab/moviedict/movies/mp4/{{ videofile }}#t={{ start }},{{ end }}">
-    <track label="Eng" kind="subtitles" src="http://pi.cs.tsinghua.edu.cn/lab/moviedict/movies/subtitles/{{ en_sub }}">
-    <track label="Chi-Eng" kind="subtitles" src="http://pi.cs.tsinghua.edu.cn/lab/moviedict/movies/subtitles/{{ dual_sub }}">
+    {% if en_sub %}<track label="Eng" kind="subtitles" src="http://pi.cs.tsinghua.edu.cn/lab/moviedict/movies/subtitles/{{ en_sub }}">{% endif %}
+    {% if dual_sub %}<track label="Chi-Eng" kind="subtitles" src="http://pi.cs.tsinghua.edu.cn/lab/moviedict/movies/subtitles/{{ dual_sub }}">{% endif %}
   </video>
+{% else %}
+  <img class="embed-responsive-item" src="{% static "img/placeholder_clip.jpg" %}">
+{% endif %}
 {% endwith %}
 </div>
 
