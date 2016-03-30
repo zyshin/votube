@@ -115,6 +115,7 @@ class PageView(TemplateView):
     def __distinct_clips(clips):
         # TODO @ssy: filter context['clips'] with same videofile and line
         st, num = 0, len(clips)
+        r = clips
         toremove = []
         while st < num:
             sentA = clips[st]['sent']
@@ -125,12 +126,15 @@ class PageView(TemplateView):
                 cover = lcs(sentA, sentB)
                 ratio = 1.0 * cover / max([len(sentA), len(sentB)])
                 if ratio > 0.9:
-                    toremove.append(clips[st])
-                    continue
+                    tmp = clips[st]
+                    if len(sentA) > len(sentB):
+                        tmp = clips[i]
+                    toremove.append(tmp)
             st += 1
+        toremove = list(set(toremove))
         for clip in toremove:
-            clips.remove(clip)
-        return clips
+            r.remove(clip)
+        return r
 
     def get_context_data(self, **kwargs):
         context = super(PageView, self).get_context_data(**kwargs)
