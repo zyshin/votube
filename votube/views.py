@@ -70,7 +70,7 @@ class PageView(TemplateView):
             'ukspeech': ukspeech,
             'usphone': usphone,
             'usspeech': usspeech,
-            # 'forms': forms,
+            'forms': forms,
             'meanings': meanings,
             'tran': word.get('tran', '(No definition found)'),
         }
@@ -86,6 +86,7 @@ class PageView(TemplateView):
             # s['start'] = start.strftime('%H:%M:%S.%f')[:-3]
             # s['end'] = end.strftime('%H:%M:%S.%f')[:-3]
             s['length'] = s['end'] - s['start']
+            s['morph'] = s['line'][s['line'].find('<em>')+4:s['line'].find('</em>')]
         return word['sents']
 
     @staticmethod
@@ -113,9 +114,8 @@ class PageView(TemplateView):
 
     @staticmethod
     def __distinct_clips(clips):
-        # TODO @ssy: filter context['clips'] with same videofile and line
+        # filter context['clips'] with same videofile and 90%-similar line
         st, num = 0, len(clips)
-        r = clips
         toremove = []
         while st < num:
             sentA = clips[st]['sent']
@@ -131,9 +131,9 @@ class PageView(TemplateView):
                         tmp = clips[i]
                     toremove.append(tmp)
             st += 1
-        toremove = list(set(toremove))
-        for clip in toremove:
-            r.remove(clip)
+        r = [c for c in clips if c not in toremove]
+        if len(r) < len(clips):
+            print len(clips) - len(r), 'duplicated clips removed'
         return r
 
     def get_context_data(self, **kwargs):
@@ -148,8 +148,9 @@ class PageView(TemplateView):
         context['clips'] = self.__get_clips(r)
         context['movies'] = self.__get_movies(r)
         context['clips'] = [c for c in context['clips'] if c['movie'].get('videofile')]    # pertain clips with movie file
+        context['clips'] = [c for c in context['clips'] if c['length'] < 30]    # pertain short clips
         context['clips'] = self.__distinct_clips(context['clips'])
-
+        
         # sort context['clips']:
         # 1. by sense 123
         # 2. by votes

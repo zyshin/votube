@@ -62,6 +62,10 @@ $(document).ready(function () {
     var v = $('#video')[0];
     v.play();
   });
+  $('.row-video').on('click', '#video', function (e) {
+    var v = $('#video')[0];
+    v.pause();
+  });
   $('.row-video').on('click', '.video-hover', function (e) {
     $('.btn-play').click()
   });
@@ -85,10 +89,12 @@ $(document).ready(function () {
   $.on('load', 'track', function (e) {
     console.log('track loaded: ' + e.target.label);
     // TODO: lemmatization
-    var keyword = $('.word-title').text().trim();
-    var re = new RegExp(keyword, 'gi');
+    var keyword = $('.word-title').text().trim(),
+      morph = $('[morph]').attr('morph'),
+      re = new RegExp(keyword, 'gi'),
+      re2 = new RegExp(morph, 'gi');
     $(e.target.track.cues).each(function (index, cue) {
-      cue.text = cue.text.replace(re, '<c.highlighted>$&</c>');
+      cue.text = cue.text.replace((cue.text.match(re2)) ? re2 : re, '<c.highlighted>$&</c>');
     });
   });
   $.on('loadeddata', '#video', function (e) {

@@ -274,6 +274,10 @@ footer {
   font-size: 10px;
 }
 
+video {
+  cursor: pointer;
+}
+
 video::cue {
   font-family: "Arial","Microsoft YaHei","黑体","宋体",sans-serif;
   font-size: 24px;
@@ -317,6 +321,18 @@ video.no-sub::cue {
 .btn-subtitle.active:focus,
 .btn-subtitle.active:hover {
   background-color: #313941;
+}
+
+.btn-subtitle>.on {
+  display: none;
+}
+
+.btn-subtitle.active>.on {
+  display: inline;
+}
+
+.btn-subtitle.active>.off {
+  display: none;
 }
 
 .btn-play {

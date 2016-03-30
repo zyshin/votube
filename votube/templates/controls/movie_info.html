@@ -7,7 +7,14 @@
   <div class="media-body">
     <div class="row row-heading">
       <div class="col-xs-12 col-sm-7">
-        <h3 class="media-heading text-overflow">{{ title|default:"No title" }} ({{ year }})</h3>
+        <h3 class="media-heading text-overflow">{{ title|default:"No title" }} ({{ year|slice:":4" }}
+        {% if type == 'Tvshow' %}
+          <span class="level-label h4 media-middle">TV</span>
+        {% else %}
+          <span class="level-label h4 media-middle">Film</span>
+        {% endif %}
+          )
+        </h3>
       </div>
       <div class="col-sm-5 text-center" title="Vocabulary used in">
         <span class="level-label">TOEFL</span>

@@ -3,31 +3,23 @@
 <div class="embed-responsive embed-responsive-16by9" id="videoContainer">
   <div class="video-hover{% if active_clip.movie.videofile %} video-hover-valid{%endif%}">
     <div class="container">
-  {% if word.meanings %}
+    {% if word.meanings %}
+      <h2>Meanings</h2>
     {% for m in word.meanings %}
-    {% if forloop.counter0 == active_clip.sense %}
-      <h2>In-Context Meaning</h2>
-        <b>{{ forloop.counter }}. [{{ m.pos_entry.pos }}] {{ m.tran|safe }}</b>
-    {% endif %}
+      {% if forloop.counter0 == active_clip.sense %}
+        <p><b>{{ forloop.counter }}. [{{ m.pos_entry.pos }}] {{ m.tran|safe }}</b></p>
+      {% else %}
+        <p>{{ forloop.counter }}. [{{ m.pos_entry.pos }}] {{ m.tran|safe }}</p>
+      {% endif %}
     {% endfor %}
+    {% else %}
+      <h2>Online Meanings</h2>
+      <p>{{ word.trans }}</p>
+    {% endif %}
     {% if active_clip.sent %}
       <h2>Line</h2>
       <p>... {{ active_clip.sent|safe }} ...</p>
     {% endif %}
-    {% if word.meanings|length > 0 %}
-    {% if word.meanings|length > 1 or not active_clip.sense %}
-      <h2>Other Meanings</h2>
-      {% for m in word.meanings %}
-      {% if forloop.counter0 != active_clip.sense %}
-        <p>{{ forloop.counter }}. [{{ m.pos_entry.pos }}] {{ m.tran|safe }}</p>
-      {% endif %}
-      {% endfor %}
-    {% endif %}
-    {% endif %}
-  {% else %}
-    <h2>Online Meanings</h2>
-    <p>{{ word.trans }}</p>
-  {% endif %}
     </div>
   </div>
 
@@ -48,14 +40,18 @@
 </div>
 
 {% if active_clip.movie.videofile %}
-<div class="row video-controls" clip-id="{{ active_clip.id }}">
+<div class="row video-controls" clip-id="{{ active_clip.id }}" morph="{{ active_clip.morph }}">
   <div class="col-xs-6">
   {% with length=active_clip.length votes=active_clip.votes views=active_clip.views %}
     {% include "controls/clip_info.html" %}
   {% endwith %}
   </div>
   <div class="col-xs-6 text-right">
-    <button type="button" class="btn btn-primary btn-subtitle" data-toggle="button" aria-pressed="false" autocomplete="off">双语字幕</button>
+    <button type="button" class="btn btn-primary btn-subtitle" data-toggle="button" aria-pressed="false" autocomplete="off">
+      双语字幕:
+      <span class="on">开</span>
+      <span class="off">关</span>
+    </button>
     <span class="hidden" title="Play">
       <a href="#" class="btn btn-link btn-lg btn-inverse btn-play" role="button">
         <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
@@ -69,7 +65,7 @@
 {% comment %}
   {% with title="Forrest Gump" year="1994" poster="https://image.tmdb.org/t/p/w185/y3EsNpMFwvpcucLmx4HiiRRhCXV.jpg" description="如果你所创建的组件不包含任何文本内容（例如，内只包含了一个图标），你应当提供其他的内容来表示这个控件的意图，这样就能让使用辅助设备的用户知道其作用了。这种情况下，你可以为控件添加 aria-label 属相。" rating=5.5 t=213 g=168 %}
 {% endcomment %}
-{% with title=active_clip.movie.title rating=active_clip.movie.rating t=active_clip.movie.t g=active_clip.movie.g rating2=active_clip.movie.omdb.imdbRating plot=active_clip.movie.omdb.Plot %}
+{% with title=active_clip.movie.title type=active_clip.movie.type rating=active_clip.movie.rating t=active_clip.movie.t g=active_clip.movie.g rating2=active_clip.movie.omdb.imdbRating plot=active_clip.movie.omdb.Plot %}
 {% static "img/placeholder_poster.jpg" as placeholder_poster %}
 {% firstof active_clip.movie.omdb.Poster active_clip.movie.poster placeholder_poster as poster %}
 {% firstof active_clip.movie.omdb.Year active_clip.movie.year "No year" as year %}
