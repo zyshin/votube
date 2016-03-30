@@ -8,6 +8,7 @@ from itertools import chain
 from datetime import datetime
 from SubWSD.subWSD import getWordSents
 from SubWSD.classifySense import splitSense
+from SubWSD.sentProcesser import lcs
 
 from pymongo import MongoClient, ReturnDocument
 db = MongoClient('166.111.139.42').dev
@@ -113,8 +114,23 @@ class PageView(TemplateView):
     @staticmethod
     def __distinct_clips(clips):
         # TODO @ssy: filter context['clips'] with same videofile and line
-        r = clips
-        return r
+        st, num = 0, len(clips)
+        toremove = []
+        while st < num:
+            sentA = clips[st]['sent']
+            for i in range(st):
+                if clips[st]['movie']['videofile'] != clips[i]['movie']['videofile']:
+                    continue
+                sentB = clips[i]['sent']
+                cover = lcs(sentA, sentB)
+                ratio = 1.0 * cover / max([len(sentA), len(sentB)])
+                if ratio > 0.9:
+                    toremove.append(clips[st])
+                    continue
+            st += 1
+        for clip in toremove:
+            clips.remove(clip)
+        return clips
 
     def get_context_data(self, **kwargs):
         context = super(PageView, self).get_context_data(**kwargs)
@@ -129,7 +145,7 @@ class PageView(TemplateView):
         context['movies'] = self.__get_movies(r)
         context['clips'] = [c for c in context['clips'] if c['movie'].get('videofile')]    # pertain clips with movie file
         context['clips'] = self.__distinct_clips(context['clips'])
-        
+
         # sort context['clips']:
         # 1. by sense 123
         # 2. by votes
