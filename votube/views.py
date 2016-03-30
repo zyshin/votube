@@ -112,22 +112,22 @@ class PageView(TemplateView):
         times = [(datetime.strptime(t, '%H:%M:%S.%f') - zero_time).total_seconds() for t in times]
         return times[1] - times[0]
 
-    @staticmethod
-    def __distinct_clips(clips):
+    @classmethod
+    def __distinct_clips(cls, clips):
         # filter context['clips'] with same videofile and 90%-similar line
         st, num = 0, len(clips)
         toremove = []
         while st < num:
-            sentA = clips[st]['sent']
+            sentA = clips[st]['line'][clips[st]['line'].find('\n')+1:]
             for i in range(st):
                 if clips[st]['movie']['videofile'] != clips[i]['movie']['videofile']:
                     continue
-                sentB = clips[i]['sent']
+                sentB = clips[i]['line'][clips[i]['line'].find('\n')+1:]
                 cover = lcs(sentA, sentB)
                 ratio = 1.0 * cover / max([len(sentA), len(sentB)])
                 if ratio > 0.9:
                     tmp = clips[st]
-                    if len(sentA) > len(sentB):
+                    if cls.__line_length(tmp['line']) > cls.__line_length(clips[i]['line']):
                         tmp = clips[i]
                     toremove.append(tmp)
             st += 1
