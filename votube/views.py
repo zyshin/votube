@@ -101,8 +101,10 @@ class PageView(TemplateView):
             m['rating'] = float(m['rating'])
             m['omdb']['imdbRating'] = float(m['omdb']['imdbRating'])
             m['omdb']['imdbVotes'] = int(m['omdb']['imdbVotes'].replace(',', ''))
-            m['omdb']['Poster'] = 'http://pi.cs.tsinghua.edu.cn/lab/moviedict/movies/poster/' + m['omdb']['Poster'].split('/')[-1]
-            m['poster'] = 'http://pi.cs.tsinghua.edu.cn/lab/moviedict/movies/poster/' + m['poster'].split('/')[-1]
+            if 'poster' in m:
+                m['poster_cached'] = 'http://pi.cs.tsinghua.edu.cn/lab/moviedict/movies/poster/' + m['poster'].split('/')[-1]
+            if 'Poster' in m['omdb']:
+                m['poster_cached2'] = 'http://pi.cs.tsinghua.edu.cn/lab/moviedict/movies/poster/' + m['omdb']['Poster'].split('/')[-1]
         return d.values()
 
     @staticmethod

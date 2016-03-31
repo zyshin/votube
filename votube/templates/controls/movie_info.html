@@ -1,7 +1,7 @@
 <div class="media">
   <div class="media-left">
     <a href="#">
-      <img class="media-object media-object-poster" src="{{ poster }}" alt="...">
+      <img class="media-object media-object-poster" src="{{ poster_cached }}" onerror="if (this.src != '{{ poster }}') this.src = '{{ poster }}';">
     </a>
   </div>
   <div class="media-body">

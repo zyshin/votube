@@ -67,6 +67,7 @@
 {% endcomment %}
 {% with title=active_clip.movie.title type=active_clip.movie.type rating=active_clip.movie.rating t=active_clip.movie.t g=active_clip.movie.g rating2=active_clip.movie.omdb.imdbRating plot=active_clip.movie.omdb.Plot %}
 {% static "img/placeholder_poster.jpg" as placeholder_poster %}
+{% firstof active_clip.movie.poster_cached2 active_clip.movie.poster_cached placeholder_poster as poster_cached %}
 {% firstof active_clip.movie.omdb.Poster active_clip.movie.poster placeholder_poster as poster %}
 {% firstof active_clip.movie.omdb.Year active_clip.movie.year "No year" as year %}
   {% include "controls/movie_info.html" %}

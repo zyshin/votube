@@ -28,6 +28,7 @@
   {% else %}
     {% with id=movie.id title=movie.title type=movie.type rating=movie.rating t=movie.t g=movie.g rating2=movie.omdb.imdbRating %}
     {% static "img/placeholder_poster.jpg" as placeholder_poster %}
+    {% firstof movie.poster_cached2 movie.poster_cached placeholder_poster as poster_cached %}
     {% firstof movie.omdb.Poster movie.poster placeholder_poster as poster %}
     {% firstof movie.omdb.Year movie.year "No year" as year %}
       {% include "controls/movie_list_item.html" %}

@@ -2,7 +2,7 @@
   <a href="#" class="btn-movie">
     <div class="media">
       <div class="media-left">
-        <img class="media-object media-object-poster-sm" src="{{ poster }}" alt="...">
+        <img class="media-object media-object-poster-sm" src="{{ poster_cached }}" onerror="if (this.src != '{{ poster }}') this.src = '{{ poster }}';">
       </div>
       <div class="media-body">
         <h5>
