@@ -130,6 +130,11 @@ class PageView(TemplateView):
                     if cls.__line_length(tmp['line']) > cls.__line_length(clips[i]['line']):
                         tmp = clips[i]
                     toremove.append(tmp)
+                else:
+                    sentA = clips[st]['sent'].replace('<em>', '').replace('</em>', '')
+                    sentB = clips[i]['sent'].replace('<em>', '').replace('</em>', '')
+                    if sentA.strip() == sentB.strip():
+                        toremove.append(clips[st])
             st += 1
         r = [c for c in clips if c not in toremove]
         if len(r) < len(clips):
@@ -150,7 +155,7 @@ class PageView(TemplateView):
         context['clips'] = [c for c in context['clips'] if c['movie'].get('videofile')]    # pertain clips with movie file
         context['clips'] = [c for c in context['clips'] if c['length'] < 30]    # pertain short clips
         context['clips'] = self.__distinct_clips(context['clips'])
-        
+
         # sort context['clips']:
         # 1. by sense 123
         # 2. by votes
