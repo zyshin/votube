@@ -24,7 +24,10 @@ def combineSents(before, after):
 
 
 def splitTime(line):
-    time = line.split('\r\n')[0]
+    tmp = line.split('\r\n')
+    if len(tmp) == 1:
+        tmp = line.split('\n')
+    time = tmp[0]
     sent = line.replace(time, '')
     return [time, sent]
 

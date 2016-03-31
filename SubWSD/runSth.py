@@ -31,24 +31,24 @@ import re
 #         saveSent(sent)
 
 # 更新sents的objectID
-sents = subtitlesdb.find()
-# sents = subtitlesdb.find({'word': 'dictionary'})
-cnt = 0
-for sent in sents:
-    cnt += 1
-    print cnt
-    word = sent['word']
-    tempid = sent['_id']
-    sent['_id'] = word + '_' + \
-        sent['subtitle'].replace('.vtt', '') + '_' + str(sent['line_no'])
-    try:
-        subtitlesdb.insert_one(sent)
-    except Exception, e:
-        print repr(e)
-        print sent
+# sents = subtitlesdb.find()
+# # sents = subtitlesdb.find({'word': 'dictionary'})
+# cnt = 0
+# for sent in sents:
+#     cnt += 1
+#     print cnt
+#     word = sent['word']
+#     tempid = sent['_id']
+#     sent['_id'] = word + '_' + \
+#         sent['subtitle'].replace('.vtt', '') + '_' + str(sent['line_no'])
+#     try:
+#         subtitlesdb.insert_one(sent)
+#     except Exception, e:
+#         print repr(e)
+#         print sent
 
-    if tempid.find('.vtt') != -1:
-        subtitlesdb.delete_one({'_id': tempid})
+#     if tempid.find('.vtt') != -1:
+#         subtitlesdb.delete_one({'_id': tempid})
 
 
 # 更新sents的movie
@@ -61,7 +61,9 @@ for sent in sents:
 #     subtitlesdb.update_one({'_id':testsent['_id']}, {'$set':{'movie':testsent['movie']}})
 
 
-# print getWordSents('dictionary')
+subtitles = getWordSents('broil')
+print subtitles
+print len(subtitles['sents'])
 
 # found = dictionary.find_one({'_id': 'dictionary'})
 # sents = processWord(found, model)
