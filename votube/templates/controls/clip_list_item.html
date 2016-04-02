@@ -13,7 +13,11 @@
           {% endfor %}
           </div>
         {% if videofile %}
+          {% if SNAPSHOT_FROM_CACHE %}
+          <img class="embed-responsive-item" src="http://pi.cs.tsinghua.edu.cn/lab/moviedict/movies/snapshots/{{ snapshot }}">
+          {% else %}
           <video class="embed-responsive-item" preload="metadata" src="http://pi.cs.tsinghua.edu.cn/lab/moviedict/movies/mp4/{{ videofile }}#t={{ start }},{{ end }}"></video>
+          {% endif %}
         {% else %}
           <img class="embed-responsive-item" src="{% static "img/placeholder_clip.jpg" %}">
         {% endif %}

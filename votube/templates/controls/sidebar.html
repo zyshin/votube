@@ -67,7 +67,7 @@
   {% endwith %}
   {% endcomment %}
   {% for clip in clips %}
-    {% with id=clip.id title=clip.movie.title type=clip.movie.type videofile=clip.movie.videofile start=clip.start end=clip.end length=clip.length votes=clip.votes views=clip.views en_sub=clip.subtitle sense=clip.sense %}
+    {% with id=clip.id title=clip.movie.title type=clip.movie.type videofile=clip.movie.videofile start=clip.start end=clip.end length=clip.length votes=clip.votes views=clip.views en_sub=clip.subtitle sense=clip.sense snapshot=clip.snapshot %}
     {% firstof clip.movie.omdb.Year clip.movie.year "No year" as year %}
       {% include "controls/clip_list_item.html" %}
     {% endwith %}

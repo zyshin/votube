@@ -6,6 +6,7 @@ from django.views.generic import View, TemplateView
 import json
 from itertools import chain
 from datetime import datetime
+from .settings import *
 from SubWSD.subWSD import getWordSents
 from SubWSD.classifySense import splitSense
 from SubWSD.sentProcesser import lcs
@@ -15,6 +16,19 @@ db = MongoClient('166.111.139.42').dev
 db.authenticate('test', 'test')
 
 zero_time = datetime.strptime('00:00:00.000', '%H:%M:%S.%f')
+
+
+from time import clock
+def timeit(func):
+    def __decorator(*args, **kwags):
+        start = clock()
+        result = func(*args, **kwags)  #recevie the native function call result
+        finish = clock()
+        span = int((finish - start) * 1000)
+        if settings.DEBUG or span > 5000:
+            print '[DEBUG] timeit: ', func.__name__, span, 'ms'
+        return result        #return to caller
+    return __decorator
 
 
 class MyView(View):
@@ -36,6 +50,12 @@ class MyView(View):
 class PageView(TemplateView):
 
     @staticmethod
+    @timeit
+    def __getWordSents(word):
+        return getWordSents(word)
+
+    @staticmethod
+    @timeit
     def __get_word(word):
         # TODO: move into templates
         try:
@@ -76,11 +96,13 @@ class PageView(TemplateView):
         }
 
     @staticmethod
+    @timeit
     def __get_clips(word):
         word['sents'] = [s for s in word['sents'] if s['movie']]    # pertain clips with movie downloads
         for s in word['sents']:
             s['id'] = s['_id']
             times = [(datetime.strptime(t, '%H:%M:%S.%f') - zero_time).total_seconds() for t in s['time']]
+            s['time'] = times
             s['start'] = max((times[0] + times[1]) / 2, times[1] - 3)
             s['end'] = min((times[2] + times[3]) / 2, times[2] + 1)
             # s['start'] = start.strftime('%H:%M:%S.%f')[:-3]
@@ -90,11 +112,15 @@ class PageView(TemplateView):
         return word['sents']
 
     @staticmethod
+    @timeit
     def __get_movies(word):
         ids = list(set([s['movie'] for s in word['sents']]))
         d = {o['_id']: o for o in db.movies.find({'_id': {'$in': ids}, 'videofile': {'$ne': ''}})}
         for s in word['sents']:
             s['movie'] = d.get(s['movie'], {})
+            if SNAPSHOT_FROM_CACHE and s['movie'].get('videofile'):
+                # TODO
+                s['snapshot'] = '%s_%d.png' % (s['movie']['videofile'], int(s['times'][1]))
         for m in d.itervalues():
             assert m['videofile']
             m['id'] = ''.join([c for c in m['_id'] if c.islower() or c.isdigit()]) # convert to safe css class name
@@ -115,6 +141,7 @@ class PageView(TemplateView):
         return times[1] - times[0]
 
     @classmethod
+    @timeit
     def __distinct_clips(cls, clips):
         # filter context['clips'] with same videofile and 90%-similar line
         st, num = 0, len(clips)
@@ -143,14 +170,16 @@ class PageView(TemplateView):
             print len(clips) - len(r), 'duplicated clips removed'
         return r
 
+    @timeit
     def get_context_data(self, **kwargs):
         context = super(PageView, self).get_context_data(**kwargs)
         if 'visited' not in self.request.session:
             self.request.session['visited'] = str(datetime.now())
         context['is_plugin'] = 'plugin' in self.request.GET
+        context['SNAPSHOT_FROM_CACHE'] = SNAPSHOT_FROM_CACHE
 
         word = self.request.GET.get('word') or 'default'
-        r = getWordSents(word)
+        r = self.__getWordSents(word)
         context['word'] = self.__get_word(r)
         context['clips'] = self.__get_clips(r)
         context['movies'] = self.__get_movies(r)
