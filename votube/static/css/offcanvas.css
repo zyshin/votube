@@ -84,6 +84,10 @@ footer {
   text-overflow: ellipsis;
 }
 
+.full-width {
+  width: 85%;
+}
+
 .container {
   padding-left: 25px;
   padding-right: 25px;

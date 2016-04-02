@@ -4,7 +4,7 @@
   <div class="video-hover{% if active_clip.movie.videofile %} video-hover-valid{%endif%}">
     <div class="container">
     {% if word.meanings %}
-      <h2>Meanings</h2>
+      <h2></h2>
     {% for m in word.meanings %}
       {% if forloop.counter0 == active_clip.sense %}
         <p><b>{{ forloop.counter }}. [{{ m.pos_entry.pos }}] {{ m.tran|safe }}</b></p>
@@ -17,8 +17,8 @@
       <p>{{ word.trans }}</p>
     {% endif %}
     {% if active_clip.sent %}
-      <h2>Line</h2>
-      <p>... {{ active_clip.sent|safe }} ...</p>
+      <h2></h2>
+      <p class="pull-down full-width text-center">... {{ active_clip.sent|safe }} ...</p>
     {% endif %}
     </div>
   </div>
