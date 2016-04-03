@@ -25,7 +25,7 @@ def timeit(func):
         result = func(*args, **kwags)  #recevie the native function call result
         finish = clock()
         span = int((finish - start) * 1000)
-        if settings.DEBUG or span > 5000:
+        if span > 500:
             print '[DEBUG] timeit: ', func.__name__, span, 'ms'
         return result        #return to caller
     return __decorator
@@ -119,8 +119,7 @@ class PageView(TemplateView):
         for s in word['sents']:
             s['movie'] = d.get(s['movie'], {})
             if SNAPSHOT_FROM_CACHE and s['movie'].get('videofile'):
-                # TODO
-                s['snapshot'] = '%s_%d.png' % (s['movie']['videofile'], int(s['times'][1]))
+                s['snapshot'] = '%s_%d.png' % (s['movie']['videofile'], int(s['time'][1]))
         for m in d.itervalues():
             assert m['videofile']
             m['id'] = ''.join([c for c in m['_id'] if c.islower() or c.isdigit()]) # convert to safe css class name

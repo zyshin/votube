@@ -1,15 +1,15 @@
 {% load static %}
 
 <div class="embed-responsive embed-responsive-16by9" id="videoContainer">
-  <div class="video-hover{% if active_clip.movie.videofile %} video-hover-valid{%endif%}">
+  <div class="video-hover{% if active_clip.movie.videofile %} video-hover-valid{% endif %}">
     <div class="container">
     {% if word.meanings %}
       <h2></h2>
     {% for m in word.meanings %}
       {% if forloop.counter0 == active_clip.sense %}
-        <p><b>{{ forloop.counter }}. [{{ m.pos_entry.pos }}] {{ m.tran|safe }}</b></p>
+        <h4><b>{{ forloop.counter }}. [{{ m.pos_entry.pos }}] {{ m.tran|safe }}</b></h4>
       {% else %}
-        <p>{{ forloop.counter }}. [{{ m.pos_entry.pos }}] {{ m.tran|safe }}</p>
+        <h4>{{ forloop.counter }}. [{{ m.pos_entry.pos }}] {{ m.tran|safe }}</h4>
       {% endif %}
     {% endfor %}
     {% else %}
@@ -17,8 +17,7 @@
       <p>{{ word.trans }}</p>
     {% endif %}
     {% if active_clip.sent %}
-      <h2></h2>
-      <p class="pull-down full-width text-center">... {{ active_clip.sent|safe }} ...</p>
+      <h4 class="pull-down full-width text-center">... {{ active_clip.sent|safe }} ...</h4>
     {% endif %}
     </div>
   </div>
