@@ -1,5 +1,4 @@
 {% load static %}
-
 <li class="list-group-item{% if clip.id == active_clip.id %} active{% endif %}" clip-id="{{ id }}">
   <div class="media">
     <div class="media-left col-xs-12 col-sm-6">
@@ -14,7 +13,7 @@
           </div>
         {% if videofile %}
           {% if SNAPSHOT_FROM_CACHE %}
-          <img class="embed-responsive-item" src="http://pi.cs.tsinghua.edu.cn/lab/moviedict/movies/snapshots/{{ snapshot }}">
+          <img class="embed-responsive-item" src="http://pi.cs.tsinghua.edu.cn/lab/moviedict/movies/snapshots/{{ snapshot }}" onerror="if (this.tagName.toLowerCase() != 'video') this.outerHTML = '<video class=&quot;embed-responsive-item&quot; preload=&quot;metadata&quot; src=&quot;http://pi.cs.tsinghua.edu.cn/lab/moviedict/movies/mp4/{{ videofile }}#t={{ start }},{{ end }}&quot;></video>';">
           {% else %}
           <video class="embed-responsive-item" preload="metadata" src="http://pi.cs.tsinghua.edu.cn/lab/moviedict/movies/mp4/{{ videofile }}#t={{ start }},{{ end }}"></video>
           {% endif %}

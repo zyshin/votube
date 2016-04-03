@@ -78,6 +78,10 @@ footer {
   border-radius: 0 !important;
 }
 
+.embed-responsive-item {
+  object-fit: contain;
+}
+
 .text-overflow {
   white-space: nowrap;
   overflow: hidden;
@@ -277,10 +281,6 @@ footer {
   width: 100%;
   background: rgba(0, 0, 0, 0.7);
   font-size: 10px;
-}
-
-video {
-  cursor: pointer;
 }
 
 video::cue {
