@@ -12,7 +12,7 @@ from SubWSD.classifySense import splitSense
 from SubWSD.sentProcesser import lcs
 
 from pymongo import MongoClient, ReturnDocument
-db = MongoClient('166.111.139.42').dev
+db = MongoClient(MONGODB_HOST).dev
 db.authenticate('test', 'test')
 
 zero_time = datetime.strptime('00:00:00.000', '%H:%M:%S.%f')
