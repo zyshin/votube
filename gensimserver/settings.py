@@ -83,6 +83,12 @@ DATABASES = {
     }
 }
 
+from pymongo import MongoClient
+MONGODB_HOST = '166.111.139.42'
+# MONGODB_HOST = 'localhost'
+MONGODB = MongoClient(MONGODB_HOST).dev
+MONGODB.authenticate("test", "test")
+
 
 # Password validation
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators

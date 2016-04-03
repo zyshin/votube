@@ -3,17 +3,16 @@ from django.conf import settings
 from django.http import HttpResponse, JsonResponse
 from django.views.generic import View, TemplateView
 
+from .settings import SNAPSHOT_FROM_CACHE
 import json
 from itertools import chain
 from datetime import datetime
-from .settings import *
 from SubWSD.subWSD import getWordSents
 from SubWSD.classifySense import splitSense
 from SubWSD.sentProcesser import lcs
 
-from pymongo import MongoClient, ReturnDocument
-db = MongoClient(MONGODB_HOST).dev
-db.authenticate('test', 'test')
+from pymongo import ReturnDocument
+db = settings.MONGODB
 
 zero_time = datetime.strptime('00:00:00.000', '%H:%M:%S.%f')
 

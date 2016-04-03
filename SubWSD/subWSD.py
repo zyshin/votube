@@ -1,5 +1,5 @@
 # coding=utf-8
-from pymongo import MongoClient
+from django.conf import settings
 from bson.objectid import *
 from classifySense import *
 from sentProcesser import *
@@ -9,8 +9,7 @@ import urllib2
 import json
 import time
 
-db = MongoClient("166.111.139.42").dev
-db.authenticate("test", "test")
+db = settings.MONGODB
 dictionary = db.dict
 subtitlesdb = db.sents
 moviesdb = db.movies
