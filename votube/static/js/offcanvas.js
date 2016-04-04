@@ -16,6 +16,14 @@ $(document).ready(function () {
     };
   }
 
+  $.stopLoading = function() {
+    if(window.stop !== undefined) {
+      window.stop();
+    } else if(document.execCommand !== undefined) {
+      document.execCommand("Stop", false);
+    }
+  }
+
   $('[data-toggle="offcanvas"]').click(function () {
     $('.row-offcanvas').toggleClass('active');
   });
