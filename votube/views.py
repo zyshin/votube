@@ -188,10 +188,10 @@ class PageView(TemplateView):
         # sort context['clips']:
         # 1. by sense 123
         # 2. by votes
-        # 3. by length of the occurence line
+        # 3. by length of the occurrence line
         # 4. by reversed clip length
         # 5. by views
-        context['clips'].sort(key=lambda c: (-c['sense'], c.get('votes', 0), int(self.__line_length(c['line']) / 2), -int(c['length'] / 2), c.get('views', 0)), reverse=True)
+        context['clips'].sort(key=lambda c: (-c.get('sense', 0), c.get('votes', 0), int(self.__line_length(c['line']) / 2), -int(c['length'] / 2), c.get('views', 0)), reverse=True)
 
         if context['clips']:
             clip_id = self.request.GET.get('clip_id')
@@ -210,7 +210,7 @@ class PageView(TemplateView):
         if context['word']['meanings']:
             sense_id = self.request.GET.get('sense_id', '')
             if sense_id:
-                context['clips'] = [c for c in context['clips'] if c['sense'] == int(sense_id[5:]) - 1]
+                context['clips'] = [c for c in context['clips'] if c.get('sense', 0) == int(sense_id[5:]) - 1]
             meanings = [{'id': '', 'tran': 'All Meanings'}] + context['word']['meanings']
             for i, m in enumerate(meanings[1:]):
                 m['index'] = '%d.' % (i + 1)

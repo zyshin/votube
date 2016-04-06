@@ -24,6 +24,8 @@ $(document).ready(function () {
     }
   }
 
+  $.waitTime = 2000;
+
   $('[data-toggle="offcanvas"]').click(function () {
     $('.row-offcanvas').toggleClass('active');
   });
@@ -47,6 +49,7 @@ $(document).ready(function () {
   $.on('play', '#video', function (e) {
     $('#video').removeClass('no-sub');
     $('#videoContainer>.video-hover').addClass('hidden');
+    $('.fa-spin').addClass('hidden');
     var data = $.getParams();
     data.lang = $('.btn-subtitle').hasClass('active') ? 'DUAL' : 'EN';
     $.get('view/', data);
@@ -106,8 +109,12 @@ $(document).ready(function () {
     });
   });
   $.on('loadeddata', '#video', function (e) {
-    $.showSubtitle('Eng');
-    $('.btn-play').click()
+    $('.fa-spin').removeClass('hidden');
+    setTimeout(function () {
+      $.waitTime = 300;
+      $.showSubtitle('Eng');
+      $('.btn-play').click();
+    }, $.waitTime);
   });
 
   $('#sidebar').on('click', '.btn-clip', function (e) {
