@@ -109,7 +109,8 @@ $(document).ready(function () {
         // TODO @zyk: highlight Chinese according to <c.highlighted>English</c>
         // cue.text = highlighted(cue.text)
         alignToolkit.alignEm(cue.text, function(str) {
-          cue.text = str;
+          if(str != null)
+            cue.text = str;
         });
       }
     });
