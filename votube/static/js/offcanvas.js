@@ -99,13 +99,16 @@ $(document).ready(function () {
   });
   $.on('load', 'track', function (e) {
     console.log('track loaded: ' + e.target.label);
-    // TODO: lemmatization
     var keyword = $('.word-title').text().trim(),
       morph = $('[morph]').attr('morph'),
       re = new RegExp(keyword, 'gi'),
       re2 = new RegExp(morph, 'gi');
     $(e.target.track.cues).each(function (index, cue) {
       cue.text = cue.text.replace((cue.text.match(re2)) ? re2 : re, '<c.highlighted>$&</c>');
+      if (e.target.label == 'Chi-Eng') {
+        // TODO @zyk: highlight Chinese according to <c.highlighted>English</c>
+        // cue.text = highlighted(cue.text)
+      }
     });
   });
   $.on('loadeddata', '#video', function (e) {
