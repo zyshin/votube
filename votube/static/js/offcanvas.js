@@ -108,6 +108,9 @@ $(document).ready(function () {
       if (e.target.label == 'Chi-Eng') {
         // TODO @zyk: highlight Chinese according to <c.highlighted>English</c>
         // cue.text = highlighted(cue.text)
+        alignToolkit.alignEm(cue.text, function(str) {
+          cue.text = str;
+        });
       }
     });
   });
