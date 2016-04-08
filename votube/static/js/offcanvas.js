@@ -24,7 +24,7 @@ $(document).ready(function () {
     }
   }
 
-  $.waitTime = 2000;
+  $.waitTime = 300;
 
   $('[data-toggle="offcanvas"]').click(function () {
     $('.row-offcanvas').toggleClass('active');
