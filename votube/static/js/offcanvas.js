@@ -95,7 +95,7 @@ $(document).ready(function () {
   $('.row-video').on('click', '.btn-subtitle', function (e) {
     var lang = $(this).hasClass('active') ? 'Eng' : 'Chi-Eng';
     $.showSubtitle(lang);
-    $('.btn-play').click()
+    $('.btn-play').click();
   });
   $.on('load', 'track', function (e) {
     console.log('track loaded: ' + e.target.label);
@@ -106,20 +106,24 @@ $(document).ready(function () {
     $(e.target.track.cues).each(function (index, cue) {
       cue.text = cue.text.replace((cue.text.match(re2)) ? re2 : re, '<c.highlighted>$&</c>');
       if (e.target.label == 'Chi-Eng') {
-        // TODO @zyk: highlight Chinese according to <c.highlighted>English</c>
-        // cue.text = highlighted(cue.text)
-        alignToolkit.alignEm(cue.text, function(str) {
-          if(str != null)
-            cue.text = str;
-        });
+        // convert to Simplified Chinese
+        cue.text = alignToolkit.chnConv(cue.text);
+        // highlight Chinese keywords according to <c.highlighted>English</c>
+        if (cue.text.indexOf('</c>') >= 0) {
+          alignToolkit.alignEm(cue.text, function(str) {
+            if(str != null)
+              cue.text = str;
+          }, 'simp');
+        }
       }
     });
   });
   $.on('loadeddata', '#video', function (e) {
     $('.fa-spin').removeClass('hidden');
+    $.showSubtitle('Chi-Eng');
+    $.showSubtitle('Eng');
     setTimeout(function () {
       $.waitTime = 300;
-      $.showSubtitle('Eng');
       $('.btn-play').click();
     }, $.waitTime);
   });
