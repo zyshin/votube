@@ -24,7 +24,7 @@ $(document).ready(function () {
     }
   }
 
-  $.waitTime = 2000;
+  $.waitTime = 300;
 
   $('[data-toggle="tooltip"]').tooltip({ html: true });
   $('[data-toggle="offcanvas"]').click(function () {
