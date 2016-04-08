@@ -76,7 +76,9 @@ class PageView(TemplateView):
             meanings = [m for m in meanings if m.get('tran')]
             for i, m in enumerate(meanings):
                 m['id'] = 'sense%d' % (i + 1)
+                m['longtran'] = m['tran']
                 m['tran'] = splitSense(m['tran'])[1]
+                m['longtran'] = m['longtran'].replace(m['tran'], '').strip()
             # TODO: filter meanings
         except Exception, e:
             print repr(e)
@@ -92,6 +94,7 @@ class PageView(TemplateView):
             'forms': forms,
             'meanings': meanings,
             'tran': word.get('tran', '(No definition found)'),
+            'longtran': word.get('longtran')
         }
 
     @staticmethod
