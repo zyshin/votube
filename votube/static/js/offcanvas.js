@@ -57,6 +57,7 @@ $(document).ready(function () {
   $.on('pause', '#video', function (e) {
     $('#video').addClass('no-sub');
     $('#videoContainer>.video-hover').removeClass('hidden');
+    window.stop();
   });
   $.on('timeupdate', '#video', function (e) {
     var v = $('#video')[0],
