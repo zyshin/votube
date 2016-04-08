@@ -7,9 +7,9 @@
       <h2></h2>
     {% for m in word.meanings %}
       {% if forloop.counter0 == active_clip.sense %}
-        <h4><b>{{ forloop.counter }}. [{{ m.pos_entry.pos }}] {{ m.tran|safe }}</b></h4>
+        <h4 title="{{ m.longtran }}"><b>{{ forloop.counter }}. [{{ m.pos_entry.pos }}] {{ m.tran|safe }}</b></h4>
       {% else %}
-        <h4>{{ forloop.counter }}. [{{ m.pos_entry.pos }}] {{ m.tran|safe }}</h4>
+        <h4 title="{{ m.longtran }}">{{ forloop.counter }}. [{{ m.pos_entry.pos }}] {{ m.tran|safe }}</h4>
       {% endif %}
     {% endfor %}
     {% else %}
