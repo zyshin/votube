@@ -133,6 +133,12 @@ footer {
   opacity: .5;
 }
 
+.tooltip-inner {
+  max-width: 400px;
+  font-size: 14px;
+  background-color: rgba(0, 0, 0, .0);
+}
+
 
 /*
  * Nav bar
@@ -191,6 +197,7 @@ footer {
 
 .input-search {
   height: inherit;
+  color: #f0f3f6;
   border-color: #3d4c5b;
   background-color: #3d4c5b;
   font-size: 18px;
@@ -270,7 +277,7 @@ footer {
 
 .video-hover>.container {
   width: 100%;
-  margin: 0;
+  margin: 25px 0;
   /*padding: 20px 30px;*/
   font-size: 16px;
 }
@@ -312,14 +319,14 @@ video.no-sub::cue {
   padding-left: 3px;
   padding-right: 3px;
   background-color: #5f6f7f;
-  color: rgba(240, 243, 246, .6);
+  color: rgba(255, 255, 255, 0.9);
 }
 
 .btn-subtitle:focus,
 .btn-subtitle:hover {
   /*outline-width:0;*/
   background-color: #6f7f8f;
-  color: rgba(240, 243, 246, .6);
+  color: rgba(255, 255, 255, 0.9);
 }
 
 .btn-subtitle.active,

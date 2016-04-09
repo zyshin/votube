@@ -4,7 +4,6 @@
   <div class="video-hover{% if active_clip.movie.videofile %} video-hover-valid{% endif %}">
     <div class="container">
     {% if word.meanings %}
-      <h2></h2>
     {% for m in word.meanings %}
       {% if forloop.counter0 == active_clip.sense %}
         <h4>
@@ -15,6 +14,7 @@
           <span data-toggle="tooltip" data-placement="right" title="{{ m.longtran }}">{{ forloop.counter }}. [{{ m.pos_entry.pos }}] {{ m.tran|safe }}</span>
         </h4>
       {% endif %}
+      <h2></h2>
     {% endfor %}
     {% else %}
       <h2>Online Meanings</h2>
@@ -22,8 +22,8 @@
     {% endif %}
     {% if active_clip.sent %}
       <div class="pull-down full-width text-center">
-        <h4 class="sent-chinese hidden">... 中文字幕 ...</h4>
-        <h4>... {{ active_clip.sent|safe }} ...</h4>
+        <h4 class="sent-chinese hidden">(无中文字幕)</h4>
+        <h4>{{ active_clip.sent|safe }}</h4>
       </div>
     {% endif %}
     </div>
@@ -55,9 +55,9 @@
   <div class="col-xs-6 text-right">
     <i class='fa fa-circle-o-notch fa-spin hidden'></i>
     <button type="button" class="btn btn-primary btn-subtitle" data-toggle="button" aria-pressed="false" autocomplete="off">
-      双语字幕:
-      <span class="on">开</span>
-      <span class="off">关</span>
+      Dual Subtitle:
+      <span class="on">on</span>
+      <span class="off">off</span>
     </button>
     <span class="hidden" title="Play">
       <a href="#" class="btn btn-link btn-lg btn-inverse btn-play" role="button">

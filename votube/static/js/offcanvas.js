@@ -142,6 +142,7 @@ $(document).ready(function () {
     $('.row-video').load('clip/?' + $.param(data), function (r) {
       $('li.list-group-item').removeClass('active');
       parent.addClass('active');
+      $('[data-toggle="tooltip"]').tooltip({ html: true });
     });
   });
   $('#sidebar').on('click', '.btn-movie', function (e) {
