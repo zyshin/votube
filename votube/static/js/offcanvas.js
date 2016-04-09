@@ -26,6 +26,7 @@ $(document).ready(function () {
 
   $.waitTime = 300;
 
+  $('[data-toggle="tooltip"]').tooltip({ html: true });
   $('[data-toggle="offcanvas"]').click(function () {
     $('.row-offcanvas').toggleClass('active');
   });
@@ -95,6 +96,7 @@ $(document).ready(function () {
   };
   $('.row-video').on('click', '.btn-subtitle', function (e) {
     var lang = $(this).hasClass('active') ? 'Eng' : 'Chi-Eng';
+    $('.sent-chinese').toggleClass('hidden');
     $.showSubtitle(lang);
     $('.btn-play').click();
   });
@@ -113,6 +115,8 @@ $(document).ready(function () {
         if (cue.text.indexOf('</c>') >= 0) {
           alignToolkit.alignEm(cue.text, function(str) {
             if(str != null)
+              // TODO: better way to get complete Chinese sentence
+              $('.sent-chinese').html(str.split('\n')[0].replace(/c(\.highlighted)?>/g, 'b>'));
               cue.text = str;
           }, 'simp');
         }

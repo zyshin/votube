@@ -7,9 +7,13 @@
       <h2></h2>
     {% for m in word.meanings %}
       {% if forloop.counter0 == active_clip.sense %}
-        <h4 title="{{ m.longtran }}"><b>{{ forloop.counter }}. [{{ m.pos_entry.pos }}] {{ m.tran|safe }}</b></h4>
+        <h4>
+          <b data-toggle="tooltip" data-placement="right" title="{{ m.longtran }}">{{ forloop.counter }}. [{{ m.pos_entry.pos }}] {{ m.tran|safe }}</b>
+        </h4>
       {% else %}
-        <h4 title="{{ m.longtran }}">{{ forloop.counter }}. [{{ m.pos_entry.pos }}] {{ m.tran|safe }}</h4>
+        <h4>
+          <span data-toggle="tooltip" data-placement="right" title="{{ m.longtran }}">{{ forloop.counter }}. [{{ m.pos_entry.pos }}] {{ m.tran|safe }}</span>
+        </h4>
       {% endif %}
     {% endfor %}
     {% else %}
@@ -17,7 +21,10 @@
       <p>{{ word.trans }}</p>
     {% endif %}
     {% if active_clip.sent %}
-      <h4 class="pull-down full-width text-center">... {{ active_clip.sent|safe }} ...</h4>
+      <div class="pull-down full-width text-center">
+        <h4 class="sent-chinese hidden">... 中文字幕 ...</h4>
+        <h4>... {{ active_clip.sent|safe }} ...</h4>
+      </div>
     {% endif %}
     </div>
   </div>
