@@ -367,6 +367,7 @@ video.no-sub::cue {
 
 .row-movie-info .row-heading {
   margin-top: 10px;
+  margin-bottom: 5px;
 }
 
 .media-object-poster {

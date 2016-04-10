@@ -195,6 +195,7 @@ class PageView(TemplateView):
         # 4. by reversed clip length
         # 5. by views
         context['clips'].sort(key=lambda c: (-c.get('sense', 0), c.get('votes', 0), int(self.__line_length(c['line']) / 2), -int(c['length'] / 2), c.get('views', 0)), reverse=True)
+        context['movies'].sort(key=lambda m: -(m.get('t', 0) + m.get('g', 0)))
 
         if context['clips']:
             clip_id = self.request.GET.get('clip_id')
