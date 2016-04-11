@@ -8,8 +8,9 @@ import json
 from itertools import chain
 from datetime import datetime
 from SubWSD.subWSD import getWordSents
-from SubWSD.classifySense import splitSense
+from SubWSD.classifySense import splitSense, classifySenses
 from SubWSD.sentProcesser import lcs
+from SubWSD.subWSD import sentprocesser, dictionary, model, WSD
 
 from pymongo import ReturnDocument
 db = settings.MONGODB
@@ -56,8 +57,19 @@ class PageView(TemplateView):
     @staticmethod
     @timeit
     def __wsd(word_object, context):
-        # TODO @ssy: do WSD
-        return 0
+        try:
+            word = word_object['word']
+            wordjson = dictionary.find_one({'_id': word})
+            senses = wordjson['def']
+            classifiedSenses = classifySenses(senses)
+            dic = sentprocesser.processDic(classifiedSenses, word)
+            sent = sentprocesser.processSent(context, word)
+            wsdans = WSD(sent, dic, model)
+        except Exception, e:
+            print repr(e)
+            print '__wsd error'
+            return 0
+        return wsdans[3]
 
     @staticmethod
     @timeit
