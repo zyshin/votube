@@ -24,19 +24,25 @@
 #extControls {
   position: relative;
   right: 20px;
-  bottom: 28px;
+  bottom: 100px;
   text-align: right;
-  color:#ddd;
-  text-shadow:0 -1px 0px rgba(1,1,1,0.4);
 }
-
-#extControls a {
-  color: #4183C4;
+#extControls a:-webkit-any-link {
+    color: -webkit-link;
     text-decoration: none;
+    cursor: auto;
+}
+#extControls a:hover {
+  text-decoration: none;
 }
 
 #extControls .glyphicon {
   margin: 2px;
+}
+
+#extControlImage {
+  width: 80px;
+  cursor: pointer;
 }
 
 @font-face {

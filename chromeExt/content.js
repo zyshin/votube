@@ -7,8 +7,11 @@ eslext.contentName = "extContentIframe";
 
 eslext.dlgDelayTimer = null;
 
-eslext.showDlg =  function(word, e) {
+eslext.jumpTarget = "";
+
+eslext.showDlg =  function(sel, e) {
     $.get(chrome.extension.getURL('/extDialog.html'), function(data) {
+        var word = sel.s;
         $(data).appendTo('body');
         offset = 10;
         eslext.hideDlg();
@@ -27,13 +30,19 @@ eslext.showDlg =  function(word, e) {
         dlg.css("left", x);
         dlg.css("display", "block");
         content = $('#' + eslext.contentName);
-        url = "http://166.111.139.15:8003/votube/?word=" + word + "&plugin=true";
+        var url = "http://166.111.139.15:8003/votube/?word=" + word + "&plugin=true&context=" + sel.context;
         content.attr('src', url);
         url = "http://166.111.139.15:8003/votube/?word=" + word;
-        $(".extControlLink").attr('href', url);
+        eslext.jumpTarget = url;
+        //$("#extControlLink").attr('href', url);
+        $("#extControlImage").attr('src', chrome.extension.getURL('play.png'));
+        $("#extControlImage").attr('onclick', "window.location.href = '" + url + "'");
         eslext.dlg = dlg;
     });
 };
+
+eslext.doJump = function() {
+}
 
 eslext.hideDlg = function() {
     if(this.dlg)
@@ -42,14 +51,25 @@ eslext.hideDlg = function() {
 };
 
 eslext.getSelection = function() {
+    var ret = {};
     var selection;
     if (window.getSelection) {
-      selection = window.getSelection();
-    } else if (document.selection) {
-      selection = document.selection.createRange();
+        selection = window.getSelection();
+        ret.s = selection.toString().trim();
+        if(ret.s.length == 0)
+            return ret;
+        ret.pos = selection.getRangeAt(0);
+        var value = ret.pos.startContainer.nodeValue;
+        var pre = "";
+        var post = "";
+        for(var i = ret.pos.startOffset - 1; i >= 0 && (value[i] == ' ' || ret.pos.startOffset - i < 500) && ".!?".indexOf(value[i]) === -1; --i)
+            pre = value[i] + pre;
+        for(var i = ret.pos.endOffset; i < value.length && (value[i] == ' ' || i - ret.pos.endOffset < 500) && ".!?".indexOf(value[i]) === -1; ++i) 
+            post = post + value[i];
+        ret.context = pre + "<em>" + value.substring(ret.pos.startOffset, ret.pos.endOffset) + "</em>" + post + ".";
+        console.log(ret.context);
     }
-    var s = selection.toString().trim();
-    return s;
+    return ret;
 }
 
 eslext.getSelectionElement = function getSelectedNode()
@@ -71,8 +91,8 @@ eslext.getSelectionElement = function getSelectedNode()
 }
 
 eslext.work = function (e) {
-    var s = this.getSelection();
-    var parent = this.getSelectionElement();
+    var sel = this.getSelection();
+    var s = sel.s;
     if(s !== '' && s.length < 50)  {
         url = 'http://166.111.139.15:9000/?' + 
             'properties=%7B%22ssplit.isOneSentence%22%3A+true%2C+%22' + 
@@ -84,11 +104,11 @@ eslext.work = function (e) {
                     return;
                 $.post(url, s, function(r) {
                     // lemma success
-                    s = r.split('\t')[2];
+                    sel.s = r.split('\t')[2];
                     // alert(s);
-                    eslext.showDlg(s, e);
+                    eslext.showDlg(sel, e);
                 }).fail(function() {
-                    eslext.showDlg(s, e);
+                    eslext.showDlg(sel, e);
                 });
             }
         );
@@ -103,7 +123,8 @@ $(document.body).bind('mouseup', function(e){
         clearTimeout(eslext.delayTimer);
         eslext.delayTimer = null;
     }
-    var s = eslext.getSelection();
+    var sel = eslext.getSelection();
+    var s = sel.s;
     if(s !== '' && s.length < 50)
         eslext.delayTimer = setTimeout(function(){eslext.work(e)}, 500);
     else
