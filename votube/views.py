@@ -112,7 +112,8 @@ class PageView(TemplateView):
             'forms': forms,
             'meanings': meanings,
             'tran': word.get('tran', '(No definition found)'),
-            'longtran': word.get('longtran')
+            'longtran': word.get('longtran'),
+            'raw_word': word
         }
 
     @staticmethod
@@ -234,7 +235,7 @@ class PageView(TemplateView):
             sense_id = self.request.GET.get('sense_id', '')
             word_context = self.request.GET.get('context')
             if word_context:
-                sense_id = 'sense%d' % (self.__wsd(context['word'], word_context) + 1)
+                sense_id = 'sense%d' % (self.__wsd(context['raw_word'], word_context) + 1)
             if sense_id:
                 context['clips'] = [c for c in context['clips'] if c.get('sense', 0) == int(sense_id[5:]) - 1]
             meanings = [{'id': '', 'tran': 'All Meanings'}] + context['word']['meanings']
