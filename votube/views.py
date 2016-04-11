@@ -67,8 +67,8 @@ class PageView(TemplateView):
             dic = sentprocesser.processDic(classifiedSenses, word)
             sent = sentprocesser.processSent(context, word)
             wsdans = WSD(sent, dic, model)
-            print senses
-            print wsdans
+            # print senses
+            # print wsdans
         except Exception, e:
             print repr(e)
             print '__wsd error'
