@@ -9,19 +9,25 @@ h1, .h1 {
 
 h2, .h2 {
   font-size: 20px;
-  margin-top: 14px;
-  margin-bottom: 14px;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 h4, .h4 {
   font-size: 16px;
+  padding-left: 5px;
 }
 
 .tooltip-inner {
   max-width: 300px;
 }
 
-.container {
+.container.plugin {
+  padding-left: 0;
+  padding-right: 15px;
+}
+
+.video-hover>.container {
   /*width: 600px;*/
   padding-left: 15px;
 }
@@ -32,8 +38,12 @@ h4, .h4 {
   margin-bottom: 20px;
 }
 
+.word-title {
+  padding-left: 20px;
+}
+
 .word-title > h1 {
-  margin-top: 5px;
+  margin-top: 5px;i
 }
 
 .row-video {
