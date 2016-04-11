@@ -107,6 +107,11 @@ footer {
   font-size: 18px;
 }
 
+.no-padding {
+  padding-left: 0;
+  padding-right: 0;
+}
+
 .pull-down {
   position: absolute;
   bottom: 0;
