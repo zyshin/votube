@@ -7,18 +7,18 @@
     {% for m in word.meanings %}
       {% if forloop.counter0 == active_clip.sense %}
         <h4>
-          <b data-toggle="tooltip" data-placement="right" title="{{ m.longtran }}">{{ forloop.counter }}. [{{ m.pos_entry.pos|slice:":7" }}] {{ m.tran|safe }}</b>
+          <b data-toggle="tooltip" data-placement="right" title="{{ m.tran_en }}">{{ forloop.counter }}. [{{ m.pos_entry.pos|slice:":7" }}] {{ m.tran_cn|safe }}</b>
         </h4>
       {% else %}
         <h4>
-          <span data-toggle="tooltip" data-placement="right" title="{{ m.longtran }}">{{ forloop.counter }}. [{{ m.pos_entry.pos|slice:":7" }}] {{ m.tran|safe }}</span>
+          <span data-toggle="tooltip" data-placement="right" title="{{ m.tran_en }}">{{ forloop.counter }}. [{{ m.pos_entry.pos|slice:":7" }}] {{ m.tran_cn|safe }}</span>
         </h4>
       {% endif %}
       <h2></h2>
     {% endfor %}
     {% else %}
       <h2>Online Meanings</h2>
-      <p>{{ word.trans }}</p>
+      <p>{{ word.tran }}</p>
     {% endif %}
     {% if active_clip.sent %}
       <div class="pull-down full-width text-center">
@@ -27,7 +27,7 @@
       </div>
     {% endif %}
     {% if is_plugin %}
-      <a class="btn-clip-next" href="#" clip-id="{{ next_clip.id }}">
+      <a class="btn-clip-next" href="#" clip-id="{{ next_clip.id }}" sense-id="{{ active_sense.current.id }}">
         <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
       </a>
     {% endif %}

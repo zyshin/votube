@@ -7,7 +7,7 @@
           <div class="video-hover">
           {% for m in word.meanings %}
           {% if forloop.counter0 == sense %}
-            <p class="pull-down text-overflow">{{ forloop.counter }}. {{ m.pos_entry.pos|slice:":3" }} {{ m.tran|safe }}</p>
+            <p class="pull-down text-overflow">{{ forloop.counter }}. {{ m.pos_entry.pos|slice:":3" }} {{ m.tran_cn|safe }}</p>
           {% endif %}
           {% endfor %}
           </div>
