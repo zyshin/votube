@@ -61,11 +61,14 @@ class PageView(TemplateView):
     @timeit
     def __wsd(word_object, context):
         try:
+            word = word_object['_id']
             senses = word_object['def']
             classifiedSenses = classifySenses(senses)
             dic = sentprocesser.processDic(classifiedSenses, word)
             sent = sentprocesser.processSent(context, word)
             wsdans = WSD(sent, dic, model)
+            print senses
+            print wsdans
         except Exception, e:
             print repr(e)
             print '__wsd error'
