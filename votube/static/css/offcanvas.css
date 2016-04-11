@@ -264,9 +264,9 @@ footer {
 
 .video-hover.video-hover-valid:before {
   content: '\e030';
-  font-size: 72px;
+  font-size: 40px;
   position: absolute;
-  right: 10px;
+  right: 20px;
   bottom: 0;
 }
 
