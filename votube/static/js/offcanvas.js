@@ -27,7 +27,6 @@ $(document).ready(function () {
       'movie_id': (movie || $('.dropdown-menu>li.active')).attr('movie-id'),
       'sense_id': (sense || $('.pager>li.current')).attr('sense-id'),
       'sessionid': $('input[name="sessionid"]').val(),
-      'plugin': params.plugin,
       'context': params.context
     };
   }

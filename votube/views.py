@@ -67,8 +67,7 @@ class PageView(TemplateView):
             dic = sentprocesser.processDic(classifiedSenses, word)
             sent = sentprocesser.processSent(context, word)
             wsdans = WSD(sent, dic, model)
-            print senses
-            print wsdans
+            print 'WSD result:', wsdans[3]
         except Exception, e:
             print repr(e)
             print '__wsd error'
@@ -237,11 +236,9 @@ class PageView(TemplateView):
 
         if context['clips']:
             clip_id = self.request.GET.get('clip_id')
-            ids = [c['id'] for c in context['clips']]
-            index = ids.index(clip_id) if clip_id in ids else 0
+            clip_ids = [c['id'] for c in context['clips']]
+            index = clip_ids.index(clip_id) if clip_id in clip_ids else 0
             context['active_clip'] = context['clips'][index]
-            context['next_clip'] = context['clips'][
-                (index + 1) % len(context['clips'])]
 
         if context['movies']:
             movie_id = self.request.GET.get('movie_id', '')
@@ -256,11 +253,16 @@ class PageView(TemplateView):
         if context['word']['meanings']:
             sense_id = self.request.GET.get('sense_id', '')
             word_context = self.request.GET.get('context')
-            if word_context:
+            if not sense_id and word_context:
                 sense_id = 'sense%d' % (self.__wsd(context['word']['raw_word'], word_context) + 1)
             if sense_id:
                 context['clips'] = [c for c in context['clips']
                                     if c.get('sense', 0) == int(sense_id[5:]) - 1]
+                if clip_id not in clip_ids and context['clips']:
+                    index = 0
+                    context['active_clip'] = context['clips'][index]
+                    context['next_clip'] = context['clips'][
+                        (index + 1) % len(context['clips'])]
             meanings = [{'id': '', 'tran': 'All Meanings'}] + \
                 context['word']['meanings']
             for i, m in enumerate(meanings[1:]):
