@@ -36,3 +36,8 @@ video::cue {
 .video-hover>.container {
   font-size: 14px;
 }
+
+.btn-clip-next {
+  font-size: 32px;
+  color: rgba(255,255,255,0.8);
+}

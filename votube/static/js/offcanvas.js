@@ -6,13 +6,29 @@ $(document).ready(function () {
     }, true);
   };
 
+  $.deparam = function (querystring) {
+      // remove any preceding url and split
+      querystring = querystring.substring(querystring.indexOf('?')+1).split('&');
+      var params = {}, pair, d = decodeURIComponent, i;
+      // march and parse
+      for (i = querystring.length; i > 0;) {
+          pair = querystring[--i].split('=');
+          params[d(pair[0])] = d(pair[1]);
+      }
+      return params;
+  };
+
   $.getParams = function(clip, movie, sense) {
+    var url = window.location.href,
+      params = $.deparam(url.substring(url.indexOf('?') + 1));
     return {
       'word': $('.word-title').text().trim(),
       'clip_id': (clip || $('.video-controls')).attr('clip-id'),
       'movie_id': (movie || $('.dropdown-menu>li.active')).attr('movie-id'),
       'sense_id': (sense || $('.pager>li.current')).attr('sense-id'),
-      'sessionid': $('input[name="sessionid"]').val()
+      'sessionid': $('input[name="sessionid"]').val(),
+      'plugin': params.plugin,
+      'context': params.context
     };
   }
 
@@ -25,6 +41,7 @@ $(document).ready(function () {
   }
 
   $.waitTime = 300;
+  $.waitTime2 = 300;
 
   $('[data-toggle="tooltip"]').tooltip({ html: true });
   $('[data-toggle="offcanvas"]').click(function () {
@@ -128,13 +145,13 @@ $(document).ready(function () {
     $.showSubtitle('Chi-Eng');
     $.showSubtitle('Eng');
     setTimeout(function () {
-      $.waitTime = 300;
+      $.waitTime = $.waitTime2;
       $('.btn-play').click();
     }, $.waitTime);
   });
 
   $('#sidebar').on('click', '.btn-clip', function (e) {
-    var parent = $(this).parents('li.list-group-item');
+    var parent = $(this).parents('[clip-id]');
     console.log('clip-btn clicked: ' + parent.attr('clip-id'));
     if (parent.hasClass('active'))
       return;

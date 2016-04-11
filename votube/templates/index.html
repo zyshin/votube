@@ -34,7 +34,7 @@
   <input type="hidden" name="sessionid" value="{{ request.session.session_key }}">
   {% if is_plugin %}
     <!-- TODO: @zyk -->
-    <div class="container">
+    <div class="container plugin">
       <div class="row row-heading">
       {% comment %}
       {% with word="ambush" ukphone="ˈæmbʊʃ" usphone="ˈæmbʊʃ" t=True g=False forms="ambushing, ambushed, ambushes" %}
@@ -71,7 +71,7 @@
                   <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
                 </button>
               </span>
-              <input class="form-control input-search" type="text" name="word" placeholder="Search for...">
+              <input class="form-control input-search" type="text" name="word" placeholder="Search for..." autocomplete="off">
             </div><!-- /input-group -->
           </form>
         </div><!-- /.nav-collapse -->
@@ -125,5 +125,8 @@
     <!-- <script src="../../static/js/offcanvas.js"></script> -->
     <script src="{% static "js/alignToolkit.js" %}"></script>
     <script src="{% static "js/offcanvas.js" %}"></script>
+  {% if is_plugin %}
+    <script src="{% static "js/plugin.js" %}"></script>
+  {% endif %}
   </body>
 </html>

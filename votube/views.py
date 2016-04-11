@@ -55,6 +55,12 @@ class PageView(TemplateView):
 
     @staticmethod
     @timeit
+    def __wsd(word_object, context):
+        # TODO @ssy: do WSD
+        return 0
+
+    @staticmethod
+    @timeit
     def __get_word(word):
         # TODO: move into templates
         try:
@@ -202,6 +208,7 @@ class PageView(TemplateView):
             ids = [c['id'] for c in context['clips']]
             index = ids.index(clip_id) if clip_id in ids else 0
             context['active_clip'] = context['clips'][index]
+            context['next_clip'] = context['clips'][(index + 1) % len(context['clips'])]
 
         if context['movies']:
             movie_id = self.request.GET.get('movie_id', '')
@@ -213,6 +220,9 @@ class PageView(TemplateView):
 
         if context['word']['meanings']:
             sense_id = self.request.GET.get('sense_id', '')
+            word_context = self.request.GET.get('context')
+            if word_context:
+                sense_id = 'sense%d' % (self.__wsd(context['word'], word_context) + 1)
             if sense_id:
                 context['clips'] = [c for c in context['clips'] if c.get('sense', 0) == int(sense_id[5:]) - 1]
             meanings = [{'id': '', 'tran': 'All Meanings'}] + context['word']['meanings']
@@ -225,6 +235,7 @@ class PageView(TemplateView):
                 'previous': meanings[index - 1],
                 'next': meanings[(index + 1) % len(meanings)],
             }
+            # TODO: skip empty previous/next
 
         return context
 

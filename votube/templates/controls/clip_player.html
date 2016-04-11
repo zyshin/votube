@@ -7,11 +7,11 @@
     {% for m in word.meanings %}
       {% if forloop.counter0 == active_clip.sense %}
         <h4>
-          <b data-toggle="tooltip" data-placement="right" title="{{ m.longtran }}">{{ forloop.counter }}. [{{ m.pos_entry.pos }}] {{ m.tran|safe }}</b>
+          <b data-toggle="tooltip" data-placement="right" title="{{ m.longtran }}">{{ forloop.counter }}. [{{ m.pos_entry.pos|slice:":7" }}] {{ m.tran|safe }}</b>
         </h4>
       {% else %}
         <h4>
-          <span data-toggle="tooltip" data-placement="right" title="{{ m.longtran }}">{{ forloop.counter }}. [{{ m.pos_entry.pos }}] {{ m.tran|safe }}</span>
+          <span data-toggle="tooltip" data-placement="right" title="{{ m.longtran }}">{{ forloop.counter }}. [{{ m.pos_entry.pos|slice:":7" }}] {{ m.tran|safe }}</span>
         </h4>
       {% endif %}
       <h2></h2>
@@ -25,6 +25,11 @@
         <h4 class="sent-chinese hidden">(无中文字幕)</h4>
         <h4>{{ active_clip.sent|safe }}</h4>
       </div>
+    {% endif %}
+    {% if is_plugin %}
+      <a class="btn-clip-next" href="#" clip-id="{{ next_clip.id }}">
+        <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
+      </a>
     {% endif %}
     </div>
   </div>
