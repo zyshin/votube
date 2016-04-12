@@ -76,6 +76,10 @@ String.prototype.replaceAll = function(search, replacement) {
     return target.replace(new RegExp(search, 'g'), replacement);
 };
 
+alignToolkit.lemmatize = {
+	'eliminated': 'eliminate'
+};
+
 alignToolkit.alignEm = function(str, callback, toT = "keep") {
 	console.log("input: " + str);
 	var strs = str.split('\n');
@@ -157,10 +161,13 @@ alignToolkit.alignEm = function(str, callback, toT = "keep") {
 				}
 				if(emInd.length == 1) {
 					for(var i = 0; i < emInd.length; ++i) 
+						var q = clearEngs[emInd[i]];
+						if(alignToolkit.lemmatize[q])
+							q = alignToolkit.lemmatize[q];
 						if(covered.indexOf(emInd[i]) == -1) {
 							$.ajax({
 								method: 'GET',
-								url: 'http://166.111.139.15:8002/word/?q=' + clearEngs[emInd[i]],
+								url: 'http://166.111.139.15:8002/word/?q=' + q,
 								success: function(data) {
 									try {
 										data = data["collins"]["collins_entries"][0];
