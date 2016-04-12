@@ -139,7 +139,9 @@ alignToolkit.alignEm = function(str, callback, toT = "keep") {
 				var emEn = [];
 				for(var i = 0; i < clearChns.length; ++i) {
 					chCnt.push(now);
-					now += clearChns[i].length;
+					for(var j = 0; j < clearChns[i].length; ++j)
+						if(alignToolkit.isChinese(clearChns[i].charCodeAt(j)))
+							now ++;
 				}
 				chCnt.push(now);
 				for(var i = 0; i < matches.length; ++i) {
