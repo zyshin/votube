@@ -190,7 +190,7 @@ alignToolkit.alignEm = function(str, callback, toT = "keep") {
 											if(simpChn.indexOf(meanings[j]) != -1) {
 												var st = simpChn.indexOf(meanings[j]);
 												resChn = chn.substring(0, st);
-												resChn = resChn + "<em>" + meanings[j] + "</em>";
+												resChn = resChn + "<c.highlighted>" + meanings[j] + "</c>";
 												resChn = resChn + chn.substring(st + meanings[j].length);
 												break;
 												
