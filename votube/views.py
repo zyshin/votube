@@ -263,7 +263,7 @@ class PageView(TemplateView):
                     context['active_clip'] = context['clips'][index]
                     context['next_clip'] = context['clips'][
                         (index + 1) % len(context['clips'])]
-            meanings = [{'id': '', 'tran': 'All Meanings'}] + \
+            meanings = [{'id': '', 'tran_cn': 'All Meanings'}] + \
                 context['word']['meanings']
             for i, m in enumerate(meanings[1:]):
                 m['index'] = '%d.' % (i + 1)
