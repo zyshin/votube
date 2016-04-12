@@ -160,10 +160,7 @@ alignToolkit.alignEm = function(str, callback, toT = "keep") {
 						if(covered.indexOf(emInd[i]) == -1) {
 							$.ajax({
 								method: 'GET',
-								url: 'http://166.111.139.15:8002/proxy/',
-								data: {
-									url: 'http://dict.youdao.com/jsonapi?dicts={count:1,dicts:[[%22collins%22]]}&q=' + clearEngs[emInd[i]]
-								},
+								url: 'http://166.111.139.15:8002/word/?q=' + clearEngs[emInd[i]],
 								success: function(data) {
 									try {
 										data = data["collins"]["collins_entries"][0];
