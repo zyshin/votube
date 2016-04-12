@@ -137,6 +137,7 @@ alignToolkit.alignEm = function(str, callback, toT = "keep") {
 				var now = 0;
 				var emSt = [];
 				var emEn = [];
+				var covered = [];
 				for(var i = 0; i < clearChns.length; ++i) {
 					chCnt.push(now);
 					for(var j = 0; j < clearChns[i].length; ++j)
@@ -149,9 +150,67 @@ alignToolkit.alignEm = function(str, callback, toT = "keep") {
 					match[0] = +match[0] - 1;
 					match[1] = +match[1] - 1;
 					if(emInd.indexOf(match[1]) >= 0 && emSt.indexOf(match[0]) == -1) {
+						covered.push(match[1]);
 						emSt.push(chCnt[match[0]]);
 						emEn.push(chCnt[match[0] + 1]);
 					}
+				}
+				if(emInd.length == 1) {
+					for(var i = 0; i < emInd.length; ++i) 
+						if(covered.indexOf(emInd[i]) == -1) {
+							$.ajax({
+								method: 'GET',
+								url: 'http://166.111.139.15:8002/proxy/',
+								data: {
+									url: 'http://dict.youdao.com/jsonapi?dicts={count:1,dicts:[[%22collins%22]]}&q=' + clearEngs[emInd[i]]
+								},
+								success: function(data) {
+									try {
+										data = data["collins"]["collins_entries"][0];
+										data = data["entries"]["entry"];
+										var meanings = [];
+										for(var j = 0; j < data.length; ++j) {
+											var tran = data[j].tran_entry[0].tran;
+											var res = "";
+											for(var k = tran.length - 1; k >= 0; --k) {
+												if(alignToolkit.isChinese(tran.charCodeAt(k)))
+													res = tran[k] + res;
+												else
+													break;
+											}
+											if(res.length > 0)
+												meanings.push(res);
+										}
+										var resChn = chn;
+										for(var j = 0; j < meanings.length; ++j) {
+											if(simpChn.indexOf(meanings[j]) != -1) {
+												var st = simpChn.indexOf(meanings[j]);
+												resChn = chn.substring(0, st);
+												resChn = resChn + "<em>" + meanings[j] + "</em>";
+												resChn = resChn + chn.substring(st + meanings[j].length);
+												break;
+												
+											}
+										}
+										var result = "";
+										if(engFirst) {
+											result = engOri + '\n' + resChn;
+										} else
+											result = resChn + '\n' + engOri;
+										if(toT == "simp")
+											result = alignToolkit.chnToSimp(result);
+										if(toT == "trad")
+											result = alignToolkit.chnToTrad(result);
+										console.log("result: " + result);
+										callback(result);
+									} catch(e) {
+										callback(str);
+									}
+
+								}
+							});
+							return;
+						}	
 				}
 				now = 0;
 				var resChn = "";
