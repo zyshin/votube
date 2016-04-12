@@ -33,7 +33,6 @@
   {% csrf_token %}
   <input type="hidden" name="sessionid" value="{{ request.session.session_key }}">
   {% if is_plugin %}
-    <!-- TODO: @zyk -->
     <div class="container plugin">
       <div class="row row-video">
         {% include "controls/clip_player.html" %}

@@ -47,7 +47,7 @@
     </li>
     <li class="current" sense-id="{{ active_sense.current.id }}">
     {% with m=active_sense.current %}
-      <span class="h4 text-overflow">{{ m.index }} {{ m.pos_entry.pos|slice:":3" }} {{ m.tran|safe }}</span>
+      <span class="h4 text-overflow">{{ m.index }} {{ m.pos_entry.pos|slice:":3" }} {{ m.tran_cn|safe }}</span>
     {% endwith %}
     </li>
     <li class="next" sense-id="{{ active_sense.next.id }}">
