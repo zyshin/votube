@@ -17,7 +17,7 @@ def splitSense(sense):
             ans = [english, chinese]
             return ans
         else:
-            if sense[i] in ['.', '?', '!']:
+            if sense[i] in ['.', '?', '!', '"']:
                 lastpoint = i
     return [sense, sense]
 
