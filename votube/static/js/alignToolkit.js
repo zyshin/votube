@@ -162,10 +162,10 @@ alignToolkit.alignEm = function(str, callback, toT) {
 				}
 				if(emInd.length == 1) {
 					for(var i = 0; i < emInd.length; ++i) 
-						var q = clearEngs[emInd[i]];
-						if(alignToolkit.lemmatize[q])
-							q = alignToolkit.lemmatize[q];
 						if(covered.indexOf(emInd[i]) == -1) {
+							var q = clearEngs[emInd[i]];
+							if(alignToolkit.lemmatize[q])
+								q = alignToolkit.lemmatize[q];
 							$.ajax({
 								method: 'GET',
 								url: 'http://166.111.139.15:8002/word/?q=' + q,
