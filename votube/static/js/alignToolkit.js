@@ -80,8 +80,9 @@ alignToolkit.lemmatize = {
 	'eliminated': 'eliminate'
 };
 
-alignToolkit.alignEm = function(str, callback, toT = "keep") {
+alignToolkit.alignEm = function(str, callback, toT) {
 	console.log("input: " + str);
+	toT = toT || "keep";
 	var strs = str.split('\n');
 	if(strs.length !== 2) {
 		console.error("invalid input");
