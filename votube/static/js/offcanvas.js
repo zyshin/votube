@@ -27,6 +27,7 @@ $(document).ready(function () {
       'movie_id': (movie || $('.dropdown-menu>li.active')).attr('movie-id'),
       'sense_id': (sense || $('.pager>li.current')).attr('sense-id'),
       'sessionid': $('input[name="sessionid"]').val(),
+      'pid': params.pid,
       'context': params.context
     };
   }
@@ -48,12 +49,10 @@ $(document).ready(function () {
   });
 
   $('.row-offcanvas').on('click', '.btn-vote', function (e) {
-    var clip_id = $(this).parents('[clip-id]').attr('clip-id'),
-      data = {
-        'clip_id': clip_id,
-        'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
-        'sessionid': $('input[name="sessionid"]').val()
-      };
+    var data = $.getParams(),
+      clip_id = $(this).parents('[clip-id]').attr('clip-id');
+    data.clip_id = clip_id;
+    data.csrfmiddlewaretoken = $('input[name="csrfmiddlewaretoken"]').val();
     console.log('vote-btn clicked: ' + clip_id);
     $('[clip-id="' + clip_id + '"]').find('.btn-vote').addClass('disabled');
     $.post('clip/', data, function (r) {

@@ -9,7 +9,7 @@
   </button>
   <ul class="col-xs-12 col-sm-12 dropdown-menu" aria-labelledby="dropdownMenu1">
   {% comment %}
-  {% with title="Forrest Gump" year="1994" poster="https://image.tmdb.org/t/p/w185/y3EsNpMFwvpcucLmx4HiiRRhCXV.jpg" description="如果你所创建的组件不包含任何文本内容（例如，内只包含了一个图标），你应当提供其他的内容来表示这个控件的意图，这样就能让使用辅助设备的用户知道其作用了。这种情况下，你可以为控件添加 aria-label 属相。" rating=5.5 t=213 g=168 %}
+  {% with title="Forrest Gump" year="1994" poster="https://image.tmdb.org/t/p/w185/y3EsNpMFwvpcucLmx4HiiRRhCXV.jpg" description="movie list item" rating=5.5 t=213 g=168 %}
     {% include "controls/movie_list_item.html" %}
     {% include "controls/movie_list_item.html" %}
     {% include "controls/movie_list_item.html" %}
@@ -26,7 +26,7 @@
       </a>
     </li>
   {% else %}
-    {% with id=movie.id title=movie.title type=movie.type rating=movie.rating t=movie.t g=movie.g rating2=movie.omdb.imdbRating %}
+    {% with id=movie.id title=movie.omdb.Title type=movie.omdb.Type rating=movie.rating t=movie.t g=movie.g rating2=movie.omdb.imdbRating %}
     {% static "img/placeholder_poster.jpg" as placeholder_poster %}
     {% firstof movie.poster_cached2 movie.poster_cached placeholder_poster as poster_cached %}
     {% firstof movie.omdb.Poster movie.poster placeholder_poster as poster %}
@@ -67,7 +67,7 @@
   {% endwith %}
   {% endcomment %}
   {% for clip in clips %}
-    {% with id=clip.id title=clip.movie.title type=clip.movie.type videofile=clip.movie.videofile start=clip.start end=clip.end length=clip.length votes=clip.votes views=clip.views en_sub=clip.subtitle sense=clip.sense snapshot=clip.snapshot %}
+    {% with id=clip.id title=clip.movie.omdb.Title type=clip.movie.omdb.Type videofile=clip.movie.videofile start=clip.start end=clip.end length=clip.length votes=clip.votes views=clip.views en_sub=clip.subtitle sense=clip.sense snapshot=clip.snapshot %}
     {% firstof clip.movie.omdb.Year clip.movie.year "No year" as year %}
       {% include "controls/clip_list_item.html" %}
     {% endwith %}

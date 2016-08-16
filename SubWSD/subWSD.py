@@ -117,34 +117,35 @@ def processAll(model, num=-1):
 
 
 def getWordSents(word, limitnum=100):
-    found = dictionary.find_one({'_id': word})
-    if found:
-        found['sents'] = list(db.sents.find({'word': word}, limit=limitnum))
-        return found
-    r = requests.get(
+    wordobj = dictionary.find_one({'_id': word})
+    if not wordobj:
+        r = requests.get(
         "http://dict.youdao.com/jsonapi?dicts=%7Bcount:1,dicts:%5B%5B%22collins%22%5D%5D%7D&q=" + word)
-    newword = {'_id': word, 'def': r.json()}
-    try:
-        sents = processWord(newword, model)
-    except Exception, e:
-        print repr(e)
-        sents = getSubtitles(word)
+        wordobj = {'_id': word, 'def': r.json()}
+        # TODO: synchronize
+        dictionary.insert_one(wordobj)
+        print 'new word inserted:', word
+    sents = list(db.sents.find({'word': word}, limit=limitnum))
+    if not sents:
+        try:
+            sents = processWord(wordobj, model)
+        except Exception, e:
+            print repr(e)
+            sents = getSubtitles(word)
 
-    for sent in sents:
-        sent['_id'] = word + '_' + \
-            sent['subtitle'].replace('.vtt', '') + '_' + str(sent['line_no'])
-        sent['word'] = word
-        sent = setSentMovie(sent)
+        for sent in sents:
+            sent['_id'] = word + '_' + \
+                sent['subtitle'].replace('.vtt', '') + '_' + str(sent['line_no'])
+            sent['word'] = word
+            sent['movie'] = sent['subtitle'][:-6]
+            # sent = setSentMovie(sent)
 
-    if len(sents) <= limitnum:
-        if sents:
+        if 0 < len(sents) <= limitnum:
             r = db.sents.insert_many(sents, ordered=False)
             print len(r.inserted_ids), 'new sents inserted for :', word
-        # TODO: synchronize
-        dictionary.insert_one(newword)
-        print 'new word inserted:', word
-    newword['sents'] = sents[0:limitnum]
-    return newword
+
+    wordobj['sents'] = sents[0:limitnum]
+    return wordobj
 
 
 def checkAll():

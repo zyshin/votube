@@ -37,7 +37,7 @@ def timeit(func):
 class MyView(View):
 
     def get(self, request, *args, **kwargs):
-        word = request.GET.get('word', '')
+        word = request.GET.get('word', '').strip()
         r = JsonResponse(getWordSents(word))
         r = self.__cors(r)
         return r
@@ -153,7 +153,7 @@ class PageView(TemplateView):
             # convert to safe css class name
             m['id'] = ''.join(
                 [c for c in m['_id'] if c.islower() or c.isdigit()])
-            m['rating'] = float(m['rating'])
+            #m['rating'] = float(m['rating'])
             m['omdb']['imdbRating'] = float(m['omdb']['imdbRating'])
             m['omdb']['imdbVotes'] = int(
                 m['omdb']['imdbVotes'].replace(',', ''))
@@ -213,7 +213,7 @@ class PageView(TemplateView):
         context['is_plugin'] = 'plugin' in self.request.GET
         context['SNAPSHOT_FROM_CACHE'] = SNAPSHOT_FROM_CACHE
 
-        word = self.request.GET.get('word') or 'default'
+        word = self.request.GET.get('word', '').strip() or 'default'
         r = self.__getWordSents(word)
         context['word'] = self.__get_word(r)
         context['clips'] = self.__get_clips(r)
@@ -281,8 +281,9 @@ class PageView(TemplateView):
     def post(self, request):
         clip_id = request.POST.get('clip_id')
         sessionid = request.POST.get('sessionid', 'unknown')
+        pid = request.POST.get('pid', 'unknown')
         if clip_id:
-            print 'vote on %s by %s' % (clip_id, sessionid)
+            print 'vote on %s by %s (%s)' % (clip_id, sessionid, pid)
             clip = db.sents.find_one_and_update(
                 {'_id': clip_id}, {'$inc': {'votes': 1}}, return_document=ReturnDocument.AFTER)
             return HttpResponse(str(clip['votes']))
