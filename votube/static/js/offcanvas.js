@@ -123,19 +123,19 @@ $(document).ready(function () {
       re2 = new RegExp(morph, 'gi');
     $(e.target.track.cues).each(function (index, cue) {
       cue.text = cue.text.replace((cue.text.match(re2)) ? re2 : re, '<c.highlighted>$&</c>');
-      if (e.target.label == 'Chi-Eng') {
-        // convert to Simplified Chinese
-        cue.text = alignToolkit.chnConv(cue.text);
-        // highlight Chinese keywords according to <c.highlighted>English</c>
-        if (cue.text.indexOf('</c>') >= 0) {
-          alignToolkit.alignEm(cue.text, function(str) {
-            if(str != null)
-              // TODO: better way to get complete Chinese sentence
-              $('.sent-chinese').html(str.split('\n')[0].replace(/c(\.highlighted)?>/g, 'b>'));
-              cue.text = str;
-          }, 'simp');
-        }
-      }
+      // if (e.target.label == 'Chi-Eng') {
+      //   // convert to Simplified Chinese
+      //   cue.text = alignToolkit.chnConv(cue.text);
+      //   // highlight Chinese keywords according to <c.highlighted>English</c>
+      //   if (cue.text.indexOf('</c>') >= 0) {
+      //     alignToolkit.alignEm(cue.text, function(str) {
+      //       if(str != null)
+      //         // TODO: better way to get complete Chinese sentence
+      //         $('.sent-chinese').html(str.split('\n')[0].replace(/c(\.highlighted)?>/g, 'b>'));
+      //         cue.text = str;
+      //     }, 'simp');
+      //   }
+      // }
     });
   });
   $.on('loadeddata', '#video', function (e) {
