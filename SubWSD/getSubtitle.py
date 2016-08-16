@@ -78,11 +78,11 @@ def findFull(match, title):
     fullsent, fullsent_ch = "", ""
     for i in range(start, end + 1):
         if i == ans['line_no']:
-            ch, en = splitSent(splitTime(match)[1])
+            ch, en = splitSent(splitTime(match)[1].strip())
         else:
-            ch, en = splitSent(splitTime(title[i])[1])
+            ch, en = splitSent(splitTime(title[i])[1].strip())
         fullsent = combineSents(fullsent, en)
-        fullsent_ch = combineSents(fullsent_ch, en)
+        fullsent_ch = combineSents(fullsent_ch, ch)
     ans['sent'] = fullsent
     ans['sent_ch'] = fullsent_ch
     return ans
