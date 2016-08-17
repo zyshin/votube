@@ -127,7 +127,7 @@ alignToolkit.alignEm = function(str, callback, toT) {
 			method: 'GET',
 			url: 'http://166.111.139.15:8002/proxy/',
 			data: {
-				url: 'http://166.111.5.245:8080/TsinghuaAligner/alignment.jsp',
+				url: 'http://166.111.139.15:8080/TsinghuaAligner/alignment.jsp',
 				params: JSON.stringify({
 					src: clearChn,
 					tgt: clearEng

@@ -286,7 +286,7 @@ class PageView(TemplateView):
             print 'vote on %s by %s (%s)' % (clip_id, sessionid, pid)
             clip = db.sents.find_one_and_update(
                 {'_id': clip_id}, {'$inc': {'votes': 1}}, return_document=ReturnDocument.AFTER)
-            return HttpResponse(str(clip['votes']))
+            return HttpResponse(str(clip and clip['votes'] or 0))
 
 
 class AnalyticView(View):
@@ -295,4 +295,4 @@ class AnalyticView(View):
         clip_id = request.GET.get('clip_id')
         clip = db.sents.find_one_and_update(
             {'_id': clip_id}, {'$inc': {'views': 1}}, return_document=ReturnDocument.AFTER)
-        return HttpResponse(str(clip['views']))
+        return HttpResponse(str(clip and clip['views'] or 0))

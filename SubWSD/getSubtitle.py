@@ -10,7 +10,7 @@ import re
 
 def isLineStart(sent):
     ch, sent = splitSent(sent)
-    return (sent[0].isupper() or sent.startswith('\"'))
+    return ((sent and sent[0].isupper()) or sent.startswith('\"'))
 
 
 def isLineEnd(line):
@@ -42,6 +42,19 @@ def splitSent(sent):
     n2 = sum([1 for c in s2 if re.match(r'[a-zA-Z ]', c)])
     r = (s2, s1) if n1 > n2 else (s1, s2)   # (ch, en)
     return r
+
+def strQ2B(ustring):
+    """全角转半角"""
+    rstring = ""
+    for uchar in ustring:
+        inside_code=ord(uchar)
+        if inside_code == 12288:                              #全角空格直接转换            
+            inside_code = 32 
+        elif (inside_code >= 65281 and inside_code <= 65374): #全角字符（除空格）根据关系转化
+            inside_code -= 65248
+
+        rstring += unichr(inside_code)
+    return rstring
 
 def findFull(match, title):
     ans = {}
@@ -83,6 +96,7 @@ def findFull(match, title):
             ch, en = splitSent(splitTime(title[i])[1].strip())
         fullsent = combineSents(fullsent, en)
         fullsent_ch = combineSents(fullsent_ch, ch)
+    # ans['sent'] = strQ2B(fullsent)
     ans['sent'] = fullsent
     ans['sent_ch'] = fullsent_ch
     return ans

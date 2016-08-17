@@ -125,7 +125,7 @@ class sentProcesser:
                 try:
                     sense[0] = self.processSent(sense[0], word)
                 except Exception, e:
-                    print repr(e)
+                    print 'processDic:', repr(e)
                     continue
                 # print sense
                 if sense[0] == []:

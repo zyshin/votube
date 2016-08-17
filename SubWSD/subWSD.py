@@ -8,6 +8,7 @@ from gensimModel import *
 import urllib2
 import json
 import time
+import re
 
 db = settings.MONGODB
 dictionary = db.dict
@@ -36,14 +37,13 @@ def processWord(wordjson, model):
             continue
         onceid.append(tmpid)
         sent = subtitle['sent']
-        # print sent
-        # sent = sentprocesser.processSent(sent, word)
+        sent_ch = subtitle['sent_ch']
         try:
             sent = sentprocesser.processSent(sent, word)
         except Exception, e:
-            print 'processSent:' + repr(e)
+            print 'processWord:', repr(e)
             continue
-        wsdans = WSD(sent, dic, model)
+        wsdans = WSD(sent, dic, model, sent_ch)
         # print wsdans[3]
         if len(wsdans) < 4:
             continue
@@ -52,7 +52,7 @@ def processWord(wordjson, model):
     return ans
 
 
-def WSD(sent, dic, model):
+def WSD(sent, dic, model, ch=''):
     senses = []
     allsense = []
     for key in dic.keys():
@@ -67,11 +67,14 @@ def WSD(sent, dic, model):
     sent = [token[0].lower() for token in sent[0]]
     maxsim = -1
     maxsense = ''
-    for sense in senses:
+    maxlenchs = [max([0] + [len(s.strip()) for s in re.split(ur'[,;\(\)\[\]]', sense[1].decode('utf8')) if s.strip() and s.strip() in ch]) for sense in senses]
+    for i, sense in enumerate(senses):
         sensetokens = [token[0].lower() for token in sense[0][0]]
         # if len(sent) == 0 or len(sensetokens) == 0:
         #     continue
         sim = model.n_similarity(sent, sensetokens)
+        if max(maxlenchs) > 0 and i == maxlenchs.index(max(maxlenchs)):
+            sim += 0.5
         # print sim
         if sim > maxsim:
             maxsim = sim
@@ -130,7 +133,7 @@ def getWordSents(word, limitnum=100):
         try:
             sents = processWord(wordobj, model)
         except Exception, e:
-            print repr(e)
+            print 'getWordSents:', repr(e)
             sents = getSubtitles(word)
 
         for sent in sents:
@@ -138,6 +141,7 @@ def getWordSents(word, limitnum=100):
                 sent['subtitle'].replace('.vtt', '') + '_' + str(sent['line_no'])
             sent['word'] = word
             sent['movie'] = sent['subtitle'][:-6]
+            # TODO: align <em> in sent['sent'] with sent['sent_ch']
             # sent = setSentMovie(sent)
 
         if 0 < len(sents) <= limitnum:
