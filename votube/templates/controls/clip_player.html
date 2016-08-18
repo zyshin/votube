@@ -32,8 +32,8 @@
     {% endif %}
     {% if active_clip.sent %}
       <div class="pull-down full-width text-center">
-        <h4 class="sent-chinese hidden">{% firstof active_clip.sent_ch|safe "(无中文字幕)" %}</h4>
-        <h4>{{ active_clip.sent|safe }}</h4>
+        <h4 class="full-sent-chinese hidden">{% firstof active_clip.sent_ch|safe "(无中文字幕)" %}</h4>
+        <h4 class="full-sent">{{ active_clip.sent|safe }}</h4>
       </div>
     {% endif %}
     {% if is_plugin %}

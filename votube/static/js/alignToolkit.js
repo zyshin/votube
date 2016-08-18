@@ -92,12 +92,12 @@ alignToolkit.alignEm = function(str, callback, toT) {
 	var chn = strs[0];
 	var eng = strs[1];
 	var engFirst = false;
-	if(strs[0].indexOf('<c.highlighted>') >= 0) {
+	if(strs[0].indexOf('<em>') >= 0) {
 		chn = strs[1];
 		eng = strs[0];
 		engFirst = true;
 	} else
-	if(strs[1].indexOf('<c.highlighted>') < 0) {
+	if(strs[1].indexOf('<em>') < 0) {
 		console.error("no highlight found.");
 		callback(null);
 		return;
@@ -105,13 +105,13 @@ alignToolkit.alignEm = function(str, callback, toT) {
 	var engOri = eng;
 	var emInd = [];
 	var emCnInd = [];
-	eng = eng.replaceAll('<c.highlighted>', '<c.highlighted> ');
-	eng = eng.replaceAll('</c>', ' ');
-	var engs = eng.split(/[^\w(<c.highlighted>)(<\/c>)]+/g);
+	eng = eng.replaceAll('<em>', '<em> ');
+	eng = eng.replaceAll('</em>', ' ');
+	var engs = eng.split(/[^\w(<em>)(<\/em>)]+/g);
 	var now = 0;
 	var clearEngs = [];
 	for(var i = 0; i < engs.length; ++i) {
-		if(engs[i] == '<c.highlighted>')
+		if(engs[i] == '<em>')
 			emInd.push(now);
 		else {
 			clearEngs.push(engs[i]);
@@ -191,7 +191,7 @@ alignToolkit.alignEm = function(str, callback, toT) {
 											if(simpChn.indexOf(meanings[j]) != -1) {
 												var st = simpChn.indexOf(meanings[j]);
 												resChn = chn.substring(0, st);
-												resChn = resChn + "<c.highlighted>" + meanings[j] + "</c>";
+												resChn = resChn + "<em>" + meanings[j] + "</em>";
 												resChn = resChn + chn.substring(st + meanings[j].length);
 												break;
 												
@@ -222,11 +222,11 @@ alignToolkit.alignEm = function(str, callback, toT) {
 				for(var i = 0; i < chn.length; ++i) {
 					if(alignToolkit.isChinese(chn.charCodeAt(i))) {
 						if(emSt.indexOf(now) >= 0)
-							resChn += "<c.highlighted>";
+							resChn += "<em>";
 						now ++;	
 						resChn += chn[i];
 						if(emEn.indexOf(now) >= 0)
-							resChn += "</c>";
+							resChn += "</em>";
 					} else
 						resChn += chn[i];
 				}
