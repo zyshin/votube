@@ -155,7 +155,9 @@ def getWordSents(word, limitnum=100):
             # TODO: align <em> in sent['sent'] with sent['sent_ch']
             # sent = setSentMovie(sent)
         if CREATE_SNAPSHOT:
+            cmds = sorted(set(cmds))
             subprocess.Popen(';\n'.join(cmds), shell=True)
+            print len(cmds), 'snapshots is being created for:', word
 
         if 0 < len(sents) <= limitnum:
             r = db.sents.insert_many(sents, ordered=False)
