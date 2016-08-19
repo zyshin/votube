@@ -1,6 +1,6 @@
 # coding=utf-8
 from django.conf import settings
-from .settings import CREATE_SNAPSHOT, SNAPSHOT_SETTINGS
+from .settings import CREATE_SNAPSHOT, SNAPSHOT_SETTINGS, SAVE_SENTS_TO_DB
 from bson.objectid import *
 from classifySense import *
 from sentProcesser import *
