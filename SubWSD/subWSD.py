@@ -159,7 +159,7 @@ def getWordSents(word, limitnum=100):
             subprocess.Popen(';\n'.join(cmds), shell=True)
             print len(cmds), 'snapshots is being created for:', word
 
-        if 0 < len(sents) <= limitnum:
+        if SAVE_SENTS_TO_DB and 0 < len(sents) <= limitnum:
             r = db.sents.insert_many(sents, ordered=False)
             print len(r.inserted_ids), 'new sents inserted for :', word
 

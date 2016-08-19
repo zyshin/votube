@@ -155,9 +155,11 @@ alignToolkit.alignEm = function(str, callback, toT) {
 					match[0] = +match[0] - 1;
 					match[1] = +match[1] - 1;
 					if(emInd.indexOf(match[1]) >= 0 && emSt.indexOf(match[0]) == -1) {
-						covered.push(match[1]);
-						emSt.push(chCnt[match[0]]);
-						emEn.push(chCnt[match[0] + 1]);
+						if (chCnt[match[0]] != chCnt[match[0] + 1]) {
+							covered.push(match[1]);
+							emSt.push(chCnt[match[0]]);
+							emEn.push(chCnt[match[0] + 1]);
+						}
 					}
 				}
 				if(emInd.length == 1) {
