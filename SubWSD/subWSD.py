@@ -1,5 +1,6 @@
 # coding=utf-8
 from django.conf import settings
+from .settings import CREATE_SNAPSHOT, SNAPSHOT_SETTINGS
 from bson.objectid import *
 from classifySense import *
 from sentProcesser import *
@@ -9,6 +10,7 @@ import urllib2
 import json
 import time
 import re
+import subprocess
 
 db = settings.MONGODB
 dictionary = db.dict
@@ -141,6 +143,16 @@ def getWordSents(word, limitnum=100):
                 sent['subtitle'].replace('.vtt', '') + '_' + str(sent['line_no'])
             sent['word'] = word
             sent['movie'] = sent['subtitle'][:-6]
+            if CREATE_SNAPSHOT:
+                # extract key frame for each sent
+                snapshot_settings = {
+                    'videofile': '%s.mp4' % sent['movie'],
+                    'outputfile': '%s.mp4_%s.png' % (sent['movie'], sent['line_no']),
+                    'time': sent['time'][1]
+                }
+                snapshot_settings.update(SNAPSHOT_SETTINGS)
+                cmd = '%(ffmpeg)s -i %(movie_dir)s%(videofile)s -ss %(time)s -frames:v 1 -vf scale=256:-1 -n %(snapshot_dir)s%(outputfile)s' % snapshot_settings
+                subprocess.Popen(cmd.split())
             # TODO: align <em> in sent['sent'] with sent['sent_ch']
             # sent = setSentMovie(sent)
 
