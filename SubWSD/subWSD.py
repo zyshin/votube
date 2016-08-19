@@ -138,23 +138,24 @@ def getWordSents(word, limitnum=100):
             print 'getWordSents:', repr(e)
             sents = getSubtitles(word)
 
+        cmds = []
         for sent in sents:
             sent['_id'] = word + '_' + \
                 sent['subtitle'].replace('.vtt', '') + '_' + str(sent['line_no'])
             sent['word'] = word
             sent['movie'] = sent['subtitle'][:-6]
-            if CREATE_SNAPSHOT:
-                # extract key frame for each sent
-                snapshot_settings = {
-                    'videofile': '%s.mp4' % sent['movie'],
-                    'outputfile': '%s.mp4_%s.png' % (sent['movie'], sent['line_no']),
-                    'time': sent['time'][1]
-                }
-                snapshot_settings.update(SNAPSHOT_SETTINGS)
-                cmd = '%(ffmpeg)s -i %(movie_dir)s%(videofile)s -ss %(time)s -frames:v 1 -vf scale=256:-1 -n %(snapshot_dir)s%(outputfile)s' % snapshot_settings
-                subprocess.Popen(cmd.split())
+            # extract key frame for each sent
+            snapshot_settings = {
+                'videofile': '%s.mp4' % sent['movie'],
+                'outputfile': '%s.mp4_%d.png' % (sent['movie'], sent['line_no']),
+                'time': sent['time'][1]
+            }
+            snapshot_settings.update(SNAPSHOT_SETTINGS)
+            cmds.append('%(ffmpeg)s -i %(movie_dir)s%(videofile)s -ss %(time)s -frames:v 1 -vf scale=256:-1 -n %(snapshot_dir)s%(outputfile)s' % snapshot_settings)
             # TODO: align <em> in sent['sent'] with sent['sent_ch']
             # sent = setSentMovie(sent)
+        if CREATE_SNAPSHOT:
+            subprocess.Popen(';\n'.join(cmds), shell=True)
 
         if 0 < len(sents) <= limitnum:
             r = db.sents.insert_many(sents, ordered=False)

@@ -146,7 +146,7 @@ class PageView(TemplateView):
         for s in word['sents']:
             s['movie'] = d.get(s['movie'], {})
             if SNAPSHOT_FROM_CACHE and s['movie'].get('videofile'):
-                s['snapshot'] = '%s_%d.png' % (s['movie']['videofile'], int(s['time'][1]))
+                s['snapshot'] = '%s_%d.png' % (s['movie']['videofile'], s['line_no'])
         for m in d.itervalues():
             assert m['videofile']
             # convert to safe css class name
