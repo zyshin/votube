@@ -252,6 +252,13 @@ footer {
   margin-top: 20px;
 }
 
+.fa-spin {
+  visibility: hidden;
+}
+.row-video.loading .fa-spin {
+  visibility: visible;
+}
+
 .video-hover {
   position: absolute;
   width: 100%;
@@ -260,6 +267,9 @@ footer {
   background: rgba(0, 0, 0, .7);
   z-index: 10;
   cursor: pointer;
+}
+.row-video.loading .video-hover {
+  cursor: wait;
 }
 
 .video-hover:before {
@@ -297,7 +307,7 @@ footer {
 
 video::cue {
   font-family: "Arial","Microsoft YaHei","黑体","宋体",sans-serif;
-  font-size: 24px;
+  font-size: 22px;
   background-color: rgba(0, 0, 0, 0);
 }
 

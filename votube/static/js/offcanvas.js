@@ -41,7 +41,7 @@ $(document).ready(function () {
   }
 
   $.waitTime = 300;
-  $.waitTime2 = 300;
+  $.autoPlay = false;
 
   $('[data-toggle="tooltip"]').tooltip({ html: true });
   $('[data-toggle="offcanvas"]').click(function () {
@@ -88,7 +88,9 @@ $(document).ready(function () {
   });
   $('.row-video').on('click', '.btn-play', function (e) {
     var v = $('#video')[0];
-    v.play();
+    if (v.readyState == 4) {
+      v.play();
+    }
   });
   $('.row-video').on('click', '#video', function (e) {
     var v = $('#video')[0];
@@ -147,19 +149,22 @@ $(document).ready(function () {
   });
   if ($('#video').attr('src')) {
     $('.sense-text').addClass('hidden');
+    $('.row-video').addClass('loading');
   }
   $.on('loadstart', '#video', function (e) {
-    $('.fa-spin').removeClass('hidden');
     $('.sense-text').addClass('hidden');
+    $('.row-video').addClass('loading');
+    $.autoPlay = true;
   });
   $.on('loadeddata', '#video', function (e) {
-    $('.fa-spin').addClass('hidden');
+    $('.row-video').removeClass('loading');
     $.showSubtitle('Chi-Eng');
     $.showSubtitle('Eng');
-    setTimeout(function () {
-      $.waitTime = $.waitTime2;
-      //$('.btn-play').click();
-    }, $.waitTime);
+    if ($.autoPlay) {
+      setTimeout(function () {
+        $('.btn-play').click();
+      }, $.waitTime);
+    }
   });
 
   $('#sidebar').on('click', '.btn-clip', function (e) {

@@ -250,13 +250,15 @@ class PageView(TemplateView):
             context['active_movie'] = context['movies'][ids.index(movie_id)]
 
         if context['word']['meanings']:
+            max_sense_id = max([c.get('sense', -1) for c in context['clips']] + [4])
+            context['word']['meanings'] = context['word']['meanings'][:max_sense_id+1]  # pertain only first 5 meanings
             sense_id = self.request.GET.get('sense_id', '')
             word_context = self.request.GET.get('context')
             if not sense_id and word_context:
                 sense_id = 'sense%d' % (self.__wsd(context['word']['raw_word'], word_context) + 1)
             if sense_id:
                 context['clips'] = [c for c in context['clips']
-                                    if c.get('sense', 0) == int(sense_id[5:]) - 1]
+                                    if c.get('sense', -1) == int(sense_id[5:]) - 1]
                 if clip_id not in clip_ids and context['clips']:
                     index = 0
                     context['active_clip'] = context['clips'][index]
