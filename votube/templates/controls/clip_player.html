@@ -16,11 +16,11 @@
     {% if word.meanings %}
     {% for m in word.meanings %}
       {% if forloop.counter0 == active_clip.sense %}
-        <h4>
+        <h4 class="sense-text">
           <b data-toggle="tooltip" data-placement="right" title="{{ m.tran_en }}">{{ forloop.counter }}. [{{ m.pos_entry.pos|slice:":7" }}] {{ m.tran_cn|safe }}</b>
         </h4>
       {% else %}
-        <h4>
+        <h4 class="sense-text">
           <span data-toggle="tooltip" data-placement="right" title="{{ m.tran_en }}">{{ forloop.counter }}. [{{ m.pos_entry.pos|slice:":7" }}] {{ m.tran_cn|safe }}</span>
         </h4>
       {% endif %}
@@ -50,7 +50,7 @@
   </video> -->
 {% with videofile=active_clip.movie.videofile start=active_clip.start end=active_clip.end en_sub=active_clip.movie.en_sub|first dual_sub=active_clip.movie.dual_sub|first %}
 {% if videofile %}
-  <video class="embed-responsive-item no-sub" id="video" crossorigin preload="metadata" src="http://pi.cs.tsinghua.edu.cn/lab/moviedict/movies/mp4/{{ videofile }}#t={{ start }},{{ end }}">
+  <video class="embed-responsive-item no-sub" id="video" crossorigin preload="auto" src="http://pi.cs.tsinghua.edu.cn/lab/moviedict/movies/mp4/{{ videofile }}#t={{ start }},{{ end }}">
     {% if en_sub %}<track label="Eng" kind="subtitles" src="http://pi.cs.tsinghua.edu.cn/lab/moviedict/movies/subtitles/{{ en_sub }}">{% endif %}
     {% if dual_sub %}<track label="Chi-Eng" kind="subtitles" src="http://pi.cs.tsinghua.edu.cn/lab/moviedict/movies/subtitles/{{ dual_sub }}">{% endif %}
   </video>
@@ -68,7 +68,7 @@
   {% endwith %}
   </div>
   <div class="col-xs-6 text-right">
-    <i class='fa fa-circle-o-notch fa-spin hidden'></i>
+    <i class="fa fa-circle-o-notch fa-spin"></i>
     <button type="button" class="btn btn-primary btn-subtitle" data-toggle="button" aria-pressed="false" autocomplete="off">
       Dual Subtitle:
       <span class="on">on</span>

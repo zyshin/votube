@@ -65,7 +65,7 @@ $(document).ready(function () {
   $.on('play', '#video', function (e) {
     $('#video').removeClass('no-sub');
     $('#videoContainer>.video-hover').addClass('hidden');
-    $('.fa-spin').addClass('hidden');
+    $('.sense-text').removeClass('hidden');
     var data = $.getParams();
     data.lang = $('.btn-subtitle').hasClass('active') ? 'DUAL' : 'EN';
     $.get('view/', data);
@@ -73,7 +73,7 @@ $(document).ready(function () {
   $.on('pause', '#video', function (e) {
     $('#video').addClass('no-sub');
     $('#videoContainer>.video-hover').removeClass('hidden');
-    window.stop();
+    // window.stop();
   });
   $.on('timeupdate', '#video', function (e) {
     var v = $('#video')[0],
@@ -114,6 +114,9 @@ $(document).ready(function () {
     $('.full-sent-chinese').toggleClass('hidden');
     $.showSubtitle(lang);
     // $('.btn-play').click();
+    var data = $.getParams();
+    data.lang = (lang == 'Eng') ? 'EN' : 'DUAL';
+    $.get('subtitle/', data);
   });
   $.on('load', 'track', function (e) {
     var track = e.target;
@@ -142,13 +145,20 @@ $(document).ready(function () {
       });
     }
   });
-  $.on('loadeddata', '#video', function (e) {
+  if ($('#video').attr('src')) {
+    $('.sense-text').addClass('hidden');
+  }
+  $.on('loadstart', '#video', function (e) {
     $('.fa-spin').removeClass('hidden');
+    $('.sense-text').addClass('hidden');
+  });
+  $.on('loadeddata', '#video', function (e) {
+    $('.fa-spin').addClass('hidden');
     $.showSubtitle('Chi-Eng');
     $.showSubtitle('Eng');
     setTimeout(function () {
       $.waitTime = $.waitTime2;
-      $('.btn-play').click();
+      //$('.btn-play').click();
     }, $.waitTime);
   });
 
