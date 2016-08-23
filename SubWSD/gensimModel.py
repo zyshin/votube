@@ -1,7 +1,7 @@
+from .settings import USE_LOCAL_MODEL
 import requests, json
 # import requests_cache
 
-USE_LOCAL_MODEL = False
 if USE_LOCAL_MODEL:
     from myapp.views import MyView
 

@@ -103,6 +103,7 @@ def findFull(match, title):
 
 
 def getSubtitles(word):
+    # TODO: add max length limit to ans
     left = "http://166.111.139.15:8983/solr/techproducts/select?q=title%3A"
     right = "+AND+lang%3A中英&rows=10000&wt=json&indent=true&hl=true&hl.fl=title&hl.snippets=10&hl.fragsize=0&hl.maxAnalyzedChars=1048576"
     url = left + word.encode('utf-8') + right
