@@ -55,16 +55,18 @@
             <li class="active"><a href="#">VoTube</a></li>
             <!-- <li><a href="#">Dictionary</a></li> -->
           </ul>
-          <form class="navbar-form navbar-right" role="search">
+        {% if not is_study %}
+          <form class="navbar-form navbar-right" role="search" title="Show me the word!">
             <div class="input-group">
               <span class="input-group-btn">
                 <button class="btn btn-search" type="submit">
                   <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
                 </button>
               </span>
-              <input class="form-control input-search" type="text" name="word" placeholder="Search for..." autocomplete="off">
+              <input class="form-control input-search" type="text" name="word" placeholder="{{ next_word }}" autocomplete="off">
             </div><!-- /input-group -->
           </form>
+        {% endif %}
         </div><!-- /.nav-collapse -->
       </div><!-- /.container -->
     </nav><!-- /.navbar -->

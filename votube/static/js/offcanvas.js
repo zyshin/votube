@@ -43,6 +43,10 @@ $(document).ready(function () {
   // $.waitTime = 300;
   $.autoPlay = false;
 
+  $('.navbar-form').submit(function () {
+    $('.input-search').val($('.input-search').val() || $('.input-search').attr('placeholder'));
+  });
+
   $('[data-toggle="tooltip"]').tooltip({ html: true });
   $('[data-toggle="offcanvas"]').click(function () {
     $('.row-offcanvas').toggleClass('active');

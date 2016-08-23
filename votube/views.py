@@ -4,6 +4,7 @@ from django.http import HttpResponse, JsonResponse
 from django.views.generic import View, TemplateView
 
 from .settings import SNAPSHOT_FROM_CACHE
+from .words import next_word
 import json
 from itertools import chain
 from datetime import datetime
@@ -91,7 +92,6 @@ class PageView(TemplateView):
             forms = ', '.join([o['word'] for o in word['def']['collins']['collins_entries'][
                               0]['basic_entries']['basic_entry'][0]['wordforms']['wordform']])
         except Exception, e:
-            print repr(e)
             forms = ''
         try:
             meanings = list(chain(*[[te['tran_entry'][0] for te in e['entries']['entry']]
@@ -200,8 +200,8 @@ class PageView(TemplateView):
                         toremove.append(clips[st])
             st += 1
         r = [c for c in clips if c not in toremove]
-        if len(r) < len(clips):
-            print len(clips) - len(r), 'duplicated clips removed'
+        # if len(r) < len(clips):
+        #     print len(clips) - len(r), 'duplicated clips removed'
         return r
 
     @timeit
@@ -210,7 +210,9 @@ class PageView(TemplateView):
         if 'visited' not in self.request.session:
             self.request.session['visited'] = str(datetime.now())
         context['is_plugin'] = 'plugin' in self.request.GET
+        context['is_study'] = 'pid' in self.request.GET
         context['SNAPSHOT_FROM_CACHE'] = SNAPSHOT_FROM_CACHE
+        context['next_word'] = next_word()
 
         word = self.request.GET.get('word', '').strip() or 'default'
         r = self.__getWordSents(word)
