@@ -40,7 +40,7 @@ $(document).ready(function () {
     }
   }
 
-  $.waitTime = 300;
+  // $.waitTime = 300;
   $.autoPlay = false;
 
   $('[data-toggle="tooltip"]').tooltip({ html: true });
@@ -150,21 +150,26 @@ $(document).ready(function () {
   if ($('#video').attr('src')) {
     $('.sense-text').addClass('hidden');
     $('.row-video').addClass('loading');
+    $.time = Date.now();
   }
   $.on('loadstart', '#video', function (e) {
     $('.sense-text').addClass('hidden');
     $('.row-video').addClass('loading');
     $.autoPlay = true;
+    $.time = Date.now();
   });
   $.on('loadeddata', '#video', function (e) {
     $('.row-video').removeClass('loading');
     $.showSubtitle('Chi-Eng');
     $.showSubtitle('Eng');
     if ($.autoPlay) {
-      setTimeout(function () {
+      // setTimeout(function () {
         $('.btn-play').click();
-      }, $.waitTime);
+      // }, $.waitTime);
     }
+    var data = $.getParams();
+    data.loadTime = Date.now() - $.time;
+    $.get('loadtime/', data);
   });
 
   $('#sidebar').on('click', '.btn-clip', function (e) {

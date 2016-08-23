@@ -26,5 +26,6 @@ urlpatterns = [
     url(r'^votube/movie/$', PageView.as_view(template_name="controls/sidebar.html")),
     url(r'^votube/view/$', AnalyticView.as_view()),
     url(r'^votube/subtitle/$', AnalyticView.as_view()),
+    url(r'^votube/loadtime/$', AnalyticView.as_view()),
     url(r'^votube/$', xframe_options_exempt(PageView.as_view(template_name="index.html"))),
 ]
