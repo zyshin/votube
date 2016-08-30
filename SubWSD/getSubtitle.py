@@ -36,8 +36,11 @@ def splitTime(line):
 
 def splitSent(sent):
     ss = sent.split('\r\n') if '\r\n' in sent else sent.split('\n')
-    s1 = ss[0] if len(ss) > 0 else ''
-    s2 = ss[1] if len(ss) > 1 else ''
+    if len(ss) < 2:
+        ss += ['', '']
+        return (ss[0], ss[1])
+    s1 = ' '.join(ss[0:(len(ss)/2)])
+    s2 = ' '.join(ss[(len(ss)/2):])
     n1 = sum([1 for c in s1 if re.match(r'[a-zA-Z ]', c)])
     n2 = sum([1 for c in s2 if re.match(r'[a-zA-Z ]', c)])
     r = (s2, s1) if n1 > n2 else (s1, s2)   # (ch, en)
