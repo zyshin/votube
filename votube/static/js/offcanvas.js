@@ -30,6 +30,7 @@ $(document).ready(function () {
       'pid': params.pid,
       'context': params.context
     };
+    // TODO: if ($.isPlugin) add plugin to params
   }
 
   $.stopLoading = function() {
@@ -39,6 +40,8 @@ $(document).ready(function () {
       document.execCommand("Stop", false);
     }
   }
+
+  $.isPlugin = ($('.plugin').length > 0);
 
   // $.waitTime = 300;
   $.autoPlay = false;
@@ -152,14 +155,17 @@ $(document).ready(function () {
     }
   });
   if ($('#video').attr('src')) {
-    $('.sense-text').addClass('hidden');
+    if (!$.isPlugin) {
+      $('.sense-text').addClass('hidden');
+    }
     $('.row-video').addClass('loading');
     $.time = Date.now();
   }
   $.on('loadstart', '#video', function (e) {
-    $('.sense-text').addClass('hidden');
+    if (!$.isPlugin) {
+      $('.sense-text').addClass('hidden');
+    }
     $('.row-video').addClass('loading');
-    $.autoPlay = true;
     $.time = Date.now();
   });
   $.on('loadeddata', '#video', function (e) {
@@ -170,6 +176,9 @@ $(document).ready(function () {
       // setTimeout(function () {
         $('.btn-play').click();
       // }, $.waitTime);
+    }
+    if (!$.isPlugin) {
+      $.autoPlay = true;
     }
     var data = $.getParams();
     data.loadTime = Date.now() - $.time;
