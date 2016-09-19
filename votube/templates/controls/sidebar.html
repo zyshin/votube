@@ -3,7 +3,8 @@
 <div class="dropdown">
   <button class="btn btn-block btn-dropdown dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
     <h4>
-      {{ active_movie.omdb.Title|truncatechars:30 }}
+      {% firstof active_movie.omdb.Title active_movie.title as movie_title %}
+      {{ movie_title|truncatechars:30 }}
       <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
     </h4>
   </button>
