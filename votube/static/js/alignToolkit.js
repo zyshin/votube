@@ -366,11 +366,12 @@ alignToolkit.alignEm = function(str, callback, toT) {
 						}
 					}
 					top3[2] = maxpos;
-
+/*
 					var topsum = scores[top3[0]] + scores[top3[1]] + scores[top3[2]];
 					for (var i = 0;i<3;i++) {
 						scores[top3[i]] = scores[top3[i]]/topsum;
 					}
+					*/
 					for (var i = 0; i < scores.length; i++){
 						if (i==top3[0]||i==top3[1]||i==top3[2]) {
 							var cnum = alignToolkit.calculatecnum(scores[i]);

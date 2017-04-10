@@ -238,23 +238,23 @@ $(document).ready(function () {
               cue.text = cue.text.replace(h, '<c.highlighted16>$&</c>')
             });
           });
-          ch = ch.replace(/<em class='em1'>/g,'<font color=#FF0000>');
-          ch = ch.replace(/<\/em>/g,'</font>')
-          ch = ch.replace(/<em class='em2'>/g,'<font color=#FF1111>');
-          ch = ch.replace(/<em class='em3'>/g,'<font color=#FF2222>');
-          ch = ch.replace(/<em class='em4'>/g,'<font color=#FF3333>');
-          ch = ch.replace(/<em class='em5'>/g,'<font color=#FF4444>');
-          ch = ch.replace(/<em class='em6'>/g,'<font color=#FF5555>');
-          ch = ch.replace(/<em class='em7'>/g,'<font color=#FF6666>');
-          ch = ch.replace(/<em class='em8'>/g,'<font color=#FF7777>');
-          ch = ch.replace(/<em class='em9'>/g,'<font color=#FF8888>');
-          ch = ch.replace(/<em class='em10'>/g,'<font color=#FF9999>');
-          ch = ch.replace(/<em class='em11'>/g,'<font color=#FFaaaa>');
-          ch = ch.replace(/<em class='em12'>/g,'<font color=#FFbbbb>');
-          ch = ch.replace(/<em class='em13'>/g,'<font color=#FFCCCC>');
-          ch = ch.replace(/<em class='em14'>/g,'<font color=#FFdddd>');
-          ch = ch.replace(/<em class='em15'>/g,'<font color=#FFeeee>');
-          ch = ch.replace(/<em class='em16'>/g,'<font color=#FFFFFF>');
+          ch = ch.replace(/<em class='em1'>/g,'<em><font color=#FFFF00>');
+          ch = ch.replace(/<\/em>/g,'</font></em>')
+          ch = ch.replace(/<em class='em2'>/g,'<em><font color=#FFFF11>');
+          ch = ch.replace(/<em class='em3'>/g,'<em><font color=#FFFF22>');
+          ch = ch.replace(/<em class='em4'>/g,'<em><font color=#FFFF33>');
+          ch = ch.replace(/<em class='em5'>/g,'<em><font color=#FFFF44>');
+          ch = ch.replace(/<em class='em6'>/g,'<em><font color=#FFFF55>');
+          ch = ch.replace(/<em class='em7'>/g,'<em><font color=#FFFF66>');
+          ch = ch.replace(/<em class='em8'>/g,'<em><font color=#FFFF77>');
+          ch = ch.replace(/<em class='em9'>/g,'<em><font color=#FFFF88>');
+          ch = ch.replace(/<em class='em10'>/g,'<em><font color=#FFFF99>');
+          ch = ch.replace(/<em class='em11'>/g,'<em><font color=#FFFFaa>');
+          ch = ch.replace(/<em class='em12'>/g,'<em><font color=#FFFFbb>');
+          ch = ch.replace(/<em class='em13'>/g,'<em><font color=#FFFFCc>');
+          ch = ch.replace(/<em class='em14'>/g,'<em><font color=#FFFFdd>');
+          ch = ch.replace(/<em class='em15'>/g,'<em><font color=#FFFFee>');
+          ch = ch.replace(/<em class='em16'>/g,'<em><font color=#FFFFFF>');
           console.log(ch);
           $('.full-sent-chinese').html(ch);
         }
