@@ -288,6 +288,7 @@ footer {
 .video-hover em, b {
   color: #ffce3f;
   font-weight: 700;
+  font-style: inherit;
 }
 
 .video-hover>.container {
