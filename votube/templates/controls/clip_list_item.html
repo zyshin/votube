@@ -13,7 +13,7 @@
           </div>
         {% if videofile %}
           {% if SNAPSHOT_FROM_CACHE %}
-          <img class="embed-responsive-item" src="http://pi.cs.tsinghua.edu.cn/lab/moviedict/movies/snapshots/{{ snapshot }}" onerror="if (this.tagName.toLowerCase() != 'video') this.outerHTML = '<video class=&quot;embed-responsive-item&quot; preload=&quot;metadata&quot; src=&quot;http://pi.cs.tsinghua.edu.cn/lab/moviedict/movies/mp4/{{ videofile }}#t={{ start }},{{ end }}&quot;></video>';">
+          <img class="embed-responsive-item" src="http://pi.cs.tsinghua.edu.cn/lab/moviedict/movies/snapshots/{{ snapshot|urlencode }}" onerror="if (this.tagName.toLowerCase() != 'video') this.outerHTML = '<video class=&quot;embed-responsive-item&quot; preload=&quot;metadata&quot; src=&quot;http://pi.cs.tsinghua.edu.cn/lab/moviedict/movies/mp4/{{ videofile|urlencode }}#t={{ start }},{{ end }}&quot;></video>';">
           {% else %}
           <video class="embed-responsive-item" preload="metadata" src="http://pi.cs.tsinghua.edu.cn/lab/moviedict/movies/mp4/{{ videofile }}#t={{ start }},{{ end }}"></video>
           {% endif %}

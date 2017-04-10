@@ -67,7 +67,7 @@ eslext.getSelection = function() {
         for(var i = ret.pos.endOffset; i < value.length && (value[i] == ' ' || i - ret.pos.endOffset < 500) && ".!?".indexOf(value[i]) === -1; ++i) 
             post = post + value[i];
         ret.context = pre + "<em>" + value.substring(ret.pos.startOffset, ret.pos.endOffset) + "</em>" + post + ".";
-        console.log(ret.context);
+        // console.log(ret.context);
     }
     return ret;
 }
