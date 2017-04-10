@@ -141,15 +141,122 @@ $(document).ready(function () {
       alignToolkit.alignEm(bilingual, function(str) {
         if (str) {
           var ch = str.split('\n')[0];
-          if (ch.indexOf('<em>') >= 0) {
-            $('.full-sent-chinese').html(ch);
-            var highlights = $('.full-sent-chinese em').map(function(i, o) { return $(o).text() });
-            $(track.track.cues).each(function (index, cue) {
-              $(highlights).each(function(i, h) {
-                cue.text = cue.text.replace(h, '<c.highlighted>$&</c>')
-              });
+          $('.full-sent-chinese').html(ch);
+          var highlights = $('.full-sent-chinese em.em1').map(function(i, o) { return $(o).text() });
+          $(track.track.cues).each(function (index, cue) {
+            $(highlights).each(function(i, h) {
+              cue.text = cue.text.replace(h, '<c.highlighted1>$&</c>')
             });
-          }
+          });
+          highlights = $('.full-sent-chinese em.em2').map(function(i, o) { return $(o).text() });
+          $(track.track.cues).each(function (index, cue) {
+            $(highlights).each(function(i, h) {
+              cue.text = cue.text.replace(h, '<c.highlighted2>$&</c>')
+            });
+          });
+          highlights = $('.full-sent-chinese em.em3').map(function(i, o) { return $(o).text() });
+          $(track.track.cues).each(function (index, cue) {
+            $(highlights).each(function(i, h) {
+              cue.text = cue.text.replace(h, '<c.highlighted3>$&</c>')
+            });
+          });
+          highlights = $('.full-sent-chinese em.em4').map(function(i, o) { return $(o).text() });
+          $(track.track.cues).each(function (index, cue) {
+            $(highlights).each(function(i, h) {
+              cue.text = cue.text.replace(h, '<c.highlighted4>$&</c>')
+            });
+          });
+          highlights = $('.full-sent-chinese em.em5').map(function(i, o) { return $(o).text() });
+          $(track.track.cues).each(function (index, cue) {
+            $(highlights).each(function(i, h) {
+              cue.text = cue.text.replace(h, '<c.highlighted5>$&</c>')
+            });
+          });
+          highlights = $('.full-sent-chinese em.em6').map(function(i, o) { return $(o).text() });
+          $(track.track.cues).each(function (index, cue) {
+            $(highlights).each(function(i, h) {
+              cue.text = cue.text.replace(h, '<c.highlighted6>$&</c>')
+            });
+          });
+          highlights = $('.full-sent-chinese em.em7').map(function(i, o) { return $(o).text() });
+          $(track.track.cues).each(function (index, cue) {
+            $(highlights).each(function(i, h) {
+              cue.text = cue.text.replace(h, '<c.highlighted7>$&</c>')
+            });
+          });
+          highlights = $('.full-sent-chinese em.em8').map(function(i, o) { return $(o).text() });
+          $(track.track.cues).each(function (index, cue) {
+            $(highlights).each(function(i, h) {
+              cue.text = cue.text.replace(h, '<c.highlighted8>$&</c>')
+            });
+          });
+          highlights = $('.full-sent-chinese em.em9').map(function(i, o) { return $(o).text() });
+          $(track.track.cues).each(function (index, cue) {
+            $(highlights).each(function(i, h) {
+              cue.text = cue.text.replace(h, '<c.highlighted9>$&</c>')
+            });
+          });
+          highlights = $('.full-sent-chinese em.em10').map(function(i, o) { return $(o).text() });
+          $(track.track.cues).each(function (index, cue) {
+            $(highlights).each(function(i, h) {
+              cue.text = cue.text.replace(h, '<c.highlighted10>$&</c>')
+            });
+          });
+          highlights = $('.full-sent-chinese em.em11').map(function(i, o) { return $(o).text() });
+          $(track.track.cues).each(function (index, cue) {
+            $(highlights).each(function(i, h) {
+              cue.text = cue.text.replace(h, '<c.highlighted11>$&</c>')
+            });
+          });
+          highlights = $('.full-sent-chinese em.em12').map(function(i, o) { return $(o).text() });
+          $(track.track.cues).each(function (index, cue) {
+            $(highlights).each(function(i, h) {
+              cue.text = cue.text.replace(h, '<c.highlighted12>$&</c>')
+            });
+          });
+          highlights = $('.full-sent-chinese em.em13').map(function(i, o) { return $(o).text() });
+          $(track.track.cues).each(function (index, cue) {
+            $(highlights).each(function(i, h) {
+              cue.text = cue.text.replace(h, '<c.highlighted13>$&</c>')
+            });
+          });
+          highlights = $('.full-sent-chinese em.em14').map(function(i, o) { return $(o).text() });
+          $(track.track.cues).each(function (index, cue) {
+            $(highlights).each(function(i, h) {
+              cue.text = cue.text.replace(h, '<c.highlighted14>$&</c>')
+            });
+          });
+          highlights = $('.full-sent-chinese em.em15').map(function(i, o) { return $(o).text() });
+          $(track.track.cues).each(function (index, cue) {
+            $(highlights).each(function(i, h) {
+              cue.text = cue.text.replace(h, '<c.highlighted15>$&</c>')
+            });
+          });
+          highlights = $('.full-sent-chinese em.em16').map(function(i, o) { return $(o).text() });
+          $(track.track.cues).each(function (index, cue) {
+            $(highlights).each(function(i, h) {
+              cue.text = cue.text.replace(h, '<c.highlighted16>$&</c>')
+            });
+          });
+          ch = ch.replace(/<em class='em1'>/g,'<font color=#FF0000>');
+          ch = ch.replace(/<\/em>/g,'</font>')
+          ch = ch.replace(/<em class='em2'>/g,'<font color=#FF1111>');
+          ch = ch.replace(/<em class='em3'>/g,'<font color=#FF2222>');
+          ch = ch.replace(/<em class='em4'>/g,'<font color=#FF3333>');
+          ch = ch.replace(/<em class='em5'>/g,'<font color=#FF4444>');
+          ch = ch.replace(/<em class='em6'>/g,'<font color=#FF5555>');
+          ch = ch.replace(/<em class='em7'>/g,'<font color=#FF6666>');
+          ch = ch.replace(/<em class='em8'>/g,'<font color=#FF7777>');
+          ch = ch.replace(/<em class='em9'>/g,'<font color=#FF8888>');
+          ch = ch.replace(/<em class='em10'>/g,'<font color=#FF9999>');
+          ch = ch.replace(/<em class='em11'>/g,'<font color=#FFaaaa>');
+          ch = ch.replace(/<em class='em12'>/g,'<font color=#FFbbbb>');
+          ch = ch.replace(/<em class='em13'>/g,'<font color=#FFCCCC>');
+          ch = ch.replace(/<em class='em14'>/g,'<font color=#FFdddd>');
+          ch = ch.replace(/<em class='em15'>/g,'<font color=#FFeeee>');
+          ch = ch.replace(/<em class='em16'>/g,'<font color=#FFFFFF>');
+          console.log(ch);
+          $('.full-sent-chinese').html(ch);
         }
       });
     }

@@ -80,10 +80,80 @@ alignToolkit.lemmatize = {
 	'eliminated': 'eliminate'
 };
 
+
+alignToolkit.isNum = function(no, base){
+  var cmp="0123456789";
+  var chkStr=no;
+  var chkChar;
+  var rc=true;
+  var nLen;
+
+  if(base == 16){
+    cmp+="ABCDEFabcdef";
+  }else if(base == 10){
+    eval("chkStr=''+parseInt(chkStr)");
+  }
+  nLen=chkStr.length;
+
+  for(var i=0; i<nLen; i++){
+     chkChar=chkStr.substring(i,i+1)
+     if(i==0 && chkChar == "#" && base == 16){
+     }else if(cmp.indexOf(chkChar)<0){
+       rc=false;
+     }
+     if(rc == false) i=nLen;
+  }
+  return rc;
+}
+alignToolkit.twobyte = function(no){
+  var str=no;
+
+  if(alignToolkit.isNum(no,16)){
+    str="0"+str;
+    str=str.substring((str.length-3)+1);
+  }else{
+    str="00";
+  }
+  return str;
+}
+alignToolkit.calculatecolor = function(score) {
+	var max = 255;
+	var num = Math.round(max*(1-score));
+	var n = num.toString(16);
+	var st = alignToolkit.twobyte(n);
+	var res = '#FF'+st+st;
+	return res;
+}
+
+alignToolkit.calculatecnum = function(score) {
+	if(score > 15/16) return '1';
+	else if(score > 14/16) return '2';
+	else if(score > 13/16) return '3';
+	else if(score > 12/16) return '4';
+	else if(score > 11/16) return '5';
+	else if(score > 10/16) return '6';
+	else if(score > 9/16) return '7';
+	else if(score > 8/16) return '8';
+	else if(score > 7/16) return '9';
+	else if(score > 6/16) return '10';
+	else if(score > 5/16) return '11';
+	else if(score > 4/16) return '12';
+	else if(score > 3/16) return '13';
+	else if(score > 2/16) return '14';
+	else if(score > 1/16) return '15';
+	else return '16';
+
+}
+
+
+
+
+
 alignToolkit.alignEm = function(str, callback, toT) {
 	console.log("input: " + str);
 	toT = toT || "keep";
 	var strs = str.split('\n');
+	var keywordpos = 0;
 	if(strs.length !== 2) {
 		console.error("invalid input");
 		callback(null);	
@@ -111,18 +181,23 @@ alignToolkit.alignEm = function(str, callback, toT) {
 	var now = 0;
 	var clearEngs = [];
 	for(var i = 0; i < engs.length; ++i) {
-		if(engs[i] == '<em>')
+		if(engs[i] == '<em>'){
 			emInd.push(now);
+			keywordpos = now;
+		}
 		else {
 			clearEngs.push(engs[i]);
 			now ++;
 		}
 	}
+	keywordpos = keywordpos + 1;
 	var clearEng = clearEngs.join(' ');
 	var simpChn = alignToolkit.chnToSimp(chn);
 	alignToolkit.scws(simpChn, function(data) {
 		var clearChn = data;
 		var clearChns = clearChn.split(' ');
+		console.log(clearChn);
+		console.log(clearEng);
 		$.ajax({
 			method: 'GET',
 			url: 'http://166.111.139.15:8002/proxy/',
@@ -130,10 +205,12 @@ alignToolkit.alignEm = function(str, callback, toT) {
 				url: 'http://166.111.139.15:8080/TsinghuaAligner/alignment.jsp',
 				params: JSON.stringify({
 					src: clearChn,
-					tgt: clearEng
+					tgt: clearEng,
+					pos: keywordpos
 				})
 			},
 			success: function(data) {
+				/*
 				var indSt = data.indexOf('<form>') + 6;
 				data = data.substring(indSt, data.indexOf('</form>'));
 				data = data.replace(/\s+/g, '');
@@ -219,6 +296,7 @@ alignToolkit.alignEm = function(str, callback, toT) {
 							return;
 						}	
 				}
+
 				now = 0;
 				var resChn = "";
 				for(var i = 0; i < chn.length; ++i) {
@@ -232,6 +310,77 @@ alignToolkit.alignEm = function(str, callback, toT) {
 					} else
 						resChn += chn[i];
 				}
+				*/
+				var indSt = data.indexOf('<form>')+8;
+				data = data.substring(indSt,data.indexOf('</form>')-4);
+				var scores = data.split(';');
+				for (var sum = i = 0; i < scores.length; i++)
+					sum += parseFloat(scores[i]);
+				for (var i = 0; i < scores.length; i++)
+					scores[i] = parseFloat(scores[i])/sum;
+				var top3 = [0,0,0];
+				chinesewords = clearChn.split(' ');
+				var chinesenum = chinesewords.length;
+
+				var newstr = '';
+				if (chinesenum == 1) {
+					newstr = '<em class=\'em1\'>'+chinesewords[0]+'</em>';
+					//newstr = '<font color="'+'#FF0000'+'">'+chinesewords[0]+'</font>';
+				}
+				else if(chinesenum == 2) {
+					for (var i = 0; i < scores.length; i++){
+						var cnum = alignToolkit.calculatecnum(scores[i]);
+						newstr = newstr + '<em class=\'em'+cnum+'\'>'+chinesewords[i] + '</em>';
+						//var color = alignToolkit.calculatecolor(scores[i]);
+						//newstr = newstr+'<font color="'+color+'">'+chinesewords[i]+'</font>';
+					}
+				}else {
+					var scoremax = 0;
+					var maxpos = 0;
+					for (var i = 0;i<scores.length;i++) {
+						if (scores[i]>scoremax) {
+							scoremax = scores[i];
+							maxpos = i;
+						}
+					}
+					top3[0] = maxpos;
+
+					scoremax = 0;
+					maxpos = 0;
+					for (var i = 0;i<scores.length;i++) {
+						if (i!=top3[0]&&scores[i]>scoremax) {
+							
+							scoremax = scores[i];
+							maxpos = i;
+						}
+					}
+
+					top3[1] = maxpos;
+					scoremax = 0;
+					maxpos = 0;
+					for (var i = 0;i<scores.length;i++) {
+						if (i!=top3[0]&&i!=top3[1]&&scores[i]>scoremax) {
+							
+							scoremax = scores[i];
+							maxpos = i;
+						}
+					}
+					top3[2] = maxpos;
+
+					var topsum = scores[top3[0]] + scores[top3[1]] + scores[top3[2]];
+					for (var i = 0;i<3;i++) {
+						scores[top3[i]] = scores[top3[i]]/topsum;
+					}
+					for (var i = 0; i < scores.length; i++){
+						if (i==top3[0]||i==top3[1]||i==top3[2]) {
+							var cnum = alignToolkit.calculatecnum(scores[i]);
+							newstr = newstr + '<em class=\'em'+cnum+'\'>'+chinesewords[i] + '</em>';
+						} else {
+							newstr = newstr + chinesewords[i];
+						}
+					}
+				}
+				resChn = newstr
 				var result = "";
 				if(engFirst) {
 					result = engOri + '\n' + resChn;
@@ -242,7 +391,6 @@ alignToolkit.alignEm = function(str, callback, toT) {
 					result = alignToolkit.chnToSimp(result);
 				if(toT == "trad")
 					result = alignToolkit.chnToTrad(result);
-				console.log("result: " + result);
 				callback(result);
 				return;
 				// callback(data);

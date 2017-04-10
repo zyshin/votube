@@ -310,12 +310,88 @@ video::cue {
   font-size: 22px;
   background-color: rgba(0, 0, 0, 0);
 }
-
 video::cue(.highlighted) {
-  color: red;
+  color: #FF0000;
   font-weight: bold;
 }
 
+video::cue(.highlighted1) {
+  color: #FF0000;
+  font-weight: bold;
+}
+
+video::cue(.highlighted2) {
+  color: #FF1111;
+  font-weight: bold;
+}
+
+video::cue(.highlighted3) {
+  color: #FF2222;
+  font-weight: bold;
+}
+
+video::cue(.highlighted4) {
+  color: #FF3333;
+  font-weight: bold;
+}
+
+video::cue(.highlighted5) {
+  color: #FF4444;
+  font-weight: bold;
+}
+video::cue(.highlighted6) {
+  color: #FF5555;
+  font-weight: bold;
+}
+
+video::cue(.highlighted7) {
+  color: #FF6666;
+  font-weight: bold;
+}
+
+video::cue(.highlighted8) {
+  color: #FF7777;
+  font-weight: bold;
+}
+
+video::cue(.highlighted9) {
+  color: #FF8888;
+  font-weight: bold;
+}
+
+video::cue(.highlighted10) {
+  color: #FF9999;
+  font-weight: bold;
+}
+
+video::cue(.highlighted11) {
+  color: #FFAAAA;
+  font-weight: bold;
+}
+video::cue(.highlighted12) {
+  color: #FFBBBB;
+  font-weight: bold;
+}
+
+video::cue(.highlighted13) {
+  color: #FFCCCC;
+  font-weight: bold;
+}
+
+video::cue(.highlighted14) {
+  color: #FFDDDD;
+  font-weight: bold;
+}
+
+video::cue(.highlighted15) {
+  color: #FFEEEE;
+  font-weight: bold;
+}
+
+video::cue(.highlighted16) {
+  color: #FFFFFF;
+  font-weight: bold;
+}
 video.no-sub::cue {
   color: rgba(0, 0, 0, 0);
   text-shadow: 0px 0px 4px #fff;
