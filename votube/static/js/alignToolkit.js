@@ -321,22 +321,55 @@ alignToolkit.alignEm = function(str, callback, toT) {
 				var top3 = [0,0,0];
 				chinesewords = clearChn.split(' ');
 				var chinesenum = chinesewords.length;
-
+				for (var i = 0; i < scores.length; i++) {
+					if (chinesewords[i] == '，' || chinesewords[i] == '。' || chinesewords[i] == '？' || chinesewords[i] == '“' || chinesewords[i] == '”'
+						|| chinesewords[i] == '；' || chinesewords[i] == '：') {
+						scores[i] == 0;
+					}
+				}
+				var cut = 15;
 				var newstr = '';
 				if (chinesenum == 1) {
-					newstr = '<em class=\'em1\'>'+chinesewords[0]+'</em>';
+					var cnum = alignToolkit.calculatecnum(scores[0]);
+					newstr = '<em class=\'em'+str(cnum)+'\'>'+chinesewords[0]+'</em>';
 					//newstr = '<font color="'+'#FF0000'+'">'+chinesewords[0]+'</font>';
 				}
 				else if(chinesenum == 2) {
+					var allless = 0;
+					var scoremax = 0;
 					for (var i = 0; i < scores.length; i++){
 						var cnum = alignToolkit.calculatecnum(scores[i]);
-						newstr = newstr + '<em class=\'em'+cnum+'\'>'+chinesewords[i] + '</em>';
+						if (int(cnum) < cut) {
+							newstr = newstr + '<em class=\'em'+cnum+'\'>'+chinesewords[i] + '</em>';
+							allless = 1;
+						}
+						else {
+							newstr = newstr + chinesewords[i];
+						}
+						if (scores[i]>scoremax)
+							scoremax = scores[i];
 						//var color = alignToolkit.calculatecolor(scores[i]);
 						//newstr = newstr+'<font color="'+color+'">'+chinesewords[i]+'</font>';
+					}
+					if (allless == 0) {
+						newstr = "";
+						for (var i = 0; i < scores.length; i++){
+							if (scores[i] == scoremax) {
+								var cnum = alignToolkit.calculatecnum(scores[i]);
+								newstr = newstr + '<em class=\'em'+cnum+'\'>'+chinesewords[i] + '</em>';
+								break;
+							}
+							else {
+								newstr = newstr + chinesewords[i];
+							}
+							//var color = alignToolkit.calculatecolor(scores[i]);
+							//newstr = newstr+'<font color="'+color+'">'+chinesewords[i]+'</font>';
+						}
 					}
 				}else {
 					var scoremax = 0;
 					var maxpos = 0;
+					var allless = 0;
 					for (var i = 0;i<scores.length;i++) {
 						if (scores[i]>scoremax) {
 							scoremax = scores[i];
@@ -344,7 +377,9 @@ alignToolkit.alignEm = function(str, callback, toT) {
 						}
 					}
 					top3[0] = maxpos;
-
+					if (alignToolkit.calculatecnum(scoremax) >= cut) {
+						allless = 1;
+					}
 					scoremax = 0;
 					maxpos = 0;
 					for (var i = 0;i<scores.length;i++) {
@@ -372,14 +407,30 @@ alignToolkit.alignEm = function(str, callback, toT) {
 						scores[top3[i]] = scores[top3[i]]/topsum;
 					}
 					*/
-					for (var i = 0; i < scores.length; i++){
-						if (i==top3[0]||i==top3[1]||i==top3[2]) {
-							var cnum = alignToolkit.calculatecnum(scores[i]);
-							newstr = newstr + '<em class=\'em'+cnum+'\'>'+chinesewords[i] + '</em>';
-						} else {
-							newstr = newstr + chinesewords[i];
+					if (allless == 0) {
+						for (var i = 0; i < scores.length; i++){
+							if (i==top3[0]||i==top3[1]||i==top3[2]) {
+								var cnum = alignToolkit.calculatecnum(scores[i]);
+								if (cnum < cut)
+									newstr = newstr + '<em class=\'em'+cnum+'\'>'+chinesewords[i] + '</em>';
+								else
+									newstr = newstr + chinesewords[i];
+							} else {
+								newstr = newstr + chinesewords[i];
+							}
 						}
 					}
+					else {
+						for (var i = 0; i < scores.length; i++){
+							if (i==top3[0]) {
+								var cnum = alignToolkit.calculatecnum(scores[i]);
+								newstr = newstr + '<em class=\'em'+cnum+'\'>'+chinesewords[i] + '</em>';
+							} else {
+								newstr = newstr + chinesewords[i];
+							}
+						}
+					}
+
 				}
 				resChn = newstr
 				var result = "";
